@@ -8,7 +8,7 @@ using UnityEngine.UI;
 // Abort / Detonate / Hold
 public class Button : MonoBehaviour
 {
-    
+    public string[] labels = {"Abort", "Detonate", "Hold"};
     private Outlinable outline;
 
     private void Start()

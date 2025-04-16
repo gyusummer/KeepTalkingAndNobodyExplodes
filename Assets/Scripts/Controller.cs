@@ -33,7 +33,10 @@ public class Controller : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
-                Select(hit.collider.gameObject);
+                if (hit.transform.TryGetComponent<ISelectable>(out ISelectable selectable))
+                {
+                    Select(selectable);
+                }
             }
         }
 
@@ -65,9 +68,10 @@ public class Controller : MonoBehaviour
         }
     }
 
-    private void Select(GameObject obj)
+    private void Select(ISelectable obj)
     {
-        selectedObject = obj.transform.root.gameObject;
+        obj.OnSelected();
+        selectedObject = obj.gameObject;
         originalPosition = selectedObject.transform.position;
         originalRotation = selectedObject.transform.eulerAngles;
         

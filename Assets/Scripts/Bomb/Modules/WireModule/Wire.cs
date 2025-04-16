@@ -21,7 +21,7 @@ public class Wire : MonoBehaviour
         outline = GetComponent<Outlinable>();
         outline.enabled = false;
         
-        color = WireModule.colors[Random.Range(0, WireModule.colors.Length)];
+        color = WireModule.COLOR_LIST[Random.Range(0, WireModule.COLOR_LIST.Length)];
         
         intact.material.color = color;
         for (int i = 0; i < snipped.Length; i++)

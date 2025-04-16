@@ -13,15 +13,16 @@ using Random = UnityEngine.Random;
 // Wire ordering begins with the first on the top.
 
 // BBRWY
-public class WireModule : MonoBehaviour
+public class WireModule : DisarmableModule
 {
-    public static readonly Color[] colors = {Color.black, Color.blue, Color.red, Color.white, Color.yellow};
+    public static readonly Color[] COLOR_LIST = {Color.black, Color.blue, Color.red, Color.white, Color.yellow};
     
     [SerializeField]private Wire[] wholeWire;
     
     private int activeWireCount;
     private Wire[] activeWires;
     private Color[] activeColors;
+    
     private Wire keyWire;
 
     private void Start()
@@ -163,7 +164,7 @@ public class WireModule : MonoBehaviour
         }
     }
 
-    public void Disarm()
+    protected override void Disarm()
     {
         for (int i = 0; i < activeWires.Length; i++)
         {

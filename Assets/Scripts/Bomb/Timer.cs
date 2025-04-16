@@ -3,16 +3,25 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class TimerModule : MonoBehaviour
 {
+    public GameObject[] strikeCounter;
+    
     [SerializeField]private TMP_Text timeText;
     private Stopwatch timer = new Stopwatch();
     private TimeSpan limitTime;
 
+    public string leftTimeString;
+
     private void Start()
     {
+        foreach (GameObject go in strikeCounter)
+        {
+            go.SetActive(false);
+        }
         StartTimer();
     }
 
@@ -37,11 +46,12 @@ public class TimerModule : MonoBehaviour
         }
         if (leftTime.Minutes > 0)
         {
-            timeText.text = $"{leftTime.Minutes:D2}:{leftTime.Seconds:D2}";
+            leftTimeString = $"{leftTime.Minutes:D2}:{leftTime.Seconds:D2}";
         }
         else
         {
-            timeText.text = $"{leftTime.Seconds:D2}:{leftTime.Milliseconds:D2}";
+            leftTimeString = $"{leftTime.Seconds:D2}:{leftTime.Milliseconds:D2}";
         }
+        timeText.text = leftTimeString;
     }
 }

@@ -10,6 +10,11 @@ public class ButtonModule : DisarmableModule, ISelectable
     private static readonly Color[] COLOR_LIST = {Color.blue, Color.red, Color.white, Color.yellow};
     private static readonly string[] LABEL_LIST = {"Abort", "Detonate", "Hold"};
     
+    public GameObject GameObject => gameObject;
+    public Transform Transform => transform;
+    public Collider Collider => selectCollider;
+    private Collider selectCollider;
+    
     private static readonly int OPEN = Animator.StringToHash("Open");
     private static readonly int CLOSE = Animator.StringToHash("Close");
     [SerializeField]private Animator animator;
@@ -24,6 +29,8 @@ public class ButtonModule : DisarmableModule, ISelectable
     
     private void Start()
     {
+        selectCollider = GetComponent<Collider>();
+        
         buttonColor = COLOR_LIST[UnityEngine.Random.Range(0, COLOR_LIST.Length)];
         stripColor = COLOR_LIST[UnityEngine.Random.Range(0, COLOR_LIST.Length)];
         

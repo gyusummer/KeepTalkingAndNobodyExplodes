@@ -8,6 +8,7 @@ using UnityEngine.Serialization;
 
 public class Controller : MonoBehaviour
 {
+    private Stack<ISelectable> selectStack = new Stack<ISelectable>();
     private GameObject selectedObject;
     [SerializeField]private Transform selectPosition;
     private Vector3 originalPosition;
@@ -71,7 +72,7 @@ public class Controller : MonoBehaviour
     private void Select(ISelectable obj)
     {
         obj.OnSelected();
-        selectedObject = obj.gameObject;
+        selectedObject = obj.GameObject;
         originalPosition = selectedObject.transform.position;
         originalRotation = selectedObject.transform.eulerAngles;
         

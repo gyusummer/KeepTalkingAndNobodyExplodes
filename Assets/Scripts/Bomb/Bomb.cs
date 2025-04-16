@@ -45,6 +45,13 @@ public class Bomb : MonoBehaviour
                   $"Indicator: {Indicator}\n" +
                   $"Battery: {Battery.Length}\n" +
                   $"LimitTime: {LimitTime}");
+
+
+        foreach (var c in GetComponentsInChildren<Collider>())
+        {
+            c.enabled = false;
+            Debug.Log($"{c.gameObject.name} Collider disabled");
+        }
     }
 
     public void Strike()

@@ -27,6 +27,7 @@ public class WireModule : DisarmableModule
 
     private void Start()
     {
+        EssentialInit();
         Initialize();
     }
 

@@ -16,9 +16,11 @@ public class KeypadModule : DisarmableModule
 
     private void Start()
     {
+        EssentialInit();
+        
         var selectedGroup = symbolGroup[Random.Range(0, symbolGroup.Length)];
         symbols = RandomUtil.GetRandomCombination(selectedGroup.symbols, 4);
-        InitalizeSymbols();
+        InitializeSymbols();
 
         for (int i = 0; i < keypadButtons.Length; i++)
         {
@@ -26,7 +28,7 @@ public class KeypadModule : DisarmableModule
         }
     }
 
-    private void InitalizeSymbols()
+    private void InitializeSymbols()
     {
         Texture2D[] shuffledSymbols = (Texture2D[])symbols.Clone();
         for (int i = shuffledSymbols.Length - 1; i > 0; i--)
@@ -46,6 +48,7 @@ public class KeypadModule : DisarmableModule
         {
             button.OnClick -= Judge;
             button.enabled = false;
+            button.collider.enabled = false;
             nextButtonCursor++;
         }
         else

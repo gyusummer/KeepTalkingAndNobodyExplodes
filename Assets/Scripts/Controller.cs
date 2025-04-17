@@ -8,16 +8,14 @@ using UnityEngine.Serialization;
 
 public class Controller : MonoBehaviour
 {
-    private Stack<ISelectable> selectStack = new Stack<ISelectable>();
-    private GameObject selectedObject;
+    private ISelectable selectedObject;
     [SerializeField]private Transform selectPosition;
-    private Vector3 originalPosition;
-    private Vector3 originalRotation;
+    private Transform originalTransform;
+    // private Vector3 originalPosition;
+    // private Vector3 originalRotation;
 
     private Vector2 mouseMove;
     private float rightDownTime;
-    
-    private float selectAnimDur = 0.5f;
 
     private void Update()
     {
@@ -34,7 +32,7 @@ public class Controller : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
-                if (hit.transform.TryGetComponent<ISelectable>(out ISelectable selectable))
+                if (hit.transform.TryGetComponent(out ISelectable selectable))
                 {
                     Select(selectable);
                 }
@@ -50,14 +48,11 @@ public class Controller : MonoBehaviour
         // right click drag
         if (Input.GetMouseButton(1))
         {
-            if (selectedObject != null)
-            {
-                mouseMove.x = Input.GetAxisRaw("Mouse X");
-                mouseMove.y = Input.GetAxisRaw("Mouse Y");
-                Vector3 rot = new Vector3(mouseMove.y,0,-mouseMove.x);
-                rot *= Time.deltaTime * rotWeight;
-                selectedObject.transform.Rotate(rot);
-            }
+            mouseMove.x = Input.GetAxisRaw("Mouse X");
+            mouseMove.y = Input.GetAxisRaw("Mouse Y");
+            Vector3 rot = new Vector3(mouseMove.y,0,-mouseMove.x);
+            rot *= Time.deltaTime * rotWeight;
+            selectedObject.Transform.Rotate(rot);
         }
         if (Input.GetMouseButtonUp(1))
         {
@@ -71,21 +66,11 @@ public class Controller : MonoBehaviour
 
     private void Select(ISelectable obj)
     {
-        obj.OnSelected();
-        selectedObject = obj.GameObject;
-        originalPosition = selectedObject.transform.position;
-        originalRotation = selectedObject.transform.eulerAngles;
-        
-        selectedObject.transform.DOMove(selectPosition.position, selectAnimDur);
-        selectedObject.transform.DORotate(selectPosition.eulerAngles, selectAnimDur);
-        Debug.Log($"Selected ::: {selectedObject.gameObject.name}");
+        selectedObject = obj.OnSelected(selectPosition);
     }
 
     private void DeSelect()
     {
-        Debug.Log($"DeSelected ::: {selectedObject.gameObject.name}");
-        selectedObject.transform.DOMove(originalPosition, selectAnimDur);
-        selectedObject.transform.DORotate(originalRotation, selectAnimDur);
-        selectedObject = null;
+        selectedObject = selectedObject.OnDeselected();
     }
 }

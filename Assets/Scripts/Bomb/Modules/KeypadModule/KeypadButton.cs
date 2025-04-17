@@ -7,9 +7,12 @@ using UnityEngine.UI;
 
 public class KeypadButton : MonoBehaviour
 {
+    private static readonly int EMISSION_COLOR = Shader.PropertyToID("_EmissionColor");
+    
     public event Action<KeypadButton> OnClick;
 
     public Renderer led;
+    public Collider collider;
 
     [SerializeField]private Outlinable outline;
 
@@ -28,9 +31,9 @@ public class KeypadButton : MonoBehaviour
         WaitForSeconds wait = new WaitForSeconds(0.4f);
         for (int i = 0; i < 3; i++)
         {
-            led.material.SetColor("_EmissionColor", color);
+            led.material.SetColor(EMISSION_COLOR, color);
             yield return wait;
-            led.material.SetColor("_EmissionColor", Color.black);
+            led.material.SetColor(EMISSION_COLOR, Color.black);
             yield return wait;
         }
     }
@@ -52,6 +55,6 @@ public class KeypadButton : MonoBehaviour
 
     private void OnDisable()
     {
-        led.material.SetColor("_EmissionColor", Color.green);
+        led.material.SetColor(EMISSION_COLOR, Color.green);
     }
 }

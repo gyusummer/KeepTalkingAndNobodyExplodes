@@ -7,6 +7,6 @@ public interface ISelectable
     public GameObject GameObject { get; }
     public Transform Transform { get; }
     public Collider Collider { get; }
-    public void OnSelected();
-    public void OnDeselected();
+    public ISelectable OnSelected(Transform selectPosition);
+    public ISelectable OnDeselected();
 }

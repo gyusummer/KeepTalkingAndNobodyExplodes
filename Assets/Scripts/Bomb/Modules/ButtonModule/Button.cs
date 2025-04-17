@@ -24,12 +24,14 @@ using UnityEngine;
 
 public class Button : MonoBehaviour
 {
-    public event Action<float> OnClick;
+    public event Action OnHold;
+    public event Action<float> OnButtonRelease;
+    
+    public bool isLedOn;
     
     private Outlinable outline;
-    
-    private float buttonDownTime;
     private float holdTime;
+    private bool isHolding;
 
     private void Start()
     {
@@ -37,17 +39,29 @@ public class Button : MonoBehaviour
         outline.enabled = false;
     }
 
+    private void Update()
+    {
+        if (isHolding)
+        {
+            holdTime += Time.deltaTime;
+            if (holdTime > 0.5f && isLedOn == false)
+            {
+                OnHold?.Invoke();
+            }
+        }
+    }
+
     private void OnMouseDown()
     {
         if(this.enabled == false) return;
-        buttonDownTime = Time.time;
+        holdTime = 0;
+        isHolding = true;
     }
 
     private void OnMouseUpAsButton()
     {
         if(this.enabled == false) return;
-        holdTime = Time.time - buttonDownTime;
-        OnClick?.Invoke(holdTime);
+        ReleaseButton();
     }
 
     private void OnMouseEnter()
@@ -59,6 +73,16 @@ public class Button : MonoBehaviour
     private void OnMouseExit()
     {
         if(this.enabled == false) return;
+        if (holdTime > 0.5f)
+        {
+            ReleaseButton();
+        }
         outline.enabled = false;
+    }
+    private void ReleaseButton()
+    {
+        holdTime = 0;
+        isHolding = false;
+        OnButtonRelease?.Invoke(holdTime);
     }
 }

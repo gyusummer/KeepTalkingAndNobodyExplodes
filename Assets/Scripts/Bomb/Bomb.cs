@@ -4,11 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
+using DG.Tweening;
 using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class Bomb : MonoBehaviour
+public class Bomb : MonoBehaviour, ISelectable
 {
     public static Bomb Instance;
     public static string Serial;
@@ -39,6 +40,7 @@ public class Bomb : MonoBehaviour
 
     private void Start()
     {
+        selectCollider = GetComponent<Collider>();
         TimerModule = GetComponentInChildren<TimerModule>();
         
         Debug.Log($"Serial: {Serial}\n" +
@@ -49,8 +51,8 @@ public class Bomb : MonoBehaviour
 
         foreach (var c in GetComponentsInChildren<Collider>())
         {
-            c.enabled = false;
-            Debug.Log($"{c.gameObject.name} Collider disabled");
+            // c.enabled = false;
+            // Debug.Log($"{c.gameObject.name} Collider disabled");
         }
     }
 
@@ -79,5 +81,33 @@ public class Bomb : MonoBehaviour
         char serialLast = Serial.Last();
         int lastAsInt = serialLast - 48;
         return lastAsInt % 2 == 1;
+    }
+
+    public GameObject GameObject => gameObject;
+    public Transform Transform => transform;
+    public Collider Collider => selectCollider;
+    private Collider selectCollider;
+
+    private Vector3 originalPosition;
+    private Vector3 originalRotation;
+    public ISelectable OnSelected(Transform selectPosition)
+    {
+        originalPosition = transform.position;
+        originalRotation = transform.eulerAngles;
+        
+        transform.DOMove(selectPosition.position, 0.5f);
+        transform.DORotate(selectPosition.eulerAngles, 0.5f);
+        Debug.Log($"Selected ::: {gameObject.name}");
+        Collider.enabled = false;
+        return this;
+    }
+
+    public ISelectable OnDeselected()
+    {
+        Debug.Log($"DeSelected ::: {gameObject.name}");
+        transform.DOMove(originalPosition, 0.5f);
+        transform.DORotate(originalRotation, 0.5f);
+        Collider.enabled = true;
+        return null;
     }
 }

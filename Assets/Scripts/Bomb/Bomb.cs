@@ -1,11 +1,7 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography;
 using DG.Tweening;
-using Unity.VisualScripting;
+using EPOOutline;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -20,9 +16,20 @@ public class Bomb : MonoBehaviour, ISelectable
     private static readonly string[] INDICATOR_LIST =
         { "SND", "CLR", "CAR", "IND", "FRQ", "SIG", "NSA", "MSA", "TRN", "BOB", "FRK" };
     
-    public TimeSpan LimitTime = new TimeSpan(0,5,0);
+    public GameObject GameObject => gameObject;
+    public Transform Transform => transform;
+    public Collider Collider => selectCollider;
+    private Collider selectCollider;
+
+    public TimeSpan LimitTime = new TimeSpan(0, 5, 0);
+    
+    [SerializeField] private PrefabGroup modulePrefabs;
+    [SerializeField] private Transform[] componentAnchors;
+    private Outlinable outline;
     private int opportunity = 3;
     private int strikeCount = 0;
+    private Vector3 originalPosition;
+    private Vector3 originalRotation;
 
     private void Awake()
     {
@@ -30,7 +37,7 @@ public class Bomb : MonoBehaviour, ISelectable
         // TODO: Randomize serial
         Serial = "4X8SB2";
         Indicator = INDICATOR_LIST[Random.Range(0, INDICATOR_LIST.Length)];
-        
+
         Battery = new string[Random.Range(1, 5)];
         for (int i = 0; i < Battery.Length; i++)
         {
@@ -41,26 +48,26 @@ public class Bomb : MonoBehaviour, ISelectable
     private void Start()
     {
         selectCollider = GetComponent<Collider>();
+        outline = GetComponent<Outlinable>();
         TimerModule = GetComponentInChildren<TimerModule>();
-        
+
+        outline.enabled = false;
         Debug.Log($"Serial: {Serial}\n" +
                   $"Indicator: {Indicator}\n" +
                   $"Battery: {Battery.Length}\n" +
                   $"LimitTime: {LimitTime}");
+    }
 
-
-        foreach (var c in GetComponentsInChildren<Collider>())
-        {
-            // c.enabled = false;
-            // Debug.Log($"{c.gameObject.name} Collider disabled");
-        }
+    private void SetModulesPosition()
+    {
+        
     }
 
     public void Strike()
     {
         Debug.Log("Strike");
         strikeCount++;
-        
+
         if (strikeCount >= opportunity)
         {
             Explode();
@@ -71,7 +78,7 @@ public class Bomb : MonoBehaviour, ISelectable
         }
     }
 
-    public void Explode()
+    private void Explode()
     {
         Debug.Log("Explode");
     }
@@ -83,18 +90,11 @@ public class Bomb : MonoBehaviour, ISelectable
         return lastAsInt % 2 == 1;
     }
 
-    public GameObject GameObject => gameObject;
-    public Transform Transform => transform;
-    public Collider Collider => selectCollider;
-    private Collider selectCollider;
-
-    private Vector3 originalPosition;
-    private Vector3 originalRotation;
     public ISelectable OnSelected(Transform selectPosition)
     {
         originalPosition = transform.position;
         originalRotation = transform.eulerAngles;
-        
+
         transform.DOMove(selectPosition.position, 0.5f);
         transform.DORotate(selectPosition.eulerAngles, 0.5f);
         Debug.Log($"Selected ::: {gameObject.name}");
@@ -109,5 +109,15 @@ public class Bomb : MonoBehaviour, ISelectable
         transform.DORotate(originalRotation, 0.5f);
         Collider.enabled = true;
         return null;
+    }
+
+    private void OnMouseEnter()
+    {
+        outline.enabled = true;
+    }
+
+    private void OnMouseExit()
+    {
+        outline.enabled = false;
     }
 }

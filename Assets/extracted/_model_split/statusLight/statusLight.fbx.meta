@@ -3,7 +3,22 @@ guid: 059395847aa3a8041b85d865bec4f2e4
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Gameplay-KT-Mobile-Diffuse 1
+    second: {fileID: 2100000, guid: 01e71b8072cf55948b61f67718d498f6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Gameplay-Unlit-Texture 0
+    second: {fileID: 2100000, guid: d5e684de2af50754b8213c6fc4170b7f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LightGlow
+    second: {fileID: 2100000, guid: 77597698b17b25941a8c19feefa789d3, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

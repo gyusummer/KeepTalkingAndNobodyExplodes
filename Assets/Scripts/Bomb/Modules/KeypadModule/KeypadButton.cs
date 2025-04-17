@@ -15,6 +15,7 @@ public class KeypadButton : MonoBehaviour
     public Collider collider;
 
     [SerializeField]private Outlinable outline;
+    private Coroutine ledCoroutine = null;
 
     private void Start()
     {
@@ -23,7 +24,11 @@ public class KeypadButton : MonoBehaviour
 
     public void BlinkLed(Color color)
     {
-        StartCoroutine(BlinkLed_Coroutine(color));
+        if (ledCoroutine != null)
+        {
+            StopCoroutine(ledCoroutine);
+        }
+        ledCoroutine = StartCoroutine(BlinkLed_Coroutine(color));
     }
 
     private IEnumerator BlinkLed_Coroutine(Color color)

@@ -54,6 +54,7 @@ public class KeypadModule : DisarmableModule
         else
         {
             button.BlinkLed(Color.red);
+            statusLED.LightRed();
             Bomb.Instance.Strike();
         }
 
@@ -66,6 +67,7 @@ public class KeypadModule : DisarmableModule
     }
     protected override void Disarm()
     {
+        statusLED.LightGreen();
         this.enabled = false;
         Debug.Log("KeypadModule Disarmed");
     }

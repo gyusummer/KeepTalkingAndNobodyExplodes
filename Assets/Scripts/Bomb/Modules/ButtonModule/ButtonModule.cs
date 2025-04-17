@@ -114,6 +114,7 @@ public class ButtonModule : DisarmableModule
         }
         else
         {
+            statusLED.LightRed();
             Bomb.Instance.Strike();
         }
     }
@@ -168,6 +169,7 @@ public class ButtonModule : DisarmableModule
     }
     protected override void Disarm()
     {
+        statusLED.LightGreen();
         button.enabled = false;
         this.enabled = false;
         Debug.Log("ButtonModule Disarmed");

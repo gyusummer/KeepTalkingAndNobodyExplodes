@@ -59,6 +59,7 @@ public class WireModule : DisarmableModule
         }
         else
         {
+            statusLED.LightRed();
             Bomb.Instance.Strike();
         }
     }
@@ -167,6 +168,7 @@ public class WireModule : DisarmableModule
 
     protected override void Disarm()
     {
+        statusLED.LightGreen();
         for (int i = 0; i < activeWires.Length; i++)
         {
             activeWires[i].enabled = false;

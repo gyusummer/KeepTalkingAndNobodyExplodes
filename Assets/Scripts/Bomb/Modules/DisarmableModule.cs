@@ -9,8 +9,9 @@ public abstract class DisarmableModule : MonoBehaviour, ISelectable
     public GameObject GameObject => gameObject;
     public Transform Transform => transform;
     public Collider Collider => selectCollider;
-    protected Collider selectCollider;
-    protected Outlinable outline;
+    private Collider selectCollider;
+    private Outlinable outline;
+    protected StatusLight statusLED;
 
     private Vector3 originalPosition;
     private Vector3 originalRotation;
@@ -20,6 +21,7 @@ public abstract class DisarmableModule : MonoBehaviour, ISelectable
 
     protected void EssentialInit()
     {
+        statusLED = GetComponentInChildren<StatusLight>();
         selectCollider = GetComponent<Collider>();
         outline = GetComponent<Outlinable>();
         outline.enabled = false;

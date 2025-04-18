@@ -43,6 +43,7 @@ public class TimerModule : MonoBehaviour
         {
             timer.Stop();
             leftTime = TimeSpan.Zero;
+            Bomb.Instance.Explode();
         }
         if (leftTime.Minutes > 0)
         {
@@ -50,7 +51,8 @@ public class TimerModule : MonoBehaviour
         }
         else
         {
-            leftTimeString = $"{leftTime.Seconds:D2}:{leftTime.Milliseconds:D2}";
+            int milliseconds = (int)(leftTime.Milliseconds * 0.1f);
+            leftTimeString = $"{leftTime.Seconds:D2}:{milliseconds:D2}";
         }
         timeText.text = leftTimeString;
     }

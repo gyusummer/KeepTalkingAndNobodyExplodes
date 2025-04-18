@@ -3,7 +3,47 @@ guid: d25c07ba2d8745745a06a891cf7c6a4d
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Component_Button_LED_BLUE
+    second: {fileID: 2100000, guid: cb950909532c81545b255fbffe12c4e6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Component_Button_LED_RED
+    second: {fileID: 2100000, guid: 3a9611bdc009e9c4996c18cc7c611d67, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Component_Button_LED_WHITE
+    second: {fileID: 2100000, guid: a11014dcfaf5b914a93877d0a9636e14, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Component_Button_LED_YELLOW
+    second: {fileID: 2100000, guid: e53369d24ab0d974bab1aeb11db878f6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Gameplay-KT-Mobile-Diffuse 0
+    second: {fileID: 2100000, guid: e35fc3f648a632340aba82910853fb5e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Gameplay-KT-Mobile-Diffuse 1
+    second: {fileID: 2100000, guid: d0060396c0ecb824398d4c4edf39635a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Gameplay-Legacy Shaders-Transparent-Diffuse 0
+    second: {fileID: 2100000, guid: 9f980e360fe3aba45bd082d5a84e47a0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LightGlow
+    second: {fileID: 2100000, guid: 715f3b559f85ac34ebe483586ed54e69, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

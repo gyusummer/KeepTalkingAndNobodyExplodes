@@ -39,7 +39,7 @@ public class WireModule : DisarmableModule
         }
         
         activeWireCount = Random.Range(3, 7);
-        activeWires = RandomUtil.GetRandomCombination(wholeWire,activeWireCount);
+        activeWires = RandomUtil.GetSortedRandomSubset(wholeWire,activeWireCount);
         activeColors = new Color[activeWires.Length];
         for (int i = 0; i < activeWireCount; i++)
         {

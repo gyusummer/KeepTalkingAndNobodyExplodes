@@ -19,7 +19,7 @@ public class KeypadModule : DisarmableModule
         EssentialInit();
         
         var selectedGroup = symbolGroup[Random.Range(0, symbolGroup.Length)];
-        symbols = RandomUtil.GetRandomCombination(selectedGroup.symbols, 4);
+        symbols = RandomUtil.GetSortedRandomSubset(selectedGroup.symbols, 4);
         InitializeSymbols();
 
         for (int i = 0; i < keypadButtons.Length; i++)

@@ -3,7 +3,37 @@ guid: da39b1fed2d5de1498d45047c43129aa
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Gameplay-KT-Unlit-TexturedLightmap 0
+    second: {fileID: 2100000, guid: 85588e7e26243ff41a8833da0ef4dd0f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Gameplay-KT-Unlit-TexturedLightmap 1
+    second: {fileID: 2100000, guid: 5474151ebfea7b74cbdf9b8a0d7d3607, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Gameplay-Unlit-Texture 0
+    second: {fileID: 2100000, guid: 1b26d9d29ce7f2a408d8c87576f38e80, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LightGlow
+    second: {fileID: 2100000, guid: 33c86bc0dc49db047bc10259ac4cf028, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Walls_01
+    second: {fileID: 2100000, guid: 1e2c3e29c8458e047890a71707d641cb, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: controls_poster
+    second: {fileID: 2100000, guid: 9af3012de76dfbc4a82b74a99f68af4f, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

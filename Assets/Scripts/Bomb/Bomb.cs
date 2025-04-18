@@ -2,7 +2,9 @@ using System;
 using System.Linq;
 using DG.Tweening;
 using EPOOutline;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class Bomb : MonoBehaviour, ISelectable
@@ -21,10 +23,11 @@ public class Bomb : MonoBehaviour, ISelectable
     public Collider Collider => selectCollider;
     private Collider selectCollider;
 
-    public TimeSpan LimitTime = new TimeSpan(0, 5, 0);
+    public TimeSpan LimitTime = new TimeSpan(0, 1, 0);
     
-    [SerializeField] private PrefabGroup modulePrefabs;
-    [SerializeField] private Transform[] componentAnchors;
+    [SerializeField] private PrefabGroup componentPrefabs;
+    [SerializeField] private Transform[] moduleAnchors;
+    [SerializeField] private Transform[] widgetAnchors;
     private Outlinable outline;
     private int opportunity = 3;
     private int strikeCount = 0;
@@ -56,11 +59,58 @@ public class Bomb : MonoBehaviour, ISelectable
                   $"Indicator: {Indicator}\n" +
                   $"Battery: {Battery.Length}\n" +
                   $"LimitTime: {LimitTime}");
+        
+        FillModules();
+        AttachWidgets();
     }
 
-    private void SetModulesPosition()
+    private void FillModules()
     {
+        TimerModule = componentPrefabs.timer;
+        var temp= RandomUtil.GetShuffled(moduleAnchors[0..5]);
+        Instantiate(TimerModule.gameObject, temp[0]);
+        for(int i = 0; i < componentPrefabs.modules.Length; i++)
+        {
+            var module = componentPrefabs.modules[i];
+            Instantiate(module.gameObject, temp[i + 1]);
+        }
+        CoverEmpties();
+    }
+
+    private void CoverEmpties()
+    {
+        for (int i = 0; i < moduleAnchors.Length; i++)
+        {
+            if (moduleAnchors[i].childCount == 0)
+            {
+                Instantiate(componentPrefabs.emptyCoverPrefab, moduleAnchors[i]);
+            }
+        }
+    }
+
+    private void AttachWidgets()
+    {
+        int widgetCount = 2 + Battery.Length;
+        var widgetTransforms = RandomUtil.GetRandomSubset(widgetAnchors, widgetCount);
         
+        GameObject serial = Instantiate(componentPrefabs.widgets[0], widgetTransforms[widgetCount - 1]);
+        serial.GetComponentInChildren<TMP_Text>().text = Serial;
+        GameObject indicator = Instantiate(componentPrefabs.widgets[1], widgetTransforms[widgetCount - 2]);
+        indicator.GetComponentInChildren<TMP_Text>().text = Indicator;
+
+        for (int i = 0; i < Battery.Length; i++)
+        {
+            var t = widgetTransforms[i];
+            switch (Battery[i])
+            {
+                case "AA":
+                    Instantiate(componentPrefabs.widgets[2], t);
+                    break;
+                case "D":
+                    Instantiate(componentPrefabs.widgets[3], t);
+                    break;
+            }
+        }
     }
 
     public void Strike()
@@ -78,7 +128,7 @@ public class Bomb : MonoBehaviour, ISelectable
         }
     }
 
-    private void Explode()
+    public void Explode()
     {
         Debug.Log("Explode");
     }

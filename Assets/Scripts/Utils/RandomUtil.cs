@@ -15,7 +15,7 @@ public static class RandomUtil
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
     /// <exception cref="ArgumentException"></exception>
-    public static T[] GetRandomCombination<T>(T[] array, int count)
+    public static T[] GetSortedRandomSubset<T>(T[] array, int count)
     {
         if (count > array.Length)
             throw new ArgumentException("뽑으려는 개수가 배열보다 많음");
@@ -38,6 +38,52 @@ public static class RandomUtil
         T[] result = new T[count];
         for (int i = 0; i < count; i++)
             result[i] = array[indices[i]];
+
+        return result;
+    }
+    public static T[] GetRandomSubset<T>(T[] array, int count)
+    {
+        if (array == null)
+            throw new ArgumentNullException(nameof(array));
+        if (count < 0 || count > array.Length)
+            throw new ArgumentOutOfRangeException(nameof(count), "count는 0 이상 array.Length 이하이어야 합니다.");
+
+        // 원본을 건드리지 않기 위해 복사본 생성
+        T[] buffer = (T[])array.Clone();
+        int n = buffer.Length;
+
+        // 앞에서부터 count개만 부분 셔플
+        for (int i = 0; i < count; i++)
+        {
+            // i 이상 n-1 사이에서 랜덤 인덱스 선택
+            int j = random.Next(i, n);
+            // swap buffer[i] <-> buffer[j]
+            (buffer[i], buffer[j]) = (buffer[j], buffer[i]);
+        }
+
+        // 셔플된 앞 count개를 결과로 잘라서 반환
+        T[] result = new T[count];
+        Array.Copy(buffer, 0, result, 0, count);
+        return result;
+    }
+    /// <summary>
+    /// 원본을 변경하지 않고, 섞인 새 배열을 반환합니다.
+    /// </summary>
+    public static T[] GetShuffled<T>(T[] array)
+    {
+        if (array == null) 
+            throw new ArgumentNullException(nameof(array));
+
+        // 복사본 생성
+        T[] result = (T[])array.Clone();
+        int n = result.Length;
+
+        // Fisher–Yates 셔플 (뒤에서부터)
+        for (int i = n - 1; i > 0; i--)
+        {
+            int j = random.Next(i + 1);
+            (result[i], result[j]) = (result[j], result[i]);
+        }
 
         return result;
     }

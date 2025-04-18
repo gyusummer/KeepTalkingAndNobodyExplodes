@@ -877,7 +877,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   led: {fileID: 1403328762293758159}
-  collider: {fileID: 0}
+  collider: {fileID: 256415663867759743}
   outline: {fileID: 4590641494333192270}
 --- !u!54 &383864581190017108
 Rigidbody:
@@ -1050,7 +1050,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   led: {fileID: 1012231725212829932}
-  collider: {fileID: 0}
+  collider: {fileID: 6837441567956924670}
   outline: {fileID: 369536651616171318}
 --- !u!54 &5766292787056191698
 Rigidbody:
@@ -1657,7 +1657,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   led: {fileID: 5406432494298669433}
-  collider: {fileID: 0}
+  collider: {fileID: 153734525768945345}
   outline: {fileID: 8563852363112750514}
 --- !u!54 &6554420285587323428
 Rigidbody:
@@ -1767,7 +1767,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   led: {fileID: 5286688784773536445}
-  collider: {fileID: 0}
+  collider: {fileID: 4339311301396653002}
   outline: {fileID: 8784023219727657617}
 --- !u!54 &6838073043016183642
 Rigidbody:

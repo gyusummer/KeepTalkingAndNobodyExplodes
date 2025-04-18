@@ -5,5 +5,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "PrefabGroup", menuName = "ScriptableObjects/PrefabGroup")]
 public class PrefabGroup : ScriptableObject
 {
-    public GameObject[] prefabs;
+    public GameObject emptyCoverPrefab;
+    public TimerModule timer;
+    public DisarmableModule[] modules;
+    public GameObject[] widgets;
 }

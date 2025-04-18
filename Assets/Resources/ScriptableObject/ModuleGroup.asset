@@ -12,7 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 648c225777a6edb45bab5b1ff53ebc57, type: 3}
   m_Name: ModuleGroup
   m_EditorClassIdentifier: 
-  prefabs:
-  - {fileID: 2593990126425878354, guid: 1716845be0d1f944bb967e5659078b70, type: 3}
-  - {fileID: 1470866822503008068, guid: fa9b2f23f8a672b4f9a27239fbfbc19b, type: 3}
-  - {fileID: 8827755836601495604, guid: 1b75cab5e5227a8438ba39a148d5f94d, type: 3}
+  emptyCoverPrefab: {fileID: 5975079936655099714, guid: 99fca3615dd57f44280980e77f6d7de5,
+    type: 3}
+  timer: {fileID: 5263014211782589708, guid: bdea5a58cba6e5c4aa52fa66ba5d7467, type: 3}
+  modules:
+  - {fileID: 7000963516593852145, guid: 1716845be0d1f944bb967e5659078b70, type: 3}
+  - {fileID: 4046879050595786344, guid: fa9b2f23f8a672b4f9a27239fbfbc19b, type: 3}
+  - {fileID: 7905152578400903473, guid: 1b75cab5e5227a8438ba39a148d5f94d, type: 3}
+  widgets:
+  - {fileID: 907992666137318883, guid: 19e88b7f993015641b87cde96627c9f9, type: 3}
+  - {fileID: 4689736448771459717, guid: 72ee90c0119f1c74588772a6e471ebdf, type: 3}
+  - {fileID: 5420086832799448277, guid: b20a901829ad1d6448dc766bb9c81871, type: 3}
+  - {fileID: 3220631504213268798, guid: 7ed9e165cb52e5e4786f244d14f7a17e, type: 3}

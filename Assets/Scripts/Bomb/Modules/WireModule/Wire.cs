@@ -16,7 +16,7 @@ public class Wire : MonoBehaviour
     private Outlinable outline;
     [SerializeField]private Renderer intact;
     [SerializeField]private Renderer[] snipped;
-    private void Start()
+    private void Awake()
     {
         outline = GetComponent<Outlinable>();
         outline.enabled = false;

@@ -3,7 +3,87 @@ guid: c4a749af4275d4041b31bd9a8923e37c
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BlankPage
+    second: {fileID: 2100000, guid: a7febf43967ef4b49a57ff13c851d5db, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BlankPageBack
+    second: {fileID: 2100000, guid: a7b8b6cd69664f24bbc69b6bf9dae345, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Common-KT-Mobile-Diffuse 0
+    second: {fileID: 2100000, guid: 7b13699e692333440866c9bcb13c2c50, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Common-KT-Transparent-Mobile Diffuse Underlay200 0
+    second: {fileID: 2100000, guid: 673b77006ccba7f4892f3827567a0e9c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Common-KT-Transparent-Mobile Diffuse Vertex Colour Underlay200 0
+    second: {fileID: 2100000, guid: 12ab7ccd0f7262a43b62d3690aa8cb5f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Common-Legacy Shaders-Transparent-Diffuse 0
+    second: {fileID: 2100000, guid: 5769dbf3a327f1d42895b04227502872, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Common-Unlit-Transparent 0
+    second: {fileID: 2100000, guid: c5b37626ce8727e459cb12f5474b5e59, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LeaderboardHighlight
+    second: {fileID: 2100000, guid: 168b07068c07211409e7a3742c69e470, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LeaderboardPageError
+    second: {fileID: 2100000, guid: 468a91aa97491064e9c8255c69d150b8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LeaderboardPageTable
+    second: {fileID: 2100000, guid: eb2ab09946c79ff42b38e4402129547c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: MissionDetailPage
+    second: {fileID: 2100000, guid: a0c9e8dd1fe1fd44997236b85bc5c6eb, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ResultDefusedPage
+    second: {fileID: 2100000, guid: 4d87950ee59330242916dc2173a861c0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ResultExplodedPage
+    second: {fileID: 2100000, guid: d815075b236a7a34f8a0b3b0254d88b5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ResultFreeplayDefusedPage
+    second: {fileID: 2100000, guid: 4443bf1cb198a0d4f8e2880c2177f26d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ResultFreeplayExplodedPage
+    second: {fileID: 2100000, guid: 29a93573aec35bd4f8f2e215276a70e6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: TutorialDetailPage
+    second: {fileID: 2100000, guid: 57be43eb716f5b34fa52079130b68050, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

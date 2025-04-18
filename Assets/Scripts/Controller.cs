@@ -46,7 +46,7 @@ public class Controller : MonoBehaviour
             rightDownTime = Time.time;
         }
         // right click drag
-        if (Input.GetMouseButton(1))
+        if (Input.GetMouseButton(1) && selectedObject is not DisarmableModule)
         {
             mouseMove.x = Input.GetAxisRaw("Mouse X");
             mouseMove.y = Input.GetAxisRaw("Mouse Y");

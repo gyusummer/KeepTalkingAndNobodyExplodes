@@ -6,6 +6,7 @@ using UnityEngine;
 
 public abstract class DisarmableModule : MonoBehaviour, ISelectable
 {
+    public Bomb bomb;
     public GameObject GameObject => gameObject;
     public Transform Transform => transform;
     public Collider Collider => selectCollider;
@@ -37,7 +38,9 @@ public abstract class DisarmableModule : MonoBehaviour, ISelectable
         transform.parent = null;
         rootBomb.parent = transform;
         
-        transform.DOMove(selectPosition.position, 0.5f);
+        var targetPosition = selectPosition.position + selectPosition.up * 0.1f;
+        
+        transform.DOMove(targetPosition, 0.5f);
         var tween = transform.DORotate(selectPosition.eulerAngles, 0.5f);
         tween.onComplete += () =>
         {
@@ -45,6 +48,8 @@ public abstract class DisarmableModule : MonoBehaviour, ISelectable
             transform.parent = originalParent;
         };
         Collider.enabled = false;
+        Camera.main.DOFieldOfView(40, 0.5f);
+        
         Debug.Log($"Selected ::: {gameObject.name}");
 
         return this;
@@ -65,6 +70,8 @@ public abstract class DisarmableModule : MonoBehaviour, ISelectable
             transform.parent = originalParent;
         };
         Collider.enabled = true;
+        Camera.main.DOFieldOfView(60, 0.5f);
+        
         Debug.Log($"DeSelected ::: {gameObject.name}");
 
         return rootBomb.GetComponent<ISelectable>();

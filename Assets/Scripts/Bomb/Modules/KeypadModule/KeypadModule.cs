@@ -8,7 +8,6 @@ using Random = UnityEngine.Random;
 public class KeypadModule : DisarmableModule
 {
     [SerializeField] private KeypadButton[] keypadButtons;
-    [SerializeField] private Renderer[] symbolRenderers;
     [SerializeField] private KeypadModuleSymbolGroup[] symbolGroup;
     private Texture2D[] symbols;
 
@@ -30,15 +29,10 @@ public class KeypadModule : DisarmableModule
 
     private void InitializeSymbols()
     {
-        Texture2D[] shuffledSymbols = (Texture2D[])symbols.Clone();
-        for (int i = shuffledSymbols.Length - 1; i > 0; i--)
+        keypadButtons = RandomUtil.GetShuffled(keypadButtons);
+        for (int i = 0; i < symbols.Length; i++)
         {
-            int j = Random.Range(0, i + 1);
-            (shuffledSymbols[i], shuffledSymbols[j]) = (shuffledSymbols[j], shuffledSymbols[i]);
-        }
-        for (int i = 0; i < shuffledSymbols.Length; i++)
-        {
-            symbolRenderers[i].material.mainTexture = shuffledSymbols[i];
+            keypadButtons[i].symbolImage.material.mainTexture = symbols[i];
         }
     }
 
@@ -55,7 +49,7 @@ public class KeypadModule : DisarmableModule
         {
             button.BlinkLed(Color.red);
             statusLED.LightRed();
-            Bomb.Instance.Strike();
+            bomb.Strike();
         }
 
         if (nextButtonCursor == keypadButtons.Length)
@@ -70,6 +64,7 @@ public class KeypadModule : DisarmableModule
         statusLED.LightGreen();
         this.enabled = false;
         Debug.Log("KeypadModule Disarmed");
+        bomb.CurDisarm++;
     }
 
     private void OnDestroy()

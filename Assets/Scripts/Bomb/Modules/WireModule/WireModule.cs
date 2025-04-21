@@ -31,7 +31,7 @@ public class WireModule : DisarmableModule
         Initialize();
     }
 
-    public void Initialize()
+    private void Initialize()
     {
         for (int i = 0; i < wholeWire.Length; i++)
         {
@@ -60,7 +60,7 @@ public class WireModule : DisarmableModule
         else
         {
             statusLED.LightRed();
-            Bomb.Instance.Strike();
+            bomb.Strike();
         }
     }
 
@@ -97,7 +97,7 @@ public class WireModule : DisarmableModule
                 // Otherwise, if there is exactly one blue wire, cut the first wire.
                 // Otherwise, if there is more than one yellow wire, cut the last wire.
                 // Otherwise, cut the second wire.
-                if (activeColors.Count(c => c == Color.red) > 1 && Bomb.Instance.IsSerialOdd())
+                if (activeColors.Count(c => c == Color.red) > 1 && bomb.IsSerialOdd())
                 {
                     int keyIndex = Array.FindIndex(activeColors, color => color == Color.red);
                     keyWire = activeWires[keyIndex];
@@ -121,7 +121,7 @@ public class WireModule : DisarmableModule
                 break;
             case 5:
                 // If the last wire is black and the last digit of the serial number is odd, cut the fourth wire.
-                if (activeColors.Last() == Color.black && Bomb.Instance.IsSerialOdd())
+                if (activeColors.Last() == Color.black && bomb.IsSerialOdd())
                 {
                     keyWire = activeWires[3]; // 4번째 와이어
                 }
@@ -143,7 +143,7 @@ public class WireModule : DisarmableModule
                 break;
             case 6:
                 // If there are no yellow wires and the last digit of the serial number is odd, cut the third wire.
-                if (!activeColors.Contains(Color.yellow) && Bomb.Instance.IsSerialOdd())
+                if (!activeColors.Contains(Color.yellow) && bomb.IsSerialOdd())
                 {
                     keyWire = activeWires[2]; // 세 번째 와이어 (인덱스 2)
                 }
@@ -175,6 +175,7 @@ public class WireModule : DisarmableModule
         }
         this.enabled = false;
         Debug.Log("WireModule Disarmed");
+        bomb.CurDisarm++;
     }
 
     private void OnDestroy()

@@ -102,9 +102,12 @@ public class ButtonModule : DisarmableModule
 
     private void Judge(bool isImmediateRelease)
     {
-        string timer = Bomb.TimerModule.leftTimeString;
+        string timer = bomb.timerModule.leftTimeString;
+        Debug.Log($"bomb {bomb}\n" +
+                  $"timermodule {bomb.timerModule}\n" +
+                  $"lefttime {timer}");
         bool isTimerHasKey = timer.Contains(key);
-        if (key == "0" && isImmediateRelease)
+        if (key == "-1" && isImmediateRelease)
         {
             Disarm();
         }
@@ -115,28 +118,28 @@ public class ButtonModule : DisarmableModule
         else
         {
             statusLED.LightRed();
-            Bomb.Instance.Strike();
+            bomb.Strike();
         }
     }
 
     private void SetKey()
     {
-        int batteryCount = Bomb.Battery.Length;
+        int batteryCount = bomb.battery.Length;
         if (buttonColor == Color.blue && label == "Abort")
         {
             DelayedRelease(); // Releasing a Held Button 참조
         }
         else if (batteryCount > 1 && label == "Detonate")
         {
-            key = "0";
+            key = "-1";
         }
-        else if (buttonColor == Color.white && Bomb.Indicator == "CAR")
+        else if (buttonColor == Color.white && bomb.indicator == "CAR")
         {
             DelayedRelease(); // Releasing a Held Button 참조
         }
-        else if (batteryCount > 2 && Bomb.Indicator == "FRK")
+        else if (batteryCount > 2 && bomb.indicator == "FRK")
         {
-            key = "0";
+            key = "-1";
         }
         else if (buttonColor == Color.yellow)
         {
@@ -144,7 +147,7 @@ public class ButtonModule : DisarmableModule
         }
         else if (buttonColor == Color.red && label == "Hold")
         {
-            key = "0";
+            key = "-1";
         }
         else
         {
@@ -173,6 +176,7 @@ public class ButtonModule : DisarmableModule
         button.enabled = false;
         this.enabled = false;
         Debug.Log("ButtonModule Disarmed");
+        bomb.CurDisarm++;
     }
     private void OpenLid()
     {

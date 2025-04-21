@@ -1,10 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Security;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Vector2 = UnityEngine.Vector2;
+using Vector3 = UnityEngine.Vector3;
 
 public class Controller : MonoBehaviour
 {
@@ -66,11 +69,19 @@ public class Controller : MonoBehaviour
 
     private void Select(ISelectable obj)
     {
+        // if (selectedObject == null)
+        // {
+        //     transform.DORotate(Vector3.zero, 0.5f);
+        // }
         selectedObject = obj.OnSelected(selectPosition);
     }
 
     private void DeSelect()
     {
         selectedObject = selectedObject.OnDeselected();
+        if (selectedObject == null)
+        {
+            transform.DORotate(new Vector3(27.36f, 0, 0), 0.5f);
+        }
     }
 }

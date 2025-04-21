@@ -11,6 +11,7 @@ public class KeypadButton : MonoBehaviour
     
     public event Action<KeypadButton> OnClick;
 
+    public Renderer symbolImage;
     public Renderer led;
     public Collider collider;
 
@@ -60,6 +61,11 @@ public class KeypadButton : MonoBehaviour
 
     private void OnDisable()
     {
+        if (ledCoroutine != null)
+        {
+            StopCoroutine(ledCoroutine);
+            ledCoroutine = null;
+        }
         led.material.SetColor(EMISSION_COLOR, Color.green);
     }
 }

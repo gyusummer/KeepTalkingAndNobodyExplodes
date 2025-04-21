@@ -489,16 +489,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e51bf8fd72fe99f4faedccf46afdd9b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bomb: {fileID: 0}
   keypadButtons:
   - {fileID: 8680007421683290722}
   - {fileID: 3404009788490558049}
   - {fileID: 703975910486082906}
   - {fileID: 3341911269932486430}
-  symbolRenderers:
-  - {fileID: 992652890736159965}
-  - {fileID: 354603271512039423}
-  - {fileID: 8787267641595172995}
-  - {fileID: 5323001067445872694}
   symbolGroup:
   - {fileID: 11400000, guid: fcce84fe85c028245aecba6b0e279121, type: 2}
   - {fileID: 11400000, guid: 8ff0a73cecbee994e8e3e03a4b3e6834, type: 2}
@@ -876,6 +872,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1720fd73a0498e24595871eccd9438b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  symbolImage: {fileID: 5323001067445872694}
   led: {fileID: 1403328762293758159}
   collider: {fileID: 256415663867759743}
   outline: {fileID: 4590641494333192270}
@@ -1049,6 +1046,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1720fd73a0498e24595871eccd9438b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  symbolImage: {fileID: 354603271512039423}
   led: {fileID: 1012231725212829932}
   collider: {fileID: 6837441567956924670}
   outline: {fileID: 369536651616171318}
@@ -1656,6 +1654,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1720fd73a0498e24595871eccd9438b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  symbolImage: {fileID: 992652890736159965}
   led: {fileID: 5406432494298669433}
   collider: {fileID: 153734525768945345}
   outline: {fileID: 8563852363112750514}
@@ -1766,6 +1765,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1720fd73a0498e24595871eccd9438b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  symbolImage: {fileID: 8787267641595172995}
   led: {fileID: 5286688784773536445}
   collider: {fileID: 4339311301396653002}
   outline: {fileID: 8784023219727657617}

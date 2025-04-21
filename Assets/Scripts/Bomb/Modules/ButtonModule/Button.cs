@@ -22,7 +22,7 @@ using UnityEngine;
 
 // Abort / Detonate / Hold
 
-public class Button : MonoBehaviour
+public class Button : ModulePart
 {
     public event Action OnHold;
     public event Action<float> OnButtonRelease;
@@ -56,6 +56,7 @@ public class Button : MonoBehaviour
         if(this.enabled == false) return;
         holdTime = 0;
         isHolding = true;
+        transform.Translate(0, -0.01f, 0);
     }
 
     private void OnMouseUpAsButton()
@@ -82,7 +83,8 @@ public class Button : MonoBehaviour
     private void ReleaseButton()
     {
         holdTime = 0;
-        isHolding = false;
+        isHolding = false;        
+        transform.Translate(0, 0.01f, 0);
         OnButtonRelease?.Invoke(holdTime);
     }
 }

@@ -5,9 +5,11 @@ using System.Diagnostics;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 public class TimerModule : MonoBehaviour
 {
+    public Bomb bomb;
     public GameObject[] strikeCounter;
     
     [SerializeField]private TMP_Text timeText;
@@ -32,8 +34,12 @@ public class TimerModule : MonoBehaviour
 
     public void StartTimer()
     {
-        limitTime = Bomb.Instance.LimitTime;
+        limitTime = bomb.Info.LimitTime;
         timer.Restart();
+    }
+    public void StopTimer()
+    {
+        timer.Stop();
     }
 
     private void UpdateTimer()
@@ -43,7 +49,7 @@ public class TimerModule : MonoBehaviour
         {
             timer.Stop();
             leftTime = TimeSpan.Zero;
-            Bomb.Instance.Explode();
+            bomb.Explode();
         }
         if (leftTime.Minutes > 0)
         {

@@ -1,11 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Numerics;
-using System.Security;
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
 
@@ -70,6 +67,16 @@ public class Controller : MonoBehaviour
             if (Time.time < rightDownTime + 0.2f && isPointerMoved == false)
             {
                 DeSelect();
+            }
+            else
+            {
+                var toCamera = transform.position - selectedObject.Transform.position;
+                toCamera.Normalize();
+                Quaternion rotation = Quaternion.FromToRotation(Vector3.up, toCamera);
+                var euler = rotation.eulerAngles;
+                euler.z = selectedObject.Transform.eulerAngles.z;
+                // UNDONE: flip
+                selectedObject.Transform.DORotate(euler, 0.5f);
             }
         }
     }

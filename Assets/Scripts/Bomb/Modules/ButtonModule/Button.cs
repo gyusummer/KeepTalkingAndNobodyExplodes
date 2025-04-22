@@ -28,16 +28,8 @@ public class Button : ModulePart
     public event Action<float> OnButtonRelease;
     
     public bool isLedOn;
-    
-    private Outlinable outline;
     private float holdTime;
     private bool isHolding;
-
-    private void Start()
-    {
-        outline = GetComponent<Outlinable>();
-        outline.enabled = false;
-    }
 
     private void Update()
     {
@@ -64,14 +56,7 @@ public class Button : ModulePart
         if(this.enabled == false) return;
         ReleaseButton();
     }
-
-    private void OnMouseEnter()
-    {
-        if(this.enabled == false) return;
-        outline.enabled = true;
-    }
-
-    private void OnMouseExit()
+    protected override void OnMouseExit()
     {
         if(this.enabled == false) return;
         if (holdTime > 0.5f)

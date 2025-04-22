@@ -42,7 +42,7 @@ public class KeypadModule : DisarmableModule
         {
             button.OnClick -= Judge;
             button.enabled = false;
-            button.collider.enabled = false;
+            button.GetComponent<Collider>().enabled = false;
             nextButtonCursor++;
         }
         else

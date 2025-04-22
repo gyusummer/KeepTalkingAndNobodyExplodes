@@ -7,19 +7,16 @@ using Random = UnityEngine.Random;
 
 // must be white wire
 // other color wires don't matter if you change the color;
-public class Wire : MonoBehaviour
+public class Wire : ModulePart
 {
     public event Action<Wire> OnSnip;
     
     [HideInInspector]public Color color;
 
-    private Outlinable outline;
     [SerializeField]private Renderer intact;
     [SerializeField]private Renderer[] snipped;
     private void Awake()
     {
-        outline = GetComponent<Outlinable>();
-        outline.enabled = false;
         
         color = WireModule.COLOR_LIST[Random.Range(0, WireModule.COLOR_LIST.Length)];
         
@@ -45,19 +42,5 @@ public class Wire : MonoBehaviour
     {
         if(this.enabled == false) return;
         SnipWire();
-    }
-
-    private void OnMouseEnter()
-    {
-        if(this.enabled == false) return;
-        outline.enabled = true;
-        Debug.Log("Mouse Enter");
-    }
-
-    private void OnMouseExit()
-    {
-        if(this.enabled == false) return;
-        outline.enabled = false;
-        Debug.Log("Mouse Exit");
     }
 }

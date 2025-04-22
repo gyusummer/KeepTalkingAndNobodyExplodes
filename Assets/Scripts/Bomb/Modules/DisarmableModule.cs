@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
@@ -20,6 +21,12 @@ public abstract class DisarmableModule : MonoBehaviour, ISelectable
     private Transform originalParent;
     protected abstract void Disarm();
 
+    private void Start()
+    {
+        EssentialInit();
+        Init();
+    }
+
     protected void EssentialInit()
     {
         statusLED = GetComponentInChildren<StatusLight>();
@@ -27,6 +34,11 @@ public abstract class DisarmableModule : MonoBehaviour, ISelectable
         outline = GetComponent<Outlinable>();
         outline.enabled = false;
     }
+
+    protected virtual void Init()
+    {
+        
+    } 
 
     public virtual ISelectable OnSelected(Transform selectPosition)
     {

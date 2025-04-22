@@ -12,6 +12,11 @@ public class SceneChanger : MonoBehaviour
 
     private void Awake()
     {
+        if(Instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
         Instance = this;
     }
     private void ChangeScene(string sceneName)

@@ -6,7 +6,6 @@ using System.Linq;
 public static class RandomUtil
 {
     private static Random random = new Random();
-
     /// <summary>
     /// 배열에서 랜덤하게 a개 뽑고 인덱스 기준 정렬
     /// </summary>
@@ -15,6 +14,20 @@ public static class RandomUtil
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
     /// <exception cref="ArgumentException"></exception>
+    public static char GetRandomAlphabet()
+    {
+        return (char)random.Next('A', 'Z' + 1);
+    }
+    public static char GetRandomDigit()
+    {
+        return (char)random.Next('0', '9' + 1);
+    }
+    public static char GetRandomAlphabetOrDigit()
+    {
+        return random.Next(0,36) < 26
+            ? (char)random.Next('A', 'Z' + 1)
+            : (char)random.Next('0', '9' + 1);
+    }
     public static T[] GetSortedRandomSubset<T>(T[] array, int count)
     {
         if (count > array.Length)

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using DG.Tweening;
 using EPOOutline;
 using TMPro;
@@ -71,8 +72,7 @@ public class Bomb : MonoBehaviour, ISelectable
         {
             Main = this;
         }
-        // TODO: Randomize serial
-        serial = "4X8SB2";
+        serial = GenerateSerial();
         indicator = INDICATOR_LIST[Random.Range(0, INDICATOR_LIST.Length)];
 
         battery = new string[Random.Range(1, 5)];
@@ -90,7 +90,14 @@ public class Bomb : MonoBehaviour, ISelectable
 
         outline.enabled = false;
 
-        Info = SceneChanger.Instance.BombInfo;
+        try
+        {
+            Info = SceneChanger.Instance.BombInfo;
+        }
+        catch (Exception e)
+        {
+            Debug.LogAssertion(e.Message);
+        }
 
         if (Info == null)
         {
@@ -243,5 +250,16 @@ public class Bomb : MonoBehaviour, ISelectable
     private void OnMouseExit()
     {
         outline.enabled = false;
+    }
+    private string GenerateSerial()
+    {
+        var sb = new StringBuilder(6);
+        sb.Append(RandomUtil.GetRandomAlphabetOrDigit());
+        sb.Append(RandomUtil.GetRandomAlphabet());
+        sb.Append(RandomUtil.GetRandomDigit());
+        sb.Append(RandomUtil.GetRandomAlphabet());
+        sb.Append(RandomUtil.GetRandomAlphabet());
+        sb.Append(RandomUtil.GetRandomDigit());
+        return sb.ToString();
     }
 }

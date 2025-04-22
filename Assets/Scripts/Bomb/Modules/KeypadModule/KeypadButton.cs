@@ -5,7 +5,7 @@ using EPOOutline;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class KeypadButton : MonoBehaviour
+public class KeypadButton : ModulePart
 {
     private static readonly int EMISSION_COLOR = Shader.PropertyToID("_EmissionColor");
     
@@ -13,15 +13,8 @@ public class KeypadButton : MonoBehaviour
 
     public Renderer symbolImage;
     public Renderer led;
-    public Collider collider;
 
-    [SerializeField]private Outlinable outline;
     private Coroutine ledCoroutine = null;
-
-    private void Start()
-    {
-        outline.enabled = false;
-    }
 
     public void BlinkLed(Color color)
     {
@@ -44,19 +37,9 @@ public class KeypadButton : MonoBehaviour
         }
     }
 
-    private void OnMouseEnter()
-    {
-        outline.enabled = true;
-    }
-
     private void OnMouseDown()
     {
         OnClick?.Invoke(this);
-    }
-
-    private void OnMouseExit()
-    {
-        outline.enabled = false;
     }
 
     private void OnDisable()

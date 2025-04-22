@@ -48,7 +48,7 @@ public abstract class DisarmableModule : MonoBehaviour, ISelectable
             transform.parent = originalParent;
         };
         Collider.enabled = false;
-        Camera.main.DOFieldOfView(40, 0.5f);
+        // Camera.main.DOFieldOfView(40, 0.5f);
         
         Debug.Log($"Selected ::: {gameObject.name}");
 
@@ -70,7 +70,7 @@ public abstract class DisarmableModule : MonoBehaviour, ISelectable
             transform.parent = originalParent;
         };
         Collider.enabled = true;
-        Camera.main.DOFieldOfView(60, 0.5f);
+        // Camera.main.DOFieldOfView(60, 0.5f);
         
         Debug.Log($"DeSelected ::: {gameObject.name}");
 

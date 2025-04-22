@@ -49,7 +49,7 @@ public class KeypadModule : DisarmableModule
         {
             button.BlinkLed(Color.red);
             statusLED.LightRed();
-            bomb.Strike();
+            bomb.Strike(this);
         }
 
         if (nextButtonCursor == keypadButtons.Length)

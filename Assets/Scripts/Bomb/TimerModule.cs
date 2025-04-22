@@ -49,7 +49,7 @@ public class TimerModule : MonoBehaviour
         {
             timer.Stop();
             leftTime = TimeSpan.Zero;
-            bomb.Explode();
+            bomb.Explode(null);
         }
         if (leftTime.Minutes > 0)
         {

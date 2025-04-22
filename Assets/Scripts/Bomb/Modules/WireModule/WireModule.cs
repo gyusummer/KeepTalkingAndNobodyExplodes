@@ -60,7 +60,7 @@ public class WireModule : DisarmableModule
         else
         {
             statusLED.LightRed();
-            bomb.Strike();
+            bomb.Strike(this);
         }
     }
 

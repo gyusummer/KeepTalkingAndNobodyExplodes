@@ -35,6 +35,7 @@ public class ButtonModule : DisarmableModule
         
         label = LABEL_LIST[UnityEngine.Random.Range(0, LABEL_LIST.Length)];
         text.text = label;
+        text.alpha = 0.5f;
 
         button = GetComponentInChildren<Button>();
         button.GetComponent<Renderer>().material.color = buttonColor;
@@ -118,7 +119,7 @@ public class ButtonModule : DisarmableModule
         else
         {
             statusLED.LightRed();
-            bomb.Strike();
+            bomb.Strike(this);
         }
     }
 

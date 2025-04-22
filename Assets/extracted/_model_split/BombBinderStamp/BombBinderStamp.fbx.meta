@@ -3,7 +3,17 @@ guid: 334fa1a3e9fa31c458c5ae72953c01df
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Stamp_Defused
+    second: {fileID: 2100000, guid: 366971179bbdaf4419d83ea0c8e4bb3b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Stamp_Exploded
+    second: {fileID: 2100000, guid: c460ac764012ead408fd1f1ac8f4219b, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

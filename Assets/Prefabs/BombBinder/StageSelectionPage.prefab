@@ -34,9 +34,9 @@ RectTransform:
   - {fileID: 7574328989467577372}
   m_Father: {fileID: 8654594204927923767}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 0, y: -0.03427818}
   m_SizeDelta: {x: 0.17, y: 0.01713909}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &6299651175311330553
@@ -123,7 +123,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: BombBinder, Assembly-CSharp
-        m_MethodName: SetMissionDetailPage
+        m_MethodName: ShowStageDetailPage
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -282,7 +282,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5935778566306552661
 RectTransform:
   m_ObjectHideFlags: 0
@@ -670,9 +670,9 @@ RectTransform:
   - {fileID: 8373569656935907931}
   m_Father: {fileID: 8654594204927923767}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 0, y: -0.01713909}
   m_SizeDelta: {x: 0.17, y: 0.01713909}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &4691631914372739814
@@ -759,7 +759,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: BombBinder, Assembly-CSharp
-        m_MethodName: SetMissionDetailPage
+        m_MethodName: ShowStageDetailPage
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1116,8 +1116,8 @@ RectTransform:
   - {fileID: 7289613213770206164}
   m_Father: {fileID: 8654594204927923767}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0.17, y: 0.01713909}
   m_Pivot: {x: 0, y: 1}
@@ -1205,7 +1205,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: BombBinder, Assembly-CSharp
-        m_MethodName: SetMissionDetailPage
+        m_MethodName: ShowStageDetailPage
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

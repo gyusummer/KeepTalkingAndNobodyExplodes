@@ -8,63 +8,121 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
+[Serializable]
+public class PageGroup
+{
+    public GameObject gameObject;
+    public List<TMP_Text> contentTexts;
+
+    public void FillTexts(params string[] texts)
+    {
+        for (int i = 0; i < contentTexts.Count; i++)
+        {
+            if (i < texts.Length)
+            {
+                contentTexts[i].text = texts[i];
+            }
+            else
+            {
+                contentTexts[i].text = string.Empty;
+            }
+        }
+    }
+}
 public class BombBinder : MonoBehaviour, ISelectable
 {
     public StageGroupSAO StageGroup;
 
-    public GameObject StageSelectionPage;
-    public GameObject MissionDetailPage;
-
-    public TMP_Text txtIdentifier;
-    public TMP_Text txtDescription;
-    public TMP_Text txtTimeLimit;
-    public TMP_Text txtModuleCount;
-    public TMP_Text txtStrikeCount;
+    public PageGroup StageSelectionPage;
+    public PageGroup MissionDetailPage;
+    public PageGroup ResultDefusedPage;
+    public PageGroup ResultExplodedPage;
 
     public Animator animator;
     public Outlinable outline;
     public Collider selectCollider;
 
-    private StageInfoSAO info;
+    private PageGroup currentPage;
+    private StageInfoSAO selectedStage;
     
     private Vector3 originalPosition;
     private Vector3 originalRotation;
+    [SerializeField]private float animationDuration = 0.5f;
 
-    private void Start()
+    private void Awake()
     {
         selectCollider = GetComponent<Collider>();
         outline.enabled = false;
     }
 
-    public void SetMissionDetailPage(string key)
+    private void Start()
     {
-        info = StageGroup.GetStageInfoOrNull(key);
-        if (info == null)
+        ShowStageSelectionPage();
+    }
+
+    public void ShowStageDetailPage(string key)
+    {
+        selectedStage = StageGroup.GetStageInfoOrNull(key);
+        if (selectedStage == null)
         {
             Debug.LogError($"StageInfo with key {key} not found in StageGroup.");
             return;
         }
-        StageSelectionPage.SetActive(false);
-        
-        txtIdentifier.text = info.Identifier;
-        txtDescription.text = info.Description;
-        txtTimeLimit.text = $"{info.LimitTimeMiniute:D2}:{info.LimitTimeSecond:D2}";
-        txtModuleCount.text = $"{info.Modules} Modules";
-        txtStrikeCount.text = $"{info.Strikes} Strikes";
-        
-        MissionDetailPage.SetActive(true);
+        SetPageDetail(MissionDetailPage, selectedStage);
+        ShowPage(MissionDetailPage);
     }
-    public void BackToStageSelectionPage()
+    public void ShowStageSelectionPage()
     {
-        MissionDetailPage.SetActive(false);
-        StageSelectionPage.SetActive(true);
-        info = null;
+        ShowPage(StageSelectionPage);
+        selectedStage = null;
+    }
+    public void ShowResultPage(ResultInfo info)
+    {
+        if (info.isDefused)
+        {
+            SetPageDetail(ResultDefusedPage, info.ToStringArray());
+            ShowPage(ResultDefusedPage);
+        }
+        else
+        {
+            SetPageDetail(ResultExplodedPage, info.ToStringArray());
+            ShowPage(ResultExplodedPage);
+        }
+    }
+    private void SetPageDetail(PageGroup pageGroup, params string[] texts)
+    {
+        pageGroup.FillTexts(texts);
+    }
+    private void SetPageDetail(PageGroup pageGroup, StageInfoSAO info)
+    {
+        SetPageDetail(pageGroup,
+            info.Identifier, 
+            info.Description, 
+            $"{info.LimitTimeMiniute:D2}:{info.LimitTimeSecond:D2}", 
+            $"{info.Modules} Modules", 
+            $"{info.Strikes} Strikes");
+    }
+    private void ShowPage(PageGroup pageGroup)
+    {
+        if (currentPage != null)
+        {
+            currentPage.gameObject.SetActive(false);
+        }
+        pageGroup.gameObject.SetActive(true);
+        currentPage = pageGroup;
     }
 
     public void StartStage()
     {
-        TimeSpan limitTime = new TimeSpan(0, info.LimitTimeMiniute, info.LimitTimeSecond);
-        SceneChanger.Instance.LoadFacilityScene(limitTime, info.Modules, info.Strikes);
+        if (selectedStage == null)
+        {
+            selectedStage = SceneChanger.Instance.currentStageInfo;
+        }
+        SceneChanger.Instance.LoadFacilityScene(selectedStage);
+    }
+    public void BackToSetupRoom()
+    {
+        SceneChanger.Instance.LoadSetupScene();
     }
 
     public GameObject GameObject => gameObject;
@@ -77,10 +135,9 @@ public class BombBinder : MonoBehaviour, ISelectable
 
         animator.SetTrigger("Open");
         
-        var targetPosition = selectPosition.position + selectPosition.up * 0.4f;
-        
-        transform.DOMove(targetPosition, 0.5f);
-        transform.DORotate(selectPosition.eulerAngles, 0.5f);
+        transform.DOMove(selectPosition.position, animationDuration);
+        transform.DORotate(selectPosition.eulerAngles, animationDuration);
+        Camera.main.DOFieldOfView(40, animationDuration);
         Debug.Log($"Selected ::: {gameObject.name}");
         Collider.enabled = false;
         return this;
@@ -88,10 +145,11 @@ public class BombBinder : MonoBehaviour, ISelectable
 
     public ISelectable OnDeselected()
     {
-        BackToStageSelectionPage();
+        ShowStageSelectionPage();
         animator.SetTrigger("Close");
-        transform.DOMove(originalPosition, 0.5f);
-        transform.DORotate(originalRotation, 0.5f);
+        transform.DOMove(originalPosition, animationDuration);
+        transform.DORotate(originalRotation, animationDuration);
+        Camera.main.DOFieldOfView(60, animationDuration);
         Collider.enabled = true;
         Debug.Log($"DeSelected ::: {gameObject.name}");
         return null;

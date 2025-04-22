@@ -27,6 +27,8 @@ public class BombInfo
 
 public class Bomb : MonoBehaviour, ISelectable
 {
+    public static Bomb Main;
+    
     public BombInfo Info;
     private string serial;
     public string indicator;
@@ -65,6 +67,10 @@ public class Bomb : MonoBehaviour, ISelectable
 
     private void Awake()
     {
+        if (Main == null)
+        {
+            Main = this;
+        }
         // TODO: Randomize serial
         serial = "4X8SB2";
         indicator = INDICATOR_LIST[Random.Range(0, INDICATOR_LIST.Length)];
@@ -160,14 +166,14 @@ public class Bomb : MonoBehaviour, ISelectable
         }
     }
 
-    public void Strike()
+    public void Strike(DisarmableModule module)
     {
         Debug.Log("Strike");
         curStrike++;
 
         if (curStrike >= Info.StrikeCount)
         {
-            Explode();
+            Explode(module);
         }
         else
         {
@@ -175,14 +181,27 @@ public class Bomb : MonoBehaviour, ISelectable
         }
     }
 
-    public void Explode()
+    public void Explode(DisarmableModule module)
     {
+        ResultInfo info = new ResultInfo();
+        info.isDefused = false;
+        info.stageInfo = SceneChanger.Instance.currentStageInfo;
+        info.leftTimeString = timerModule.leftTimeString;
+        info.causeOfExplosion = module == null? "TimeLimit" : module.GetType().Name;
+        
+        Result.Instance.ShowResult(info);
         Debug.Log("Explode");
     }
 
     private void Defuse()
     {
         timerModule.StopTimer();
+        ResultInfo info = new ResultInfo();
+        info.isDefused = true;
+        info.stageInfo = SceneChanger.Instance.currentStageInfo;
+        info.leftTimeString = timerModule.leftTimeString;
+        
+        Result.Instance.ShowResult(info);
         Debug.Log("Defuse");
     }
 
@@ -197,8 +216,10 @@ public class Bomb : MonoBehaviour, ISelectable
     {
         originalPosition = transform.position;
         originalRotation = transform.eulerAngles;
+        
+        var targetPosition = selectPosition.position - selectPosition.up * 0.1f;
 
-        transform.DOMove(selectPosition.position, 0.5f);
+        transform.DOMove(targetPosition, 0.5f);
         transform.DORotate(selectPosition.eulerAngles, 0.5f);
         Debug.Log($"Selected ::: {gameObject.name}");
         Collider.enabled = false;

@@ -267,7 +267,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+  m_fontColor: {r: 0, g: 0, b: 0, a: 0.5019608}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -440,6 +440,7 @@ GameObject:
   - component: {fileID: 7000963516593852145}
   - component: {fileID: 5872138934687223182}
   - component: {fileID: 7225940929776443140}
+  - component: {fileID: 1080798902864201011}
   m_Layer: 0
   m_Name: ButtonComponent
   m_TagString: Untagged
@@ -477,7 +478,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 347bf6413eb88b440aa30ba83cd34b81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 590903660567716216}
+  bomb: {fileID: 0}
+  animator: {fileID: 1080798902864201011}
   text: {fileID: 279531214885849840}
   led: {fileID: 3141636221528380}
 --- !u!114 &5872138934687223182
@@ -630,6 +632,27 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.19011551, y: 0.10254904, z: 0.19423826}
   m_Center: {x: 0.004942253, y: 0.04260342, z: -0.0015129894}
+--- !u!95 &1080798902864201011
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2593990126425878354}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 8652aae56a029534d84e15fe35ac1c2c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &3592247412559593197
 GameObject:
   m_ObjectHideFlags: 0
@@ -828,7 +851,6 @@ GameObject:
   - component: {fileID: 1181060974782130953}
   - component: {fileID: 4401976027271522664}
   - component: {fileID: 5216363928518523453}
-  - component: {fileID: 590903660567716216}
   - component: {fileID: 3771622014049440333}
   m_Layer: 0
   m_Name: buttonLid
@@ -903,27 +925,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!95 &590903660567716216
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4904797985632735807}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 8652aae56a029534d84e15fe35ac1c2c, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &3771622014049440333
 MonoBehaviour:
   m_ObjectHideFlags: 0

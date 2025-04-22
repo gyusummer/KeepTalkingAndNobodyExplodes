@@ -5,50 +5,32 @@ using UnityEngine;
 
 public class SceneChanger : MonoBehaviour
 {
-    private static SceneChanger instance;
-    public static SceneChanger Instance
-    {
-        get
-        {
-            if (instance == null)
-            {
-                instance = FindObjectOfType<SceneChanger>();
-                if (instance == null)
-                {
-                    GameObject obj = new GameObject();
-                    obj.name = typeof(SceneChanger).Name;
-                    instance = obj.AddComponent<SceneChanger>();
-                }
-            }
-            return instance;
-        }
-    }
+    public static SceneChanger Instance;
     
     public BombInfo BombInfo;
+    public StageInfoSAO currentStageInfo;
 
-    protected virtual void Awake()
+    private void Awake()
     {
-        if (instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        Instance = this;
     }
-    public void ChangeScene(string sceneName)
+    private void ChangeScene(string sceneName)
     {
         UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
     }
-    public void LoadFacilityScene(TimeSpan limitTime, int moduleCount, int strikeCount)
+    public void LoadFacilityScene(StageInfoSAO stageInfo)
     {
+        currentStageInfo = stageInfo;
         BombInfo info = new BombInfo();
+        TimeSpan limitTime = new TimeSpan(0, stageInfo.LimitTimeMiniute, stageInfo.LimitTimeSecond);
         info.LimitTime = limitTime;
-        info.ModuleCount = moduleCount;
-        info.StrikeCount = strikeCount;
+        info.ModuleCount = stageInfo.Modules;
+        info.StrikeCount = stageInfo.Strikes;
         BombInfo = info;
         ChangeScene("Facility");
+    }
+    public void LoadSetupScene()
+    {
+        ChangeScene("Setup");
     }
 }

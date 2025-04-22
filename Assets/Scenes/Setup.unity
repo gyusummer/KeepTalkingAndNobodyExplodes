@@ -416,7 +416,7 @@ Transform:
   m_GameObject: {fileID: 374388506}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0.8}
+  m_LocalPosition: {x: 0, y: 0, z: 0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -807,6 +807,31 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 330585545}
+    - target: {fileID: 1699895206996335381, guid: dc176d9531cac0b4f80c377c5c6a8c59,
+        type: 3}
+      propertyPath: animationDuration
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2608436763491244846, guid: dc176d9531cac0b4f80c377c5c6a8c59,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ShowStageDetailPage
+      objectReference: {fileID: 0}
+    - target: {fileID: 2837619936577155285, guid: dc176d9531cac0b4f80c377c5c6a8c59,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 1.6248757e-17
+      objectReference: {fileID: 0}
+    - target: {fileID: 2837619936577155285, guid: dc176d9531cac0b4f80c377c5c6a8c59,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -93.899994
+      objectReference: {fileID: 0}
+    - target: {fileID: 2837619936577155285, guid: dc176d9531cac0b4f80c377c5c6a8c59,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 4.772437e-16
+      objectReference: {fileID: 0}
     - target: {fileID: 2985347769388390151, guid: dc176d9531cac0b4f80c377c5c6a8c59,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -836,6 +861,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4311167850075946608, guid: dc176d9531cac0b4f80c377c5c6a8c59,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ShowStageDetailPage
       objectReference: {fileID: 0}
     - target: {fileID: 5248691734426709557, guid: dc176d9531cac0b4f80c377c5c6a8c59,
         type: 3}
@@ -871,6 +901,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 6017347036088560826, guid: dc176d9531cac0b4f80c377c5c6a8c59,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ShowStageDetailPage
+      objectReference: {fileID: 0}
+    - target: {fileID: 6255085244843117184, guid: dc176d9531cac0b4f80c377c5c6a8c59,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 6.8396587e-19
+      objectReference: {fileID: 0}
+    - target: {fileID: 6255085244843117184, guid: dc176d9531cac0b4f80c377c5c6a8c59,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -90.799995
+      objectReference: {fileID: 0}
+    - target: {fileID: 6255085244843117184, guid: dc176d9531cac0b4f80c377c5c6a8c59,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 9.796893e-17
       objectReference: {fileID: 0}
     - target: {fileID: 6760448329203121131, guid: dc176d9531cac0b4f80c377c5c6a8c59,
         type: 3}

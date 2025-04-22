@@ -11,6 +11,8 @@ using Vector3 = UnityEngine.Vector3;
 
 public class Controller : MonoBehaviour
 {
+    public static Controller Instance;
+    
     private ISelectable selectedObject;
     [SerializeField]private Transform selectPosition;
     private Transform originalTransform;
@@ -19,6 +21,11 @@ public class Controller : MonoBehaviour
 
     private Vector2 mouseMove;
     private float rightDownTime;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     private void Update()
     {
@@ -67,7 +74,7 @@ public class Controller : MonoBehaviour
         }
     }
 
-    private void Select(ISelectable obj)
+    public void Select(ISelectable obj)
     {
         // if (selectedObject == null)
         // {

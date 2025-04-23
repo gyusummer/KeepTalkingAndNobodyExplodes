@@ -18,11 +18,6 @@ public class KeypadModule : DisarmableModule
         var selectedGroup = symbolGroup[Random.Range(0, symbolGroup.Length)];
         symbols = RandomUtil.GetSortedRandomSubset(selectedGroup.symbols, 4);
         InitializeSymbols();
-
-        for (int i = 0; i < keypadButtons.Length; i++)
-        {
-            keypadButtons[i].OnClick += Judge;
-        }
     }
 
     private void InitializeSymbols()
@@ -33,36 +28,28 @@ public class KeypadModule : DisarmableModule
             keypadButtons[i].symbolImage.material.mainTexture = symbols[i];
         }
     }
-
-    private void Judge(KeypadButton button)
+    protected override void SetKeyEvent()
     {
-        if (keypadButtons[nextButtonCursor] == button)
-        {
-            button.OnClick -= Judge;
-            button.enabled = false;
-            button.GetComponent<Collider>().enabled = false;
-            nextButtonCursor++;
-        }
-        else
-        {
-            button.BlinkLed(Color.red);
-            statusLED.LightRed();
-            bomb.Strike(this);
-        }
-
+        keyEvent.part = keypadButtons[nextButtonCursor];
+    }
+    protected override void Success(PartEventInfo info)
+    {
+        info.part.MainEvent -= Judge;
+        info.part.enabled = false;
+        info.part.GetComponentInChildren<Collider>().enabled = false;
+        nextButtonCursor++;
         if (nextButtonCursor == keypadButtons.Length)
         {
             Disarm();
+            return;
         }
-
-        Debug.Log(nextButtonCursor);
+        SetKeyEvent();
     }
-
-    private void OnDestroy()
+    protected override void Strike(PartEventInfo info)
     {
-        for (int i = 0; i < keypadButtons.Length; i++)
-        {
-            keypadButtons[i].OnClick -= Judge;
-        }
+        var btn = info.part as KeypadButton;
+        btn.BlinkLed(Color.red);
+        statusLED.LightRed();
+        bomb.Strike(this);
     }
 }

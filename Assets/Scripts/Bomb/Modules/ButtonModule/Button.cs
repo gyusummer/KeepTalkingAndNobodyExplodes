@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using EPOOutline;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 
 // 1. If the button is blue and the button says "Abort", hold the button and refer to "Releasing a Held Button".
@@ -24,9 +25,6 @@ using UnityEngine;
 
 public class Button : ModulePart
 {
-    public event Action OnHold;
-    public event Action<float> OnButtonRelease;
-    
     public bool isLedOn;
     private float holdTime;
     private bool isHolding;
@@ -38,7 +36,7 @@ public class Button : ModulePart
             holdTime += Time.deltaTime;
             if (holdTime > 0.5f && isLedOn == false)
             {
-                OnHold?.Invoke();
+                SubEvent?.Invoke();
             }
         }
     }
@@ -56,7 +54,7 @@ public class Button : ModulePart
         if(this.enabled == false) return;
         ReleaseButton();
     }
-    protected override void OnMouseExit()
+    public override void OnPointerExit(PointerEventData eventData)
     {
         if(this.enabled == false) return;
         if (holdTime > 0.5f)
@@ -67,9 +65,9 @@ public class Button : ModulePart
     }
     private void ReleaseButton()
     {
-        holdTime = 0;
-        isHolding = false;        
+        isHolding = false;
         transform.Translate(0, 0.01f, 0);
-        OnButtonRelease?.Invoke(holdTime);
+        MainEvent?.Invoke(new PartEventInfo(){part = this, time = holdTime});
+        holdTime = 0;
     }
 }

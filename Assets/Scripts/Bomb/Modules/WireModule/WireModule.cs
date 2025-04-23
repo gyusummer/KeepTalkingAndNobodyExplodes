@@ -17,48 +17,27 @@ public class WireModule : DisarmableModule
 {
     public static readonly Color[] COLOR_LIST = {Color.black, Color.blue, Color.red, Color.white, Color.yellow};
     
-    [SerializeField]private Wire[] wholeWire;
-    
     private int activeWireCount;
-    private Wire[] activeWires;
+    private ModulePart[] activeWires;
     private Color[] activeColors;
-    
-    private Wire keyWire;
     
     protected override void Init()
     {
-        for (int i = 0; i < wholeWire.Length; i++)
+        for (int i = 0; i < parts.Length; i++)
         {
-            wholeWire[i].gameObject.SetActive(false);
+            parts[i].gameObject.SetActive(false);
         }
         
         activeWireCount = Random.Range(3, 7);
-        activeWires = RandomUtil.GetSortedRandomSubset(wholeWire,activeWireCount);
+        activeWires = RandomUtil.GetSortedRandomSubset(parts,activeWireCount);
         activeColors = new Color[activeWires.Length];
         for (int i = 0; i < activeWireCount; i++)
         {
             activeWires[i].gameObject.SetActive(true);
-            activeColors[i] = activeWires[i].color;
-            activeWires[i].OnSnip += Judge;
-        }
-        
-        SetKey();
-    }
-
-    private void Judge(Wire wire)
-    {
-        if (wire == keyWire)
-        {
-            Disarm();
-        }
-        else
-        {
-            statusLED.LightRed();
-            bomb.Strike(this);
+            activeColors[i] = (activeWires[i] as Wire).color;
         }
     }
-
-    private void SetKey()
+    protected override void SetKeyEvent()
     {
         switch (activeWireCount)
         {
@@ -69,20 +48,20 @@ public class WireModule : DisarmableModule
                 // Otherwise, cut the last wire.
                 if (activeColors.Contains(Color.red) == false)
                 {
-                    keyWire = activeWires[1];
+                    keyEvent.part = activeWires[1];
                 }
                 else if (activeColors.Last() == Color.white)
                 {
-                    keyWire = activeWires.Last();
+                    keyEvent.part = activeWires.Last();
                 }
                 else if (activeColors.Count(c => c == Color.blue) > 1)
                 {
                     int keyIndex = Array.FindIndex(activeColors, color => color == Color.blue);
-                    keyWire = activeWires[keyIndex];
+                    keyEvent.part = activeWires[keyIndex];
                 }
                 else
                 {
-                    keyWire = activeWires.Last();
+                    keyEvent.part = activeWires.Last();
                 }
                 break;
             case 4:
@@ -94,77 +73,69 @@ public class WireModule : DisarmableModule
                 if (activeColors.Count(c => c == Color.red) > 1 && bomb.IsSerialOdd())
                 {
                     int keyIndex = Array.FindIndex(activeColors, color => color == Color.red);
-                    keyWire = activeWires[keyIndex];
+                    keyEvent.part = activeWires[keyIndex];
                 }
                 else if (activeColors.Last() == Color.yellow && activeColors.Contains(Color.red) == false)
                 {
-                    keyWire = activeWires[0];
+                    keyEvent.part = activeWires[0];
                 }
                 else if (activeColors.Count(c => c == Color.blue) == 1)
                 {
-                    keyWire = activeWires[0];
+                    keyEvent.part = activeWires[0];
                 }
                 else if (activeColors.Count(c => c == Color.yellow) > 1)
                 {
-                    keyWire = activeWires.Last();
+                    keyEvent.part = activeWires.Last();
                 }
                 else
                 {
-                    keyWire = activeWires[1];
+                    keyEvent.part = activeWires[1];
                 }
                 break;
             case 5:
                 // If the last wire is black and the last digit of the serial number is odd, cut the fourth wire.
                 if (activeColors.Last() == Color.black && bomb.IsSerialOdd())
                 {
-                    keyWire = activeWires[3]; // 4번째 와이어
+                    keyEvent.part = activeWires[3]; // 4번째 와이어
                 }
                 // Otherwise, if there is exactly one red wire and there is more than one yellow wire, cut the first wire.
                 else if (activeColors.Count(c => c == Color.red) == 1 && activeColors.Count(c => c == Color.yellow) > 1)
                 {
-                    keyWire = activeWires[0]; // 1번째 와이어
+                    keyEvent.part = activeWires[0]; // 1번째 와이어
                 }
                 // Otherwise, if there are no black wires, cut the second wire.
                 else if (activeColors.Contains(Color.black) == false)
                 {
-                    keyWire = activeWires[1]; // 2번째 와이어
+                    keyEvent.part = activeWires[1]; // 2번째 와이어
                 }
                 // Otherwise, cut the first wire.
                 else
                 {
-                    keyWire = activeWires[0]; // 1번째 와이어
+                    keyEvent.part = activeWires[0]; // 1번째 와이어
                 }
                 break;
             case 6:
                 // If there are no yellow wires and the last digit of the serial number is odd, cut the third wire.
                 if (!activeColors.Contains(Color.yellow) && bomb.IsSerialOdd())
                 {
-                    keyWire = activeWires[2]; // 세 번째 와이어 (인덱스 2)
+                    keyEvent.part = activeWires[2]; // 세 번째 와이어 (인덱스 2)
                 }
                 // Otherwise, if there is exactly one yellow wire and there is more than one white wire, cut the fourth wire.
                 else if (activeColors.Count(c => c == Color.yellow) == 1 && activeColors.Count(c => c == Color.white) > 1)
                 {
-                    keyWire = activeWires[3]; // 네 번째 와이어 (인덱스 3)
+                    keyEvent.part = activeWires[3]; // 네 번째 와이어 (인덱스 3)
                 }
                 // Otherwise, if there are no red wires, cut the last wire.
                 else if (!activeColors.Contains(Color.red))
                 {
-                    keyWire = activeWires.Last(); // 마지막 와이어 (.Last())
+                    keyEvent.part = activeWires.Last(); // 마지막 와이어 (.Last())
                 }
                 // Otherwise, cut the fourth wire.
                 else
                 {
-                    keyWire = activeWires[3]; // 네 번째 와이어 (인덱스 3)
+                    keyEvent.part = activeWires[3]; // 네 번째 와이어 (인덱스 3)
                 }
                 break;
-        }
-    }
-    
-    private void OnDestroy()
-    {
-        for (int i = 0; i < activeWireCount; i++)
-        {
-            activeWires[i].OnSnip -= Judge;
         }
     }
 }

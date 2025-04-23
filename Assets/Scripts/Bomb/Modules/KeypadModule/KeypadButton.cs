@@ -8,8 +8,6 @@ using UnityEngine.UI;
 public class KeypadButton : ModulePart
 {
     private static readonly int EMISSION_COLOR = Shader.PropertyToID("_EmissionColor");
-    
-    public event Action<KeypadButton> OnClick;
 
     public Renderer symbolImage;
     public Renderer led;
@@ -39,16 +37,21 @@ public class KeypadButton : ModulePart
 
     private void OnMouseDown()
     {
-        OnClick?.Invoke(this);
+        MainEvent?.Invoke(new PartEventInfo(this));
     }
 
-    private void OnDisable()
+    protected override void OnDisable()
     {
+        if (outline is not null)
+        {
+            outline.enabled = false;
+        }
         if (ledCoroutine != null)
         {
             StopCoroutine(ledCoroutine);
             ledCoroutine = null;
         }
+        
         led.material.SetColor(EMISSION_COLOR, Color.green);
     }
 }

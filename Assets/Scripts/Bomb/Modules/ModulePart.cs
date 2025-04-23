@@ -3,27 +3,54 @@ using System.Collections;
 using System.Collections.Generic;
 using EPOOutline;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public abstract class ModulePart : MonoBehaviour
+[Serializable]
+public class PartEventInfo
 {
-    public event Action<ModulePart> MainEvent;
-    public event Action<ModulePart> SubEvent;
+    public ModulePart part;
+    public float time;
+    public string parameter;
+
+    public PartEventInfo()
+    {
+        
+    }
+
+    public PartEventInfo(ModulePart part)
+    {
+        this.part = part;
+    }
+}
+public abstract class ModulePart : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+{
+    public Action<PartEventInfo> MainEvent;
+    public Action SubEvent;
     
-    protected Outlinable outline;
+    public Outlinable outline;
 
     private void Start()
     {
         outline = GetComponentInChildren<Outlinable>();
         outline.enabled = false;
     }
-    protected virtual void OnMouseEnter()
+
+    public virtual void OnPointerEnter(PointerEventData eventData)
     {
         if(this.enabled == false) return;
         outline.enabled = true;
     }
-    protected virtual void OnMouseExit()
+
+    public virtual void OnPointerExit(PointerEventData eventData)
     {
         if(this.enabled == false) return;
         outline.enabled = false;
+    }
+    protected virtual void OnDisable()
+    {
+        if (outline is not null)
+        {
+            outline.enabled = false;
+        }
     }
 }

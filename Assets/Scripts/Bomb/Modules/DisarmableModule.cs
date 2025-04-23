@@ -14,7 +14,9 @@ public abstract class DisarmableModule : MonoBehaviour, ISelectable
     private Collider selectCollider;
     private Outlinable outline;
     protected StatusLight statusLED;
-    private ModulePart[] parts;
+    protected ModulePart[] parts;
+
+    protected PartEventInfo keyEvent;
 
     private Vector3 originalPosition;
     private Vector3 originalRotation;
@@ -24,6 +26,7 @@ public abstract class DisarmableModule : MonoBehaviour, ISelectable
     {
         EssentialInit();
         Init();
+        SetKeyEvent();
     }
     private void EssentialInit()
     {
@@ -31,6 +34,7 @@ public abstract class DisarmableModule : MonoBehaviour, ISelectable
         selectCollider = GetComponent<Collider>();
         outline = GetComponent<Outlinable>();
         parts = GetComponentsInChildren<ModulePart>();
+        keyEvent = new PartEventInfo();
 
         for (int i = 0; i < parts.Length; i++)
         {
@@ -40,9 +44,34 @@ public abstract class DisarmableModule : MonoBehaviour, ISelectable
     }
     protected abstract void Init();
 
-    protected void Judge(ModulePart part)
+    protected abstract void SetKeyEvent();
+    protected virtual bool CompareKeyEvent(PartEventInfo partEvent)
     {
-        
+        if (keyEvent.part == partEvent.part)
+        {
+            return true;
+        }
+        return false;
+    }
+    protected virtual void Judge(PartEventInfo partEvent)
+    {
+        if (CompareKeyEvent(partEvent))
+        {
+            Success(partEvent);
+        }
+        else
+        {
+            Strike(partEvent);
+        }
+    }
+    protected virtual void Success(PartEventInfo info)
+    {
+        Disarm();
+    }
+    protected virtual void Strike(PartEventInfo info)
+    {
+        statusLED.LightRed();
+        bomb.Strike(this);
     }
     protected void Disarm()
     {
@@ -87,8 +116,7 @@ public abstract class DisarmableModule : MonoBehaviour, ISelectable
         bomb.transform.parent = transform;
         
         transform.DOMove(originalPosition, 0.5f);
-        var tween = transform.DORotate(originalRotation, 0.5f);
-        tween.onComplete += () =>
+        transform.DORotate(originalRotation, 0.5f).onComplete += () =>
         {
             bomb.transform.parent = null;
             transform.parent = originalParent;
@@ -106,5 +134,12 @@ public abstract class DisarmableModule : MonoBehaviour, ISelectable
     private void OnMouseExit()
     {
         outline.enabled = false;
+    }
+    protected virtual void OnDestroy()
+    {
+        for (int i = 0; i < parts.Length; i++)
+        {
+            parts[i].MainEvent -= Judge;
+        }
     }
 }

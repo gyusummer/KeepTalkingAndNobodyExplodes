@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using EPOOutline;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -9,8 +10,6 @@ using Random = UnityEngine.Random;
 // other color wires don't matter if you change the color;
 public class Wire : ModulePart
 {
-    public event Action<Wire> OnSnip;
-    
     [HideInInspector]public Color color;
 
     [SerializeField]private Renderer intact;
@@ -34,7 +33,7 @@ public class Wire : ModulePart
         {
             snipped[i].gameObject.SetActive(true);
         }
-        OnSnip?.Invoke(this);
+        MainEvent?.Invoke(new PartEventInfo(this));
     }
     private void OnMouseDown()
     {

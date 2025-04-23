@@ -13,10 +13,8 @@ public class KeypadModule : DisarmableModule
 
     private int nextButtonCursor = 0;
 
-    private void Start()
+    protected override void Init()
     {
-        EssentialInit();
-        
         var selectedGroup = symbolGroup[Random.Range(0, symbolGroup.Length)];
         symbols = RandomUtil.GetSortedRandomSubset(selectedGroup.symbols, 4);
         InitializeSymbols();
@@ -58,13 +56,6 @@ public class KeypadModule : DisarmableModule
         }
 
         Debug.Log(nextButtonCursor);
-    }
-    protected override void Disarm()
-    {
-        statusLED.LightGreen();
-        this.enabled = false;
-        Debug.Log("KeypadModule Disarmed");
-        bomb.CurDisarm++;
     }
 
     private void OnDestroy()

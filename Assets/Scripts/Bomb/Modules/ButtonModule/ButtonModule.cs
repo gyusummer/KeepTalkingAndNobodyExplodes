@@ -26,10 +26,8 @@ public class ButtonModule : DisarmableModule
     private string key;
     private Coroutine ledCoroutine = null;
     
-    private void Start()
+    protected override void Init()
     {
-        EssentialInit();
-        
         buttonColor = COLOR_LIST[UnityEngine.Random.Range(0, COLOR_LIST.Length)];
         stripColor = COLOR_LIST[UnityEngine.Random.Range(0, COLOR_LIST.Length)];
         
@@ -170,14 +168,6 @@ public class ButtonModule : DisarmableModule
         {
             key = "1";
         }
-    }
-    protected override void Disarm()
-    {
-        statusLED.LightGreen();
-        button.enabled = false;
-        this.enabled = false;
-        Debug.Log("ButtonModule Disarmed");
-        bomb.CurDisarm++;
     }
     private void OpenLid()
     {

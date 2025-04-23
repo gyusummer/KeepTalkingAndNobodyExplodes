@@ -17,7 +17,6 @@ public class Wire : ModulePart
     [SerializeField]private Renderer[] snipped;
     private void Awake()
     {
-        
         color = WireModule.COLOR_LIST[Random.Range(0, WireModule.COLOR_LIST.Length)];
         
         intact.material.color = color;
@@ -28,9 +27,8 @@ public class Wire : ModulePart
         }
     }
 
-    public void SnipWire()
+    private void SnipWire()
     {
-        // play sound
         gameObject.SetActive(false);
         for (int i = 0; i < snipped.Length; i++)
         {

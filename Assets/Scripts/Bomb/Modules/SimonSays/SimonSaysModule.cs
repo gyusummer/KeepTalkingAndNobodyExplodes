@@ -5,13 +5,10 @@ using UnityEngine;
 public class SimonSaysModule : DisarmableModule
 {
     public SimonButton[] buttons;
-    
-    
-    
-    
-    
-    protected override void Disarm()
+
+
+    protected override void Init()
     {
-        throw new System.NotImplementedException();
+        
     }
 }

@@ -24,14 +24,8 @@ public class WireModule : DisarmableModule
     private Color[] activeColors;
     
     private Wire keyWire;
-
-    private void Start()
-    {
-        EssentialInit();
-        Initialize();
-    }
-
-    private void Initialize()
+    
+    protected override void Init()
     {
         for (int i = 0; i < wholeWire.Length; i++)
         {
@@ -48,7 +42,7 @@ public class WireModule : DisarmableModule
             activeWires[i].OnSnip += Judge;
         }
         
-        SetKeyWire();
+        SetKey();
     }
 
     private void Judge(Wire wire)
@@ -64,7 +58,7 @@ public class WireModule : DisarmableModule
         }
     }
 
-    private void SetKeyWire()
+    private void SetKey()
     {
         switch (activeWireCount)
         {
@@ -165,19 +159,7 @@ public class WireModule : DisarmableModule
                 break;
         }
     }
-
-    protected override void Disarm()
-    {
-        statusLED.LightGreen();
-        for (int i = 0; i < activeWires.Length; i++)
-        {
-            activeWires[i].enabled = false;
-        }
-        this.enabled = false;
-        Debug.Log("WireModule Disarmed");
-        bomb.CurDisarm++;
-    }
-
+    
     private void OnDestroy()
     {
         for (int i = 0; i < activeWireCount; i++)

@@ -49,7 +49,6 @@ public class KeypadModule : DisarmableModule
     {
         var btn = info.part as KeypadButton;
         btn.BlinkLed(Color.red);
-        statusLED.LightRed();
-        bomb.Strike(this);
+        base.Strike(info);
     }
 }

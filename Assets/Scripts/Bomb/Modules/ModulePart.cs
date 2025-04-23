@@ -14,7 +14,9 @@ public class PartEventInfo
 
     public PartEventInfo()
     {
-        
+        part = null;
+        time = 0;
+        parameter = string.Empty;
     }
 
     public PartEventInfo(ModulePart part)
@@ -32,6 +34,7 @@ public abstract class ModulePart : MonoBehaviour, IPointerEnterHandler, IPointer
     private void Start()
     {
         outline = GetComponentInChildren<Outlinable>();
+        outline.OutlineParameters.Color = Color.red;
         outline.enabled = false;
     }
 

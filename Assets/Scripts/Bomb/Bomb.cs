@@ -48,7 +48,7 @@ public class Bomb : MonoBehaviour, ISelectable
     [SerializeField] private Transform[] moduleAnchors;
     [SerializeField] private Transform[] widgetAnchors;
     private Outlinable outline;
-    private int curStrike = 0;
+    public int CurStrike { get; private set; } = 0;
     private int curDisarm = 0;
     public int CurDisarm
     {
@@ -176,15 +176,15 @@ public class Bomb : MonoBehaviour, ISelectable
     public void Strike(DisarmableModule module)
     {
         Debug.Log("Strike");
-        curStrike++;
+        CurStrike++;
 
-        if (curStrike >= Info.StrikeCount)
+        if (CurStrike >= Info.StrikeCount)
         {
             Explode(module);
         }
         else
         {
-            timerModule.strikeCounter[curStrike - 1].SetActive(true);
+            timerModule.strikeCounter[CurStrike - 1].SetActive(true);
         }
     }
 
@@ -217,6 +217,11 @@ public class Bomb : MonoBehaviour, ISelectable
         char serialLast = serial.Last();
         int lastAsInt = serialLast - 48;
         return lastAsInt % 2 == 1;
+    }
+    public bool HasSerialVowel()
+    {
+        char[] vowels = { 'A', 'E', 'I', 'O', 'U' };
+        return serial.Any(c => vowels.Contains(c));
     }
 
     public ISelectable OnSelected(Transform selectPosition)

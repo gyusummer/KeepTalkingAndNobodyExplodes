@@ -69,7 +69,7 @@ public class SimonSaysModule : DisarmableModule
         }
     }
 
-    protected override void Success(PartEventInfo info)
+    protected override void Hit(PartEventInfo info)
     {
         keyCursor++;
         if (keyCursor >= parts.Length)
@@ -87,9 +87,9 @@ public class SimonSaysModule : DisarmableModule
 
     protected override void Strike(PartEventInfo info)
     {
+        base.Strike(info);
         ResetKeyCursor();
         SetKeyEvent();
-        base.Strike(info);
     }
 
     private void ResetKeyCursor()

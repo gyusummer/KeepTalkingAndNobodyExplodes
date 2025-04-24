@@ -33,10 +33,13 @@ public abstract class ModulePart : MonoBehaviour, IPointerEnterHandler, IPointer
 
     private void Start()
     {
-        outline = GetComponentInChildren<Outlinable>();
+        outline = GetComponent<Outlinable>();
         outline.OutlineParameters.Color = Color.red;
         outline.enabled = false;
+        Init();
     }
+
+    protected virtual void Init() {}
 
     public virtual void OnPointerEnter(PointerEventData eventData)
     {

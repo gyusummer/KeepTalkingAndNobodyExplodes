@@ -20,7 +20,7 @@ public class BombInfo
         return new BombInfo
         {
             LimitTime = new TimeSpan(0, 5, 0),
-            ModuleCount = 3,
+            ModuleCount = 5,
             StrikeCount = 3
         };
     }

@@ -24,6 +24,10 @@ public abstract class DisarmableModule : MonoBehaviour, ISelectable
     
     private void Start()
     {
+        if (bomb == null)
+        {
+            bomb = Bomb.Main;
+        }
         EssentialInit();
         Init();
         SetKeyEvent();
@@ -57,14 +61,14 @@ public abstract class DisarmableModule : MonoBehaviour, ISelectable
     {
         if (CompareKeyEvent(partEvent))
         {
-            Success(partEvent);
+            Hit(partEvent);
         }
         else
         {
             Strike(partEvent);
         }
     }
-    protected virtual void Success(PartEventInfo info)
+    protected virtual void Hit(PartEventInfo info)
     {
         Disarm();
     }

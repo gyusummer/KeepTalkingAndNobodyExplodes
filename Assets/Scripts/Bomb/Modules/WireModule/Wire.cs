@@ -14,7 +14,8 @@ public class Wire : ModulePart
 
     [SerializeField]private Renderer intact;
     [SerializeField]private Renderer[] snipped;
-    private void Awake()
+    
+    protected override void Init()
     {
         color = WireModule.COLOR_LIST[Random.Range(0, WireModule.COLOR_LIST.Length)];
         

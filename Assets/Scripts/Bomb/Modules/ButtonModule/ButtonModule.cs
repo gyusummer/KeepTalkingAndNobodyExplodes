@@ -40,9 +40,6 @@ public class ButtonModule : DisarmableModule
     protected override bool CompareKeyEvent(PartEventInfo partEvent)
     {
         string timer = bomb.timerModule.leftTimeString;
-        // Debug.Log($"bomb {bomb}\n" +
-        //           $"timermodule {bomb.timerModule}\n" +
-        //           $"lefttime {timer}");
         bool isTimerHasKey = timer.Contains(keyEvent.parameter);
         bool isImmediateRelease = partEvent.time <= 0.2f;
         if (keyEvent.parameter == "-1" && isImmediateRelease)

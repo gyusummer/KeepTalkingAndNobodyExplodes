@@ -32,7 +32,7 @@ public class KeypadModule : DisarmableModule
     {
         keyEvent.part = keypadButtons[nextButtonCursor];
     }
-    protected override void Success(PartEventInfo info)
+    protected override void Hit(PartEventInfo info)
     {
         info.part.MainEvent -= Judge;
         info.part.enabled = false;

@@ -1,11 +1,17 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class SceneChanger : MonoBehaviour
 {
     public static SceneChanger Instance;
+    public event Action OnScneChange;
+    public Image black;
     
     public BombInfo BombInfo;
     public StageInfoSAO currentStageInfo;
@@ -18,10 +24,29 @@ public class SceneChanger : MonoBehaviour
             return;
         }
         Instance = this;
+        DontDestroyOnLoad(this);
     }
+
+    private void Start()
+    {
+        SceneManager.sceneLoaded += (scene, mode) =>
+        {
+            black.DOFade(0.0f, 1.0f).OnComplete(() =>
+            {
+                black.gameObject.SetActive(false);
+            });
+        };
+    }
+
     private void ChangeScene(string sceneName)
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
+        black.color = Color.clear;
+        black.gameObject.SetActive(true);
+        OnScneChange?.Invoke();
+        black.DOFade(1.0f, 1.0f).onComplete += () =>
+        {
+            SceneManager.LoadSceneAsync(sceneName);
+        };
     }
     public void LoadFacilityScene(StageInfoSAO stageInfo)
     {

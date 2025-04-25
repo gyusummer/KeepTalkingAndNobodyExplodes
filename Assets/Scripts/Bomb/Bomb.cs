@@ -108,7 +108,7 @@ public class Bomb : MonoBehaviour, ISelectable
         }
         catch (Exception e)
         {
-            Debug.Log(e.Message);
+            Debug.LogWarning(e.Message);
         }
 
         if (Info == null)
@@ -125,15 +125,6 @@ public class Bomb : MonoBehaviour, ISelectable
         FillModules();
         AttachWidgets();
     }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Keypad0))
-        {
-            Defuse();
-        }
-    }
-
     private void FillModules()
     {
         if (Info.ModuleCount > componentPrefabs.modules.Length)
@@ -209,18 +200,17 @@ public class Bomb : MonoBehaviour, ISelectable
         }
     }
 
-    public StageInfoSAO asdf;
     public void Explode(DisarmableModule module)
     {
         PlaySound(audioClips.explode);
+        timerModule.StopTimer();
         ResultInfo info = new ResultInfo();
         info.isDefused = false;
-        // info.stageInfo = SceneChanger.Instance.currentStageInfo;
-        info.stageInfo = asdf;
+        info.stageInfo = SceneChanger.Instance.currentStageInfo;
         info.leftTimeString = timerModule.leftTimeString;
         info.causeOfExplosion = module == null? "TimeLimit" : module.GetType().Name;
         
-        Result.Instance.ShowResult(info);
+        FacilityManager.Instance.ShowResult(info);
         Debug.Log("Explode");
     }
 
@@ -230,11 +220,11 @@ public class Bomb : MonoBehaviour, ISelectable
         timerModule.StopTimer();
         ResultInfo info = new ResultInfo();
         info.isDefused = true;
-        // info.stageInfo = SceneChanger.Instance.currentStageInfo;
-        info.stageInfo = asdf;
+        info.stageInfo = SceneChanger.Instance.currentStageInfo;
+
         info.leftTimeString = timerModule.leftTimeString;
         
-        Result.Instance.ShowResult(info);
+        FacilityManager.Instance.ShowResult(info);
         Debug.Log("Defuse");
     }
 

@@ -26,7 +26,7 @@ public class TimerModule : MonoBehaviour
         {
             go.SetActive(false);
         }
-        StartTimer();
+        limitTime = bomb.Info.LimitTime;
     }
 
     private void Update()
@@ -36,7 +36,6 @@ public class TimerModule : MonoBehaviour
 
     public void StartTimer()
     {
-        limitTime = bomb.Info.LimitTime;
         coroutine = StartCoroutine(Beep_Coroutine());
         timer.Restart();
     }
@@ -52,6 +51,7 @@ public class TimerModule : MonoBehaviour
     }
     public void StopTimer()
     {
+        audio.clip = null;
         StopCoroutine(coroutine);
         timer.Stop();
     }

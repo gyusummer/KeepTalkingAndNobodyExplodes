@@ -23,7 +23,7 @@ public class WOFButton : ModulePart
         sequence.Pause();
         sequence.AppendCallback(() =>
         {
-            Debug.Log($"{gameObject.name} collider disabled");
+            // Debug.Log($"{gameObject.name} collider disabled");
             collider.enabled = false;
         });
         sequence.Append(transform.DOLocalMoveZ(transform.localPosition.z + 0.02f, 0.5f));
@@ -34,7 +34,7 @@ public class WOFButton : ModulePart
         sequence.Append(transform.DOLocalMoveZ(transform.localPosition.z, 0.5f));
         sequence.AppendCallback(() =>
         {
-            Debug.Log($"{gameObject.name} collider enabled");
+            // Debug.Log($"{gameObject.name} collider enabled");
             collider.enabled = true;
         });
         sequence.Restart();

@@ -148,9 +148,11 @@ public class BombBinder : MonoBehaviour, ISelectable
         ShowStageSelectionPage();
         animator.SetTrigger("Close");
         transform.DOMove(originalPosition, animationDuration);
-        transform.DORotate(originalRotation, animationDuration);
+        transform.DORotate(originalRotation, animationDuration).onComplete += () =>
+        {
+            Collider.enabled = true;
+        };
         Camera.main.DOFieldOfView(60, animationDuration);
-        Collider.enabled = true;
         Debug.Log($"DeSelected ::: {gameObject.name}");
         return null;
     }
@@ -162,5 +164,12 @@ public class BombBinder : MonoBehaviour, ISelectable
     public void OnMouseExit()
     {
         outline.enabled = false;
+    }
+
+    public AudioSource audio;
+    public void PlaySound(AudioClip clip)
+    {
+        audio.clip = clip;
+        audio.Play();
     }
 }

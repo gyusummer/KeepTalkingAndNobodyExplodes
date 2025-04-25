@@ -12,9 +12,11 @@ public class TimerModule : MonoBehaviour
     public Bomb bomb;
     public GameObject[] strikeCounter;
     
+    [SerializeField]private AudioSource audio;
     [SerializeField]private TMP_Text timeText;
     private Stopwatch timer = new Stopwatch();
     private TimeSpan limitTime;
+    private Coroutine coroutine;
 
     public string leftTimeString;
 
@@ -35,10 +37,22 @@ public class TimerModule : MonoBehaviour
     public void StartTimer()
     {
         limitTime = bomb.Info.LimitTime;
+        coroutine = StartCoroutine(Beep_Coroutine());
         timer.Restart();
+    }
+
+    private IEnumerator Beep_Coroutine()
+    {
+        var wfs = new WaitForSeconds(1f);
+        while (gameObject.activeInHierarchy)
+        {
+            audio.Play();
+            yield return wfs;
+        }
     }
     public void StopTimer()
     {
+        StopCoroutine(coroutine);
         timer.Stop();
     }
 

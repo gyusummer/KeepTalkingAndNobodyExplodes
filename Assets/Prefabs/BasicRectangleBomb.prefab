@@ -527,7 +527,7 @@ GameObject:
   - component: {fileID: 6512988657607974021}
   - component: {fileID: 7621538747633160472}
   - component: {fileID: 8279676345561534505}
-  - component: {fileID: 4680197089509065314}
+  - component: {fileID: 7677191502873507692}
   m_Layer: 0
   m_Name: BasicRectangleBomb
   m_TagString: Untagged
@@ -601,6 +601,13 @@ MonoBehaviour:
   - {fileID: 7031637488712866905}
   - {fileID: 527797983566707777}
   - {fileID: 7230426492271776105}
+  audio: {fileID: 7677191502873507692}
+  audioClips:
+    outlineTick: {fileID: 8300000, guid: fe22efd918343db468049a0de648f768, type: 3}
+    putDown: {fileID: 8300000, guid: a5c7eed264d7c6644b85457f68a8bb4d, type: 3}
+    defuse: {fileID: 8300000, guid: 555f5b5d645d914408ee50d4646c8d2f, type: 3}
+    strike: {fileID: 8300000, guid: 1fe717199fce62341aa5a40af187222c, type: 3}
+    explode: {fileID: 8300000, guid: 75fab7f292b92d24889bed313b862647, type: 3}
 --- !u!65 &7621538747633160472
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -938,7 +945,7 @@ MonoBehaviour:
     fillPass:
       shader: {fileID: 0}
       serializedProperties: []
---- !u!82 &4680197089509065314
+--- !u!82 &7677191502873507692
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

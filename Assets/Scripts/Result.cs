@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using DG.Tweening;
 using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine.UI;
 using UnityEngine;
@@ -29,6 +30,13 @@ public class Result : MonoBehaviour
 {
     public static Result Instance;
     public BombBinder binder;
+    public AudioSource audio;
+    public AudioClip fanfare;
+    public AudioClip lose;
+    public AudioClip win;
+
+    public Canvas canvas;
+    public Image black;
     
     private void Awake()
     {
@@ -38,9 +46,33 @@ public class Result : MonoBehaviour
     public void ShowResult(ResultInfo info)
     {
         binder.ShowResultPage(info);
-        
+
+        if (info.isDefused == true)
+        {
+            StartCoroutine(Win_Coroutine());
+        }
+        else
+        {
+            black.color = Color.black;
+            black.gameObject.SetActive(true);
+            CommonRoutine();
+        }
+    }
+
+    private IEnumerator Win_Coroutine()
+    {
+        yield return new WaitForSeconds(2.0f);
+        audio.PlayOneShot(fanfare);
+        yield return new WaitForSeconds(3.0f);
+        black.color = Color.clear;
+        black.gameObject.SetActive(true);
+        black.DOFade(1.0f, 1.0f).onComplete += CommonRoutine;
+    }
+    private void CommonRoutine()
+    {
         Controller.Instance.transform.position = transform.position;
-        Controller.Instance.transform.rotation = transform.rotation;
+        canvas.planeDistance = 3.0f;
+        binder.gameObject.SetActive(true);
         Controller.Instance.Select(binder);
     }
 }

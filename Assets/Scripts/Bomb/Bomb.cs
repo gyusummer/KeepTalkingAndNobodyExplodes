@@ -5,6 +5,7 @@ using System.Text;
 using DG.Tweening;
 using EPOOutline;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Serialization;
@@ -28,6 +29,15 @@ public class BombInfo
 [RequireComponent(typeof(Outlinable),typeof(AudioSource))]
 public class Bomb : MonoBehaviour, ISelectable
 {
+    [Serializable]
+    private class AudioClips
+    {
+        public AudioClip outlineTick;
+        public AudioClip putDown;
+        public AudioClip defuse;
+        public AudioClip strike;
+        public AudioClip explode;
+    }
     public static Bomb Main;
     
     public BombInfo Info;
@@ -48,7 +58,8 @@ public class Bomb : MonoBehaviour, ISelectable
     [SerializeField] private Transform[] moduleAnchors;
     [SerializeField] private Transform[] widgetAnchors;
     private Outlinable outline;
-    private AudioSource audio;
+    [SerializeField] private AudioSource audio;
+    [SerializeField] private AudioClips audioClips;
     public int CurStrike { get; private set; } = 0;
     private int curDisarm = 0;
     public int CurDisarm
@@ -87,7 +98,6 @@ public class Bomb : MonoBehaviour, ISelectable
     {
         selectCollider = GetComponent<Collider>();
         outline = GetComponent<Outlinable>();
-        audio = GetComponent<AudioSource>();
         timerModule = GetComponentInChildren<TimerModule>();
 
         outline.enabled = false;
@@ -98,7 +108,7 @@ public class Bomb : MonoBehaviour, ISelectable
         }
         catch (Exception e)
         {
-            Debug.LogAssertion(e.Message);
+            Debug.Log(e.Message);
         }
 
         if (Info == null)
@@ -114,6 +124,14 @@ public class Bomb : MonoBehaviour, ISelectable
         
         FillModules();
         AttachWidgets();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Keypad0))
+        {
+            Defuse();
+        }
     }
 
     private void FillModules()
@@ -187,27 +205,33 @@ public class Bomb : MonoBehaviour, ISelectable
         else
         {
             timerModule.strikeCounter[CurStrike - 1].SetActive(true);
+            PlaySound(audioClips.strike);
         }
     }
 
+    public StageInfoSAO asdf;
     public void Explode(DisarmableModule module)
     {
+        PlaySound(audioClips.explode);
         ResultInfo info = new ResultInfo();
         info.isDefused = false;
         // info.stageInfo = SceneChanger.Instance.currentStageInfo;
+        info.stageInfo = asdf;
         info.leftTimeString = timerModule.leftTimeString;
         info.causeOfExplosion = module == null? "TimeLimit" : module.GetType().Name;
         
-        // Result.Instance.ShowResult(info);
+        Result.Instance.ShowResult(info);
         Debug.Log("Explode");
     }
 
     private void Defuse()
     {
+        PlaySound(audioClips.defuse);
         timerModule.StopTimer();
         ResultInfo info = new ResultInfo();
         info.isDefused = true;
-        info.stageInfo = SceneChanger.Instance.currentStageInfo;
+        // info.stageInfo = SceneChanger.Instance.currentStageInfo;
+        info.stageInfo = asdf;
         info.leftTimeString = timerModule.leftTimeString;
         
         Result.Instance.ShowResult(info);
@@ -251,6 +275,7 @@ public class Bomb : MonoBehaviour, ISelectable
 
     private void OnMouseEnter()
     {
+        PlaySound(audioClips.outlineTick);
         outline.enabled = true;
     }
 
@@ -268,5 +293,11 @@ public class Bomb : MonoBehaviour, ISelectable
         sb.Append(RandomUtil.GetRandomAlphabet());
         sb.Append(RandomUtil.GetRandomDigit());
         return sb.ToString();
+    }
+
+    private void PlaySound(AudioClip clip)
+    {
+        audio.clip = clip;
+        audio.Play();
     }
 }

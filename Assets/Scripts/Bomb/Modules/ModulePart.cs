@@ -63,6 +63,7 @@ public abstract class ModulePart : MonoBehaviour, IPointerEnterHandler, IPointer
     }
     protected virtual void OnDisable()
     {
+        if(outline == null) return;
         outline.enabled = false;
     }
 

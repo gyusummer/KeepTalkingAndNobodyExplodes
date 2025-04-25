@@ -35,11 +35,6 @@ public class KeypadButton : ModulePart
         }
     }
 
-    private void OnMouseDown()
-    {
-        MainEvent?.Invoke(new PartEventInfo(this));
-    }
-
     protected override void OnDisable()
     {
         if (outline is not null)

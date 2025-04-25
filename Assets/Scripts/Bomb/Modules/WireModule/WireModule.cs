@@ -34,7 +34,8 @@ public class WireModule : DisarmableModule
         for (int i = 0; i < activeWireCount; i++)
         {
             activeWires[i].gameObject.SetActive(true);
-            activeColors[i] = (activeWires[i] as Wire).color;
+            activeColors[i] = COLOR_LIST[Random.Range(0, COLOR_LIST.Length)];
+            (activeWires[i] as Wire).color = activeColors[i];
         }
     }
     protected override void SetKeyEvent()

@@ -24,16 +24,25 @@ public class PartEventInfo
         this.part = part;
     }
 }
-public abstract class ModulePart : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+[RequireComponent(typeof(Outlinable),typeof(AudioSource))]
+public abstract class ModulePart : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
 {
     public Action<PartEventInfo> MainEvent;
     public Action SubEvent;
     
-    public Outlinable outline;
+    protected Outlinable outline;
+    protected AudioSource audio;
+    protected AudioClip outlineTick;
+    protected AudioClip buttonDown;
 
     private void Start()
     {
         outline = GetComponent<Outlinable>();
+        audio = GetComponent<AudioSource>();
+        outlineTick = Resources.Load(StaticStrings.AudioClipPath.Tick) as AudioClip;
+        Debug.Log(StaticStrings.AudioClipPath.Tick);
+        Debug.Log(Resources.Load(StaticStrings.AudioClipPath.Tick));
+        buttonDown = Resources.Load(StaticStrings.AudioClipPath.ButtonPress) as AudioClip;
         outline.OutlineParameters.Color = Color.red;
         outline.enabled = false;
         Init();
@@ -43,20 +52,33 @@ public abstract class ModulePart : MonoBehaviour, IPointerEnterHandler, IPointer
 
     public virtual void OnPointerEnter(PointerEventData eventData)
     {
-        if(this.enabled == false) return;
+        audio.clip = outlineTick;
+        audio.Play();
         outline.enabled = true;
     }
 
     public virtual void OnPointerExit(PointerEventData eventData)
     {
-        if(this.enabled == false) return;
         outline.enabled = false;
     }
     protected virtual void OnDisable()
     {
-        if (outline is not null)
+        outline.enabled = false;
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        if (eventData.button != PointerEventData.InputButton.Left)
         {
-            outline.enabled = false;
+            return;
         }
+        audio.clip = buttonDown;
+        audio.Play();
+        OnButtonDown();
+    }
+
+    protected virtual void OnButtonDown()
+    {
+        MainEvent?.Invoke(new PartEventInfo(this));
     }
 }

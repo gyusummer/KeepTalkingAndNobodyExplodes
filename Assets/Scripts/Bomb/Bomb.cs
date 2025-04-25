@@ -19,13 +19,13 @@ public class BombInfo
     {
         return new BombInfo
         {
-            LimitTime = new TimeSpan(0, 5, 0),
+            LimitTime = new TimeSpan(0, 60, 0),
             ModuleCount = 5,
             StrikeCount = 3
         };
     }
 }
-
+[RequireComponent(typeof(Outlinable),typeof(AudioSource))]
 public class Bomb : MonoBehaviour, ISelectable
 {
     public static Bomb Main;
@@ -48,6 +48,7 @@ public class Bomb : MonoBehaviour, ISelectable
     [SerializeField] private Transform[] moduleAnchors;
     [SerializeField] private Transform[] widgetAnchors;
     private Outlinable outline;
+    private AudioSource audio;
     public int CurStrike { get; private set; } = 0;
     private int curDisarm = 0;
     public int CurDisarm
@@ -86,6 +87,7 @@ public class Bomb : MonoBehaviour, ISelectable
     {
         selectCollider = GetComponent<Collider>();
         outline = GetComponent<Outlinable>();
+        audio = GetComponent<AudioSource>();
         timerModule = GetComponentInChildren<TimerModule>();
 
         outline.enabled = false;
@@ -122,9 +124,9 @@ public class Bomb : MonoBehaviour, ISelectable
             return;
         }
         // we only use front anchors now
-        var anchors= RandomUtil.GetShuffled(moduleAnchors[0..5]);
+        var anchors= RandomUtil.GetShuffled(moduleAnchors[0..6]);
         
-        timerModule = Instantiate(componentPrefabs.timer, anchors[0]);
+        timerModule = Instantiate(componentPrefabs.timer, anchors[5]);
         timerModule.bomb = this;
 
         var modules = RandomUtil.GetRandomSubset(componentPrefabs.modules, Info.ModuleCount);
@@ -132,7 +134,7 @@ public class Bomb : MonoBehaviour, ISelectable
         {
             var module = modules[i];
             module.bomb = this;
-            Instantiate(module, anchors[i + 1]);
+            Instantiate(module, anchors[i]);
         }
         CoverEmpties();
     }
@@ -192,11 +194,11 @@ public class Bomb : MonoBehaviour, ISelectable
     {
         ResultInfo info = new ResultInfo();
         info.isDefused = false;
-        info.stageInfo = SceneChanger.Instance.currentStageInfo;
+        // info.stageInfo = SceneChanger.Instance.currentStageInfo;
         info.leftTimeString = timerModule.leftTimeString;
         info.causeOfExplosion = module == null? "TimeLimit" : module.GetType().Name;
         
-        Result.Instance.ShowResult(info);
+        // Result.Instance.ShowResult(info);
         Debug.Log("Explode");
     }
 

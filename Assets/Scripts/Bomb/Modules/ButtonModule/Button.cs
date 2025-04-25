@@ -23,12 +23,13 @@ using UnityEngine.EventSystems;
 
 // Abort / Detonate / Hold
 
-public class Button : ModulePart
+public class Button : ModulePart, IPointerClickHandler
 {
     public bool isLedOn;
     private float holdTime;
     private bool isHolding;
 
+    [SerializeField] private AudioClip buttonUp;
     private void Update()
     {
         if (isHolding)
@@ -41,17 +42,24 @@ public class Button : ModulePart
         }
     }
 
-    private void OnMouseDown()
+    protected override void OnButtonDown()
     {
         if(this.enabled == false) return;
         holdTime = 0;
         isHolding = true;
         transform.Translate(0, -0.01f, 0);
     }
-
-    private void OnMouseUpAsButton()
+    public void OnPointerClick(PointerEventData eventData)
     {
-        if(this.enabled == false) return;
+        if (eventData.button != PointerEventData.InputButton.Left)
+        {
+            return;
+        }
+
+        if (isHolding == false)
+        {
+            return;
+        }
         ReleaseButton();
     }
     public override void OnPointerExit(PointerEventData eventData)
@@ -65,6 +73,8 @@ public class Button : ModulePart
     }
     private void ReleaseButton()
     {
+        audio.clip = buttonUp;
+        audio.Play();
         isHolding = false;
         transform.Translate(0, 0.01f, 0);
         MainEvent?.Invoke(new PartEventInfo(){part = this, time = holdTime});

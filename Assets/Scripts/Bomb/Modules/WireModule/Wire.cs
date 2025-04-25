@@ -17,7 +17,7 @@ public class Wire : ModulePart
     
     protected override void Init()
     {
-        color = WireModule.COLOR_LIST[Random.Range(0, WireModule.COLOR_LIST.Length)];
+        buttonDown = Resources.Load<AudioClip>(StaticStrings.AudioClipPath.WireSnip) as AudioClip;
         
         intact.material.color = color;
         for (int i = 0; i < snipped.Length; i++)
@@ -29,16 +29,15 @@ public class Wire : ModulePart
 
     private void SnipWire()
     {
-        gameObject.SetActive(false);
+        intact.enabled = false;
         for (int i = 0; i < snipped.Length; i++)
         {
             snipped[i].gameObject.SetActive(true);
         }
         MainEvent?.Invoke(new PartEventInfo(this));
     }
-    private void OnMouseDown()
+    protected override void OnButtonDown()
     {
-        if(this.enabled == false) return;
         SnipWire();
     }
 }

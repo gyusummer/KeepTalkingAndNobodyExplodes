@@ -5,6 +5,7 @@ using DG.Tweening;
 using EPOOutline;
 using UnityEngine;
 
+[RequireComponent(typeof(Outlinable),typeof(AudioSource))]
 public abstract class DisarmableModule : MonoBehaviour, ISelectable
 {
     public Bomb bomb;
@@ -13,6 +14,8 @@ public abstract class DisarmableModule : MonoBehaviour, ISelectable
     public Collider Collider => selectCollider;
     private Collider selectCollider;
     private Outlinable outline;
+    protected AudioSource audio;
+    protected AudioClip outlineTick;
     protected StatusLight statusLED;
     protected ModulePart[] parts;
 
@@ -34,10 +37,13 @@ public abstract class DisarmableModule : MonoBehaviour, ISelectable
     }
     private void EssentialInit()
     {
-        statusLED = GetComponentInChildren<StatusLight>();
         selectCollider = GetComponent<Collider>();
         outline = GetComponent<Outlinable>();
+        audio = GetComponent<AudioSource>();
+        outlineTick = Resources.Load(StaticStrings.AudioClipPath.Tick) as AudioClip;
+        statusLED = GetComponentInChildren<StatusLight>();
         parts = GetComponentsInChildren<ModulePart>();
+        
         keyEvent = new PartEventInfo();
 
         for (int i = 0; i < parts.Length; i++)
@@ -133,6 +139,8 @@ public abstract class DisarmableModule : MonoBehaviour, ISelectable
     }
     private void OnMouseEnter()
     {
+        audio.clip = outlineTick;
+        audio.Play();
         outline.enabled = true;
     }
     private void OnMouseExit()

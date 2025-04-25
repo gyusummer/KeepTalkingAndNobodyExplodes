@@ -6,7 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class WOFButton : ModulePart, IPointerClickHandler
+public class WOFButton : ModulePart
 {
     private TMP_Text text;
     private Collider collider;
@@ -23,6 +23,7 @@ public class WOFButton : ModulePart, IPointerClickHandler
         sequence.Pause();
         sequence.AppendCallback(() =>
         {
+            Debug.Log($"{gameObject.name} collider disabled");
             collider.enabled = false;
         });
         sequence.Append(transform.DOLocalMoveZ(transform.localPosition.z + 0.02f, 0.5f));
@@ -33,13 +34,9 @@ public class WOFButton : ModulePart, IPointerClickHandler
         sequence.Append(transform.DOLocalMoveZ(transform.localPosition.z, 0.5f));
         sequence.AppendCallback(() =>
         {
+            Debug.Log($"{gameObject.name} collider enabled");
             collider.enabled = true;
         });
         sequence.Restart();
-    }
-
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        MainEvent?.Invoke(new PartEventInfo(this));
     }
 }

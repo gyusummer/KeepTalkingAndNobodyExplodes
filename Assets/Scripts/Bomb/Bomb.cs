@@ -39,6 +39,8 @@ public class Bomb : MonoBehaviour, ISelectable
         public AudioClip explode;
     }
     public static Bomb Main;
+
+    public event Action OnBombStrike;
     
     public BombInfo Info;
     private string serial;
@@ -195,6 +197,7 @@ public class Bomb : MonoBehaviour, ISelectable
         }
         else
         {
+            OnBombStrike?.Invoke();
             timerModule.strikeCounter[CurStrike - 1].SetActive(true);
             PlaySound(audioClips.strike);
         }

@@ -38,6 +38,8 @@ public class SimonSaysModule : DisarmableModule
 
         flashOrder = RandomUtil.GetShuffled(buttons);
 
+        bomb.OnBombStrike += SetKeyEvent;
+
         StartCoroutine(FlashRoutine_Coroutine());
     }
     protected override void SetKeyEvent()

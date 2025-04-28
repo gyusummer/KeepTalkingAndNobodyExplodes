@@ -33,6 +33,8 @@ public class BombBinder : MonoBehaviour, ISelectable
 {
     public StageGroupSAO StageGroup;
 
+    public PageGroup DialogTutorialPage;
+    public PageGroup ControlTutorialPage;
     public PageGroup StageSelectionPage;
     public PageGroup MissionDetailPage;
     public PageGroup ResultDefusedPage;
@@ -74,6 +76,16 @@ public class BombBinder : MonoBehaviour, ISelectable
     public void ShowStageSelectionPage()
     {
         ShowPage(StageSelectionPage);
+        selectedStage = null;
+    }
+    public void ShowDialogTutorialPage()
+    {
+        ShowPage(DialogTutorialPage);
+        selectedStage = null;
+    }
+    public void ShowControlTutorialPage()
+    {
+        ShowPage(ControlTutorialPage);
         selectedStage = null;
     }
     public void ShowResultPage(ResultInfo info)

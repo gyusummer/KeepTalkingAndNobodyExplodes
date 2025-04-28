@@ -38,7 +38,7 @@ public class SceneChanger : MonoBehaviour
         };
     }
 
-    private void ChangeScene(string sceneName)
+    public void ChangeScene(string sceneName)
     {
         black.color = Color.clear;
         black.gameObject.SetActive(true);

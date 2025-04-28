@@ -167,7 +167,7 @@ public class Bomb : MonoBehaviour, ISelectable
         var widgetTransforms = RandomUtil.GetRandomSubset(widgetAnchors, widgetCount);
         
         GameObject serialObj = Instantiate(componentPrefabs.widgets[0], widgetTransforms[widgetCount - 1]);
-        serialObj.GetComponentInChildren<TMP_Text>().text = this.serial;
+        serialObj.GetComponentsInChildren<TMP_Text>()[1].text = this.serial;
         GameObject indicatorObj = Instantiate(componentPrefabs.widgets[1], widgetTransforms[widgetCount - 2]);
         indicatorObj.GetComponentInChildren<TMP_Text>().text = this.indicator;
 

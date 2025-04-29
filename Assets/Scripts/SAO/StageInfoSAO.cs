@@ -14,4 +14,6 @@ public class StageInfoSAO : ScriptableObject
     public int LimitTimeSecond;
     public int Modules;
     public int Strikes;
+
+    public DisarmableModule[] ModuleCandidates;
 }

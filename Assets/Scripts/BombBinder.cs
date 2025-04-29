@@ -83,10 +83,18 @@ public class BombBinder : MonoBehaviour, ISelectable
         ShowPage(DialogTutorialPage);
         selectedStage = null;
     }
+    public void StartDialogTutorialPage()
+    {
+        SceneChanger.Instance.ChangeScene("DialogTutorial");
+    }
     public void ShowControlTutorialPage()
     {
         ShowPage(ControlTutorialPage);
         selectedStage = null;
+    }
+    public void StartControlTutorialPage()
+    {
+        SceneChanger.Instance.ChangeScene("ControlTutorial");
     }
     public void ShowResultPage(ResultInfo info)
     {

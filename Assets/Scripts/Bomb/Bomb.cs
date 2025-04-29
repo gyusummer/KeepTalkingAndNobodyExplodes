@@ -129,7 +129,8 @@ public class Bomb : MonoBehaviour, ISelectable
     }
     private void FillModules()
     {
-        if (Info.ModuleCount > componentPrefabs.modules.Length)
+        DisarmableModule[] moduleCandidates = SceneChanger.Instance.currentStageInfo.ModuleCandidates;
+        if (Info.ModuleCount > moduleCandidates.Length)
         {
             Debug.LogAssertion("Module count exceeds available modules.");
             return;
@@ -140,7 +141,7 @@ public class Bomb : MonoBehaviour, ISelectable
         timerModule = Instantiate(componentPrefabs.timer, anchors[5]);
         timerModule.bomb = this;
 
-        var modules = RandomUtil.GetRandomSubset(componentPrefabs.modules, Info.ModuleCount);
+        var modules = RandomUtil.GetRandomSubset(moduleCandidates, Info.ModuleCount);
         for(int i = 0; i < Info.ModuleCount; i++)
         {
             var module = modules[i];

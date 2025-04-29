@@ -5,7 +5,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "StageGroupSAO", menuName = "ScriptableObjects/StageGroupSAO")]
 public class StageGroupSAO : ScriptableObject
 {
-    public string SectionTitle;
     public List<StageInfoSAO> StageInfos;
     
     public StageInfoSAO GetStageInfoOrNull(string key)

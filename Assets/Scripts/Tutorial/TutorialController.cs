@@ -49,13 +49,19 @@ public class TutorialController : MonoBehaviour
         // right click drag
         if (Input.GetMouseButton(1) && selectedObject is not DisarmableModule)
         {
-            float mouseX = Input.GetAxis("Mouse X") * rotWeight * Time.deltaTime;
-            float mouseY = Input.GetAxis("Mouse Y") * rotWeight * Time.deltaTime;
+            mouseMove.x = Input.GetAxis("Mouse X") * rotWeight * Time.deltaTime;
+            mouseMove.y = Input.GetAxis("Mouse Y") * rotWeight * Time.deltaTime;
 
-            rotationZ -= mouseX;
-            rotationX += mouseY;
+            rotationZ -= mouseMove.x;
+            rotationX += mouseMove.y;
 
             selectedObject.Transform.rotation = Quaternion.Euler(rotationX, 0f, rotationZ);
+            
+            if (mouseMove.magnitude > 5f)
+            {
+                Debug.Log("BombRotated");
+                ControlTutorialManager.Instance.BombEvent("BombRotated");
+            }
         }
         if (Input.GetMouseButtonUp(1))
         {

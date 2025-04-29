@@ -28,8 +28,6 @@ public class ResultInfo
 }
 public class FacilityManager : MonoBehaviour
 {
-    public StageInfoSAO mock;
-    
     public static FacilityManager Instance;
     public GameObject light;
     public BombBinder binder;
@@ -41,6 +39,13 @@ public class FacilityManager : MonoBehaviour
 
     public Canvas canvas;
     public Image black;
+
+    private bool isOver = false;
+    [SerializeField] private Image hint;
+    [SerializeField] private Sprite[] hints;
+    private int hintCursor = 0;
+    private Camera cam;
+    private Vector3 camPos;
     
     private void Awake()
     {
@@ -49,6 +54,8 @@ public class FacilityManager : MonoBehaviour
 
     private IEnumerator Start()
     {
+        cam = Camera.main;
+        camPos = cam.transform.position;
         yield return new WaitForSeconds(2.0f);
         
         RenderSettings.reflectionIntensity = 1.0f;
@@ -66,6 +73,7 @@ public class FacilityManager : MonoBehaviour
 
     public void ShowResult(ResultInfo info)
     {
+        isOver = true;
         binder.ShowResultPage(info);
         audio.Stop();
 
@@ -76,6 +84,43 @@ public class FacilityManager : MonoBehaviour
         else
         {
             StartCoroutine(Lose_Coroutine());
+        }
+    }
+
+    private void Update()
+    {
+        if (isOver)
+        {
+            return;
+        }
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            cam.transform.DOMoveX(camPos.x * - 1, 0.5f);
+            hint.gameObject.SetActive(true);
+        }
+        if (Input.GetKey(KeyCode.H))
+        {
+            if (Input.mouseScrollDelta.y != 0)
+            {
+                if(Input.mouseScrollDelta.y > 0)
+                {
+                    hintCursor--;
+                }
+                else if(Input.mouseScrollDelta.y < 0)
+                {
+                    hintCursor++;
+                }
+
+                hintCursor = Math.Clamp(hintCursor, 0, hints.Length - 1);
+                hint.sprite = hints[hintCursor];
+
+            }
+        }
+
+        if (Input.GetKeyUp(KeyCode.H))
+        {
+            cam.transform.DOMoveX(camPos.x, 0.5f);
+            hint.gameObject.SetActive(false);
         }
     }
 

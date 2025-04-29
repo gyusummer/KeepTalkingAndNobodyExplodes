@@ -10,6 +10,8 @@ public class TutorialController : MonoBehaviour
 
     public ISelectable selectedObject;
     private Vector2 mouseMove;
+    private float rotationX = 0f;
+    private float rotationZ = 0f;
     private float rightDownTime;
     
     private void Awake()
@@ -47,16 +49,13 @@ public class TutorialController : MonoBehaviour
         // right click drag
         if (Input.GetMouseButton(1) && selectedObject is not DisarmableModule)
         {
-            mouseMove.x = Input.GetAxisRaw("Mouse X");
-            mouseMove.y = Input.GetAxisRaw("Mouse Y");
-            Vector3 rot = new Vector3(mouseMove.y,0,-mouseMove.x);
-            rot *= Time.deltaTime * rotWeight;
-            selectedObject.Transform.Rotate(rot);
+            float mouseX = Input.GetAxis("Mouse X") * rotWeight * Time.deltaTime;
+            float mouseY = Input.GetAxis("Mouse Y") * rotWeight * Time.deltaTime;
 
-            if (rot.magnitude > 10f)
-            {
-                ControlTutorialManager.Instance.BombEvent("BombRotated");
-            }
+            rotationZ -= mouseX;
+            rotationX += mouseY;
+
+            selectedObject.Transform.rotation = Quaternion.Euler(rotationX, 0f, rotationZ);
         }
         if (Input.GetMouseButtonUp(1))
         {
@@ -67,19 +66,20 @@ public class TutorialController : MonoBehaviour
             }
             else
             {
-                var toCamera = transform.position - selectedObject.Transform.position;
-                toCamera.Normalize();
-                Quaternion rotation = Quaternion.FromToRotation(Vector3.up, toCamera);
-                var euler = rotation.eulerAngles;
-                euler.z = selectedObject.Transform.eulerAngles.z;
-                // UNDONE: flip
-                selectedObject.Transform.DORotate(euler, 0.5f);
+                var now = selectedObject.Transform.forward;
+                var qua = Quaternion.FromToRotation(now, selectPosition.forward) * selectedObject.Transform.rotation;
+                selectedObject.Transform.DORotate(qua.eulerAngles, 0.5f);
+                
+                rotationX = selectedObject.Transform.rotation.eulerAngles.x;
+                rotationZ = selectedObject.Transform.rotation.eulerAngles.z;
             }
         }
     }
     public void Select(ISelectable obj)
     {
         selectedObject = obj.OnSelected(selectPosition);
+        rotationX = selectedObject.Transform.rotation.eulerAngles.x;
+        rotationZ = selectedObject.Transform.rotation.eulerAngles.z;
     }
 
     private void DeSelect()

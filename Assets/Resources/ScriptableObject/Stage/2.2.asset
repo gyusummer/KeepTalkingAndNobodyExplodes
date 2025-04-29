@@ -17,7 +17,7 @@ MonoBehaviour:
   Description: The task is clear but the timer doesn't care about your workload.
   LimitTimeMiniute: 5
   LimitTimeSecond: 0
-  Modules: 5
+  Modules: 6
   Strikes: 3
   ModuleCandidates:
   - {fileID: 7905152578400903473, guid: 1b75cab5e5227a8438ba39a148d5f94d, type: 3}

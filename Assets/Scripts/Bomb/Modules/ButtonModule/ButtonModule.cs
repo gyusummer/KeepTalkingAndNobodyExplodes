@@ -8,7 +8,7 @@ using UnityEngine;
 public class ButtonModule : DisarmableModule
 {
     private static readonly Color[] COLOR_LIST = {Color.blue, Color.red, Color.white, Color.yellow};
-    private static readonly string[] LABEL_LIST = {"Abort", "Detonate", "Hold"};
+    private static readonly string[] LABEL_LIST = {"Abort", "Detonate", "Hold",};
     private static readonly int OPEN = Animator.StringToHash("Open");
     private static readonly int CLOSE = Animator.StringToHash("Close");
     private static readonly int EMISSION_COLOR = Shader.PropertyToID("_EmissionColor");

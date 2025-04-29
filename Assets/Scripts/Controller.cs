@@ -76,10 +76,12 @@ public class Controller : MonoBehaviour
             {
                 var now = selectedObject.Transform.forward;
                 var qua = Quaternion.FromToRotation(now, selectPosition.forward) * selectedObject.Transform.rotation;
-                selectedObject.Transform.DORotate(qua.eulerAngles, 0.5f);
+                selectedObject.Transform.DORotate(qua.eulerAngles, 0.5f).onComplete += () =>
+                {
+                    rotationX = selectedObject.Transform.rotation.eulerAngles.x;
+                    rotationZ = selectedObject.Transform.rotation.eulerAngles.z;
+                };
                 
-                rotationX = selectedObject.Transform.rotation.eulerAngles.x;
-                rotationZ = selectedObject.Transform.rotation.eulerAngles.z;
             }
         }
     }
@@ -87,8 +89,8 @@ public class Controller : MonoBehaviour
     public void Select(ISelectable obj)
     {
         selectedObject = obj.OnSelected(selectPosition);
-        rotationX = selectedObject.Transform.rotation.eulerAngles.x;
-        rotationZ = selectedObject.Transform.rotation.eulerAngles.z;
+        rotationX = selectPosition.rotation.eulerAngles.x;
+        rotationZ = selectPosition.rotation.eulerAngles.z;
     }
 
     private void DeSelect()

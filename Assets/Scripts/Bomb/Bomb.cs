@@ -135,18 +135,34 @@ public class Bomb : MonoBehaviour, ISelectable
             Debug.LogAssertion("Module count exceeds available modules.");
             return;
         }
-        // we only use front anchors now
-        var anchors= RandomUtil.GetShuffled(moduleAnchors[0..6]);
+
+
+        int frontCount = Info.ModuleCount;
+        if (Info.ModuleCount >= 6)
+        {
+            frontCount = Info.ModuleCount / 2;
+        }
+        int backCount = Info.ModuleCount - frontCount;
         
-        timerModule = Instantiate(componentPrefabs.timer, anchors[5]);
+        // we only use front anchors now
+        var frontAnchors= RandomUtil.GetShuffled(moduleAnchors[..6]);
+        var backAnchors = RandomUtil.GetShuffled(moduleAnchors[6..]);
+        
+        timerModule = Instantiate(componentPrefabs.timer, frontAnchors[5]);
         timerModule.bomb = this;
 
         var modules = RandomUtil.GetRandomSubset(moduleCandidates, Info.ModuleCount);
-        for(int i = 0; i < Info.ModuleCount; i++)
+        for(int i = 0; i < frontCount; i++)
         {
             var module = modules[i];
             module.bomb = this;
-            Instantiate(module, anchors[i]);
+            Instantiate(module, frontAnchors[i]);
+        }
+        for(int i = 0; i < backCount; i++)
+        {
+            var module = modules[frontCount + i];
+            module.bomb = this;
+            Instantiate(module, backAnchors[i]);
         }
         CoverEmpties();
     }

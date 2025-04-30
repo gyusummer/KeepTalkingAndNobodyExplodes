@@ -26,7 +26,7 @@ public class PartEventInfo
     }
 }
 [RequireComponent(typeof(Outlinable),typeof(AudioSource))]
-public abstract class ModulePart : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
+public abstract class ModulePart : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerClickHandler
 {
     public Action<PartEventInfo> MainEvent;
     public Action SubEvent;
@@ -82,5 +82,40 @@ public abstract class ModulePart : MonoBehaviour, IPointerEnterHandler, IPointer
     protected virtual void OnButtonDown()
     {
         MainEvent?.Invoke(new PartEventInfo(this));
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        #region ClickSpringRotation
+        Transform bomb = Bomb.Main.transform;
+        Vector3 clickPosition = eventData.pointerCurrentRaycast.worldPosition;
+        Vector3 clickVector = (clickPosition - bomb.position).normalized;
+
+        float quadrant = Vector3.Dot(clickVector, bomb.right) * Vector3.Dot(clickVector, bomb.forward);
+
+        Vector3 axis = Quaternion.AngleAxis(20f, bomb.up) * bomb.forward;
+        if (quadrant > 0)
+        {
+            axis = Quaternion.AngleAxis(180f, bomb.forward) * axis;
+        }
+        
+        Vector3 cross = Vector3.Cross(axis, clickVector);
+        float dir = Vector3.Dot(cross.normalized, (Camera.main.transform.position - bomb.position).normalized);
+        Debug.Log(dir);
+        Debug.DrawRay( bomb.position, cross, Color.red, 5f);
+        
+        float angle = 5f;
+        if (dir > 0)
+        {
+            angle *= -1f;
+        }
+
+        var qua = Quaternion.AngleAxis(angle, axis);
+        var restore = bomb.rotation;
+        bomb.DORotate((qua * bomb.rotation).eulerAngles, 0.1f).SetEase(Ease.OutBack).onComplete += () =>
+        {
+            bomb.DORotate(restore.eulerAngles, 0.4f).SetEase(Ease.OutBack);
+        };
+        #endregion
     }
 }

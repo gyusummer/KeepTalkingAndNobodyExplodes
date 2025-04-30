@@ -74,6 +74,9 @@ public class FacilityManager : MonoBehaviour
     public void ShowResult(ResultInfo info)
     {
         isOver = true;
+        hint.gameObject.SetActive(false);
+        cam.transform.DOMoveX(camPos.x, 0.5f);
+
         binder.ShowResultPage(info);
         audio.Stop();
 

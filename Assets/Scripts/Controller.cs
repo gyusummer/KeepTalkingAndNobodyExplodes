@@ -55,16 +55,19 @@ public class Controller : MonoBehaviour
             rightDownTime = Time.time;
         }
         // right click drag
-        if (Input.GetMouseButton(1) && selectedObject is not DisarmableModule)
+        if (Input.GetMouseButton(1))
         {
-            mouseMove.x = Input.GetAxis("Mouse X") * rotWeight * Time.deltaTime;
-            mouseMove.y = Input.GetAxis("Mouse Y") * rotWeight * Time.deltaTime;
-
-            rotationZ -= mouseMove.x;
-            rotationX += mouseMove.y;
-
-            selectedObject.Transform.rotation = Quaternion.Euler(rotationX, 0f, rotationZ);
+            mouseMove.x = Input.GetAxis("Mouse X");
+            mouseMove.y = Input.GetAxis("Mouse Y");
+            if (selectedObject is not DisarmableModule)
+            {
+                rotationZ -= mouseMove.x * rotWeight * Time.deltaTime;
+                rotationX += mouseMove.y * rotWeight * Time.deltaTime;
+            
+                selectedObject.Transform.rotation = Quaternion.Euler(rotationX, 0f, rotationZ);
+            }
         }
+        
         if (Input.GetMouseButtonUp(1))
         {
             bool isPointerMoved = mouseMove.magnitude > 0.5f;
@@ -81,7 +84,6 @@ public class Controller : MonoBehaviour
                     rotationX = selectedObject.Transform.rotation.eulerAngles.x;
                     rotationZ = selectedObject.Transform.rotation.eulerAngles.z;
                 };
-                
             }
         }
     }
@@ -96,5 +98,11 @@ public class Controller : MonoBehaviour
     private void DeSelect()
     {
         selectedObject = selectedObject.OnDeselected();
+        if (selectedObject == null)
+        {
+            return;
+        }
+        rotationX = selectedObject.Transform.rotation.eulerAngles.x;
+        rotationZ = selectedObject.Transform.rotation.eulerAngles.z;
     }
 }

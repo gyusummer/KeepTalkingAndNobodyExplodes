@@ -21,8 +21,8 @@ public abstract class DisarmableModule : MonoBehaviour, ISelectable
 
     protected PartEventInfo keyEvent;
 
-    private Vector3 originalPosition;
-    private Vector3 originalRotation;
+    public Vector3 originalPosition;
+    public Vector3 originalRotation;
     private Transform originalParent;
     
     private void Start()

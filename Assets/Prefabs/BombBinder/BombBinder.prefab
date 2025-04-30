@@ -10493,6 +10493,11 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 6823710126958220455, guid: c712b30479ae21741a7acc469a1f5e2f,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0.18
+      objectReference: {fileID: 0}
     - target: {fileID: 7072674948005672608, guid: c712b30479ae21741a7acc469a1f5e2f,
         type: 3}
       propertyPath: m_margin.w
@@ -13159,6 +13164,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2584055518789432444, guid: 93e67b06c25dccc44bcdb67fd36b279b,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0.18
       objectReference: {fileID: 0}
     - target: {fileID: 3447941256623991870, guid: 93e67b06c25dccc44bcdb67fd36b279b,
         type: 3}

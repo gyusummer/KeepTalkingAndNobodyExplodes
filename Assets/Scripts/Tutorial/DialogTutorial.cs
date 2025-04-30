@@ -43,6 +43,8 @@ public class DialogTutorial : MonoBehaviour
         {
             return;
         }
+
+        nextButton.SetActive(true);
         finishButton.SetActive(false);
         dialogPages[currentPageIndex].SetActive(false);
         currentPageIndex--;

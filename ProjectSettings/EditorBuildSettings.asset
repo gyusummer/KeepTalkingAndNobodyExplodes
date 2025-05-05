@@ -13,7 +13,7 @@ EditorBuildSettings:
     guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1
     path: Assets/Scenes/Facility.unity
-    guid: 60649cb764dfa2841b03d5d11b76e20d
+    guid: 32272fb840c883a4e93411cbd98c44cd
   - enabled: 1
     path: Assets/Scenes/DialogTutorial.unity
     guid: 38e440456a0d86b42beb87acc45987f8

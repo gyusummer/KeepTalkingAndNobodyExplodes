@@ -17,21 +17,21 @@ public class EmitTest : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha0))
         {
-            mat.SetColor("_EmissionColor",Color.black);
+            mat.SetColor("_EmissionColor", Color.black);
         }
         else
         {
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
-                mat.SetColor("_EmissionColor",Color.red);
+                mat.SetColor("_EmissionColor", Color.red);
             }
             else if (Input.GetKeyDown(KeyCode.Alpha2))
             {
-                mat.SetColor("_EmissionColor",Color.blue);
+                mat.SetColor("_EmissionColor", Color.blue);
             }
             else if (Input.GetKeyDown(KeyCode.Alpha3))
             {
-                mat.SetColor("_EmissionColor",Color.white);
+                mat.SetColor("_EmissionColor", Color.white);
             }
         }
     }

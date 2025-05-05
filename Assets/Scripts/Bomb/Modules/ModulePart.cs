@@ -26,10 +26,9 @@ public class PartEventInfo
     }
 }
 [RequireComponent(typeof(Outlinable),typeof(AudioSource))]
-public abstract class ModulePart : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerClickHandler
+public abstract class ModulePart : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
 {
     public Action<PartEventInfo> MainEvent;
-    public Action SubEvent;
     
     protected Outlinable outline;
     protected AudioSource audio;
@@ -41,8 +40,8 @@ public abstract class ModulePart : MonoBehaviour, IPointerEnterHandler, IPointer
         outline = GetComponent<Outlinable>();
         audio = GetComponent<AudioSource>();
         outlineTick = Resources.Load(StaticStrings.AudioClipPath.Tick) as AudioClip;
-        Debug.Log(StaticStrings.AudioClipPath.Tick);
-        Debug.Log(Resources.Load(StaticStrings.AudioClipPath.Tick));
+        // Debug.Log(StaticStrings.AudioClipPath.Tick);
+        // Debug.Log(Resources.Load(StaticStrings.AudioClipPath.Tick));
         buttonDown = Resources.Load(StaticStrings.AudioClipPath.ButtonPress) as AudioClip;
         outline.OutlineParameters.Color = Color.red;
         outline.enabled = false;
@@ -76,18 +75,18 @@ public abstract class ModulePart : MonoBehaviour, IPointerEnterHandler, IPointer
         }
         audio.clip = buttonDown;
         audio.Play();
-        OnButtonDown();
+        SpringAction(eventData);
+        OnPointerDown();
     }
 
-    protected virtual void OnButtonDown()
+    protected virtual void OnPointerDown()
     {
         MainEvent?.Invoke(new PartEventInfo(this));
     }
 
-    public void OnPointerClick(PointerEventData eventData)
+    private void SpringAction(PointerEventData eventData)
     {
-        #region ClickSpringRotation
-        Transform bomb = Bomb.Main.transform;
+        Transform bomb = transform.root;
         Vector3 clickPosition = eventData.pointerCurrentRaycast.worldPosition;
         Vector3 clickVector = (clickPosition - bomb.position).normalized;
 
@@ -116,6 +115,5 @@ public abstract class ModulePart : MonoBehaviour, IPointerEnterHandler, IPointer
         {
             bomb.DORotate(restore.eulerAngles, 0.4f).SetEase(Ease.OutBack);
         };
-        #endregion
     }
 }

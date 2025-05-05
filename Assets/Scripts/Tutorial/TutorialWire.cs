@@ -36,7 +36,7 @@ public class TutorialWire : ModulePart
             ControlTutorialManager.Instance.BombEvent("BlueWireCut");
         }
     }
-    protected override void OnButtonDown()
+    protected override void OnPointerDown()
     {
         SnipWire();
     }

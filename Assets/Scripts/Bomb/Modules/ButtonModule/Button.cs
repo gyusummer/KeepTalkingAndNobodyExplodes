@@ -5,6 +5,7 @@ using EPOOutline;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 
 
 // 1. If the button is blue and the button says "Abort", hold the button and refer to "Releasing a Held Button".
@@ -25,9 +26,14 @@ using UnityEngine.EventSystems;
 
 public class Button : ModulePart, IPointerClickHandler
 {
-    public bool isLedOn;
+    private static readonly int EMISSION_COLOR = Shader.PropertyToID("_EmissionColor");
+
+    public Renderer Led;
+    public Color StripColor;
+    private bool isLedOn;
     private float holdTime;
     private bool isHolding;
+    private Coroutine ledCoroutine = null;
 
     [SerializeField] private AudioClip buttonUp;
     private void Update()
@@ -37,12 +43,59 @@ public class Button : ModulePart, IPointerClickHandler
             holdTime += Time.deltaTime;
             if (holdTime > 0.5f && isLedOn == false)
             {
-                SubEvent?.Invoke();
+                TurnOnLed();
+            }
+        }
+    }
+    private void TurnOnLed()
+    {
+        if (ledCoroutine == null)
+        {
+            ledCoroutine = StartCoroutine(LED_Coroutine());
+            isLedOn = true;
+        }
+    }
+    private void TurnOffLed()
+    {
+        if (ledCoroutine != null)
+        {
+            StopCoroutine(ledCoroutine);
+            ledCoroutine = null;
+            Led.material.SetColor(EMISSION_COLOR, Color.black);
+            isLedOn = false;
+        }
+    }
+    private IEnumerator LED_Coroutine()
+    {
+        float intensity = 0;
+        bool isRising = true;
+        float weight = 3;
+        while(Led.gameObject.activeInHierarchy)
+        {
+            if(isRising)
+            {
+                while(intensity < 2f)
+                {
+                    intensity += weight * Time.deltaTime;
+                    Led.material.SetColor(EMISSION_COLOR, StripColor * intensity);
+                    yield return null;
+                }
+                isRising = false;
+            }
+            else
+            {
+                while(intensity > -2)
+                {
+                    intensity -= weight * Time.deltaTime;
+                    Led.material.SetColor(EMISSION_COLOR, StripColor * Mathf.Clamp(intensity,0,2f));
+                    yield return null;
+                }
+                isRising = true;
             }
         }
     }
 
-    protected override void OnButtonDown()
+    protected override void OnPointerDown()
     {
         if(this.enabled == false) return;
         holdTime = 0;
@@ -77,7 +130,8 @@ public class Button : ModulePart, IPointerClickHandler
         audio.Play();
         isHolding = false;
         transform.Translate(0, 0.01f, 0);
-        MainEvent?.Invoke(new PartEventInfo(){part = this, time = holdTime});
+        MainEvent?.Invoke(new PartEventInfo{part = this, time = holdTime});
+        TurnOffLed();
         holdTime = 0;
     }
 }

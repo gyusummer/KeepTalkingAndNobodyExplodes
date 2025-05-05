@@ -1,0 +1,82 @@
+@startuml
+' icon size
+skinparam classAttributeIconSize 10
+
+class Bomb {
+    +Strike()
+    +Defuse()
+    +Explode()
+}
+
+class PartEventInfo {
+    +ModulePart part;
+    +Float time;
+    +String parameter;
+}
+' module
+abstract class DisarmableModule {
+    #keyEvent : PartEventInfo
+    #Init()
+    #SetKeyEvent()
+    #IsCorrectEvent()
+    #Judge(PartEventInfo)
+    #Hit()
+    #Strike()
+}
+
+class KeypadModule
+class WhosOnFirstModule
+class WireModule
+
+' module part
+abstract class ModulePart {
+    +MainEvent : Action<PartEventInfo>
+    +OnPointerDown(PointerEventData eventData)
+}
+
+class KeypadButton
+class WOFButton
+class Wire
+
+interface IPointerDownHandler {
+    +OnPointerDown(PointerEventData eventData)
+}
+' inheritance and composition
+Bomb *-- DisarmableModule
+
+DisarmableModule <|-- KeypadModule
+DisarmableModule <|-- WhosOnFirstModule
+DisarmableModule <|-- WireModule
+
+IPointerDownHandler <|.. ModulePart
+
+ModulePart <|-- KeypadButton
+ModulePart <|-- WOFButton
+ModulePart <|-- Wire
+
+' event
+
+DisarmableModule --> ModulePart : MainEvent += Judge
+
+note right of ModulePart::OnPointerDown
+    OnPointerDown(PointerEventData eventData)
+    {
+        MainEvent.Invoke(PartEventInfo)
+        // Other InputReaction
+    }
+end note
+
+note left of DisarmableModule::Judge
+    Judge(PartEventInfo partEvent)
+    {
+        if (IsCorrectEvent(partEvent))
+        {
+            Hit(partEvent);
+        }
+        else
+        {
+            Strike(partEvent);
+        }
+    }
+end note
+@enduml

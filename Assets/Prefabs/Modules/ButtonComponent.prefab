@@ -481,6 +481,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bomb: {fileID: 0}
+  originalPosition: {x: 0, y: 0, z: 0}
+  originalRotation: {x: 0, y: 0, z: 0}
   animator: {fileID: 1080798902864201011}
   text: {fileID: 279531214885849840}
   led: {fileID: 3141636221528380}
@@ -955,7 +957,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b29cf4ff0f50a754a97ef5c9e76575e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLedOn: 0
+  Led: {fileID: 3141636221528380}
+  StripColor: {r: 0, g: 0, b: 0, a: 0}
   buttonUp: {fileID: 8300000, guid: 223135b7f467f2e4b9d60d617f0d9a67, type: 3}
 --- !u!82 &1969666169319109723
 AudioSource:

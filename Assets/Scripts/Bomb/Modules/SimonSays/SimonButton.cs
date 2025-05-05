@@ -13,7 +13,7 @@ public class SimonButton : ModulePart
         yield return new WaitForSeconds(duration);
         highlight.SetActive(false);
     }
-    protected override void OnButtonDown()
+    protected override void OnPointerDown()
     {
         StartCoroutine(FlashHighlight(0.3f));
         MainEvent?.Invoke(new PartEventInfo(this));

@@ -73,8 +73,14 @@ public class WireModule : DisarmableModule
                 // Otherwise, cut the second wire.
                 if (activeColors.Count(c => c == Color.red) > 1 && bomb.IsSerialOdd())
                 {
-                    int keyIndex = Array.FindIndex(activeColors, color => color == Color.red);
-                    keyEvent.part = activeWires[keyIndex];
+                    for(int i = activeColors.Length - 1; i > 0; i--)
+                    {
+                        if (activeColors[i] == Color.red)
+                        {
+                            keyEvent.part = activeWires[i];
+                            break;
+                        }
+                    }
                 }
                 else if (activeColors.Last() == Color.yellow && activeColors.Contains(Color.red) == false)
                 {

@@ -17,7 +17,7 @@ public class Wire : ModulePart
     
     protected override void Init()
     {
-        buttonDown = Resources.Load<AudioClip>(StaticStrings.AudioClipPath.WireSnip) as AudioClip;
+        buttonDown = Resources.Load<AudioClip>(StaticStrings.AudioClipPath.WireSnip);
         
         intact.material.color = color;
         for (int i = 0; i < snipped.Length; i++)
@@ -36,7 +36,7 @@ public class Wire : ModulePart
         }
         MainEvent?.Invoke(new PartEventInfo(this));
     }
-    protected override void OnButtonDown()
+    protected override void OnPointerDown()
     {
         SnipWire();
     }

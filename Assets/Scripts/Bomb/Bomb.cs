@@ -10,6 +10,8 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
+
+[Serializable]
 public class BombInfo
 {
     public TimeSpan LimitTime;
@@ -22,7 +24,7 @@ public class BombInfo
         {
             LimitTime = new TimeSpan(0, 60, 0),
             ModuleCount = 5,
-            StrikeCount = 3
+            StrikeCount = 99
         };
     }
 }
@@ -144,7 +146,6 @@ public class Bomb : MonoBehaviour, ISelectable
         }
         int backCount = Info.ModuleCount - frontCount;
         
-        // we only use front anchors now
         var frontAnchors= RandomUtil.GetShuffled(moduleAnchors[..6]);
         var backAnchors = RandomUtil.GetShuffled(moduleAnchors[6..]);
         
@@ -152,15 +153,29 @@ public class Bomb : MonoBehaviour, ISelectable
         timerModule.bomb = this;
 
         var modules = RandomUtil.GetRandomSubset(moduleCandidates, Info.ModuleCount);
+        var frontModules = modules[..frontCount];
+        var backModules = modules[frontCount..];
+
+        // swap button module to front
+        for (int i = 0; i < backCount; i++)
+        {
+            if (backModules[i] is ButtonModule)
+            {
+                var front = Array.FindIndex(frontModules,m => m is not ButtonModule);
+                Debug.Log($"{backModules[i].GetType().Name} ::: {frontModules[i].GetType().Name}");
+                (frontModules[front], backModules[i]) = (backModules[i], frontModules[front]);
+            }
+        }
+        
         for(int i = 0; i < frontCount; i++)
         {
-            var module = modules[i];
+            var module = frontModules[i];
             module.bomb = this;
             Instantiate(module, frontAnchors[i]);
         }
         for(int i = 0; i < backCount; i++)
         {
-            var module = modules[frontCount + i];
+            var module = backModules[i];
             module.bomb = this;
             Instantiate(module, backAnchors[i]);
         }
@@ -269,14 +284,12 @@ public class Bomb : MonoBehaviour, ISelectable
 
         transform.DOMove(targetPosition, 0.5f);
         transform.DORotate(selectPosition.eulerAngles, 0.5f);
-        Debug.Log($"Selected ::: {gameObject.name}");
         Collider.enabled = false;
         return this;
     }
 
     public ISelectable OnDeselected()
     {
-        Debug.Log($"DeSelected ::: {gameObject.name}");
         transform.DOMove(originalPosition, 0.5f);
         transform.DORotate(originalRotation, 0.5f);
         Collider.enabled = true;

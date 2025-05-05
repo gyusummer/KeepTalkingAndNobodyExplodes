@@ -34,7 +34,6 @@ public class KeypadModule : DisarmableModule
     }
     protected override void Hit(PartEventInfo info)
     {
-        info.part.MainEvent -= Judge;
         info.part.enabled = false;
         info.part.GetComponentInChildren<Collider>().enabled = false;
         nextButtonCursor++;

@@ -6,14 +6,6 @@ using System.Linq;
 public static class RandomUtil
 {
     private static Random random = new Random();
-    /// <summary>
-    /// 배열에서 랜덤하게 a개 뽑고 인덱스 기준 정렬
-    /// </summary>
-    /// <param name="array"></param>
-    /// <param name="count"></param>
-    /// <typeparam name="T"></typeparam>
-    /// <returns></returns>
-    /// <exception cref="ArgumentException"></exception>
     public static char GetRandomAlphabet()
     {
         return (char)random.Next('A', 'Z' + 1);
@@ -79,9 +71,6 @@ public static class RandomUtil
         Array.Copy(buffer, 0, result, 0, count);
         return result;
     }
-    /// <summary>
-    /// 원본을 변경하지 않고, 섞인 새 배열을 반환합니다.
-    /// </summary>
     public static T[] GetShuffled<T>(T[] array)
     {
         if (array == null) 

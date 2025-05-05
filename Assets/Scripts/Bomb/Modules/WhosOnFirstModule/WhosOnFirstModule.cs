@@ -21,10 +21,7 @@ public class WhosOnFirstModule : DisarmableModule
 
     private static string[] buttonLabels =
     {
-        "READY", "FIRST", "NO", "BLANK", "NOTHING", "YES", "WHAT", "UHHH",
-        "LEFT", "RIGHT", "MIDDLE", "OKAY", "WAIT", "PRESS", "YOU", "YOU ARE",
-        "YOUR", "YOU'RE", "UR", "U", "UH HUH", "UH UH", "WHAT?", "DONE",
-        "NEXT", "HOLD", "SURE", "LIKE"
+        "READY", "FIRST", "NO", "BLANK", "NOTHING", "YES", "WHAT", "UHHH", "LEFT", "RIGHT", "MIDDLE", "OKAY", "WAIT", "PRESS", "YOU", "YOU ARE", "YOUR", "YOU'RE", "UR", "U", "UH HUH", "UH UH", "WHAT?", "DONE", "NEXT", "HOLD", "SURE", "LIKE"
     };
 
     private static string[][] buttonTable =
@@ -198,9 +195,8 @@ public class WhosOnFirstModule : DisarmableModule
         displayText.text = string.Empty;
         yield return new WaitForSeconds(0.5f);
         displayText.text = display;
-        // Debug.Log($"displayText.text ::: {displayText.text}\n" +
-        //           $"looking ::: {displayTable[displayLabelIndex]}");
     }
+
     private IEnumerator SetRound()
     {
         int displayLabelIndex = Random.Range(0, displayLabels.Length);
@@ -208,34 +204,23 @@ public class WhosOnFirstModule : DisarmableModule
         int indexToRead = displayTable[displayLabelIndex];
 
         string[] labels = RandomUtil.GetRandomSubset(buttonLabels, 6);
-        // for (int i = 0;  i< labels.Length; i++)
-        // {
-        //     Debug.Log($"labels[{i}] ::: {labels[i]}");
-        // }
         int buttonTableIndex = Array.IndexOf(buttonLabels, labels[indexToRead]);
-        // Debug.Log($"labels[indexToRead] ::: {labels[indexToRead]}\n"+
-        //           $"buttonTableIndex ::: {buttonTableIndex}");
-        
+
         string[] stringArrayToPush = buttonTable[buttonTableIndex];
-        // Debug.Log($"stringArrayToPush::: {stringArrayToPush}");
-        
+
         int keyIndex = -1;
         int minStringIndex = 99;
         for (int buttonIndex = 0; buttonIndex < labels.Length; buttonIndex++)
         {
             int stringIndex = Array.IndexOf(stringArrayToPush, labels[buttonIndex]);
-            if (stringIndex != -1)
+            if (stringIndex != -1
+                && stringIndex < minStringIndex)
             {
-                // Debug.Log($"There is a match at {buttonIndex} ::: {labels[buttonIndex]}\n" +
-                //           $"stringIndex ::: {stringIndex}");
-                if (stringIndex < minStringIndex)
-                {
-                    minStringIndex = stringIndex;
-                    keyIndex = buttonIndex;
-                }
+                minStringIndex = stringIndex;
+                keyIndex = buttonIndex;
             }
         }
-        
+
         if (minStringIndex == 99)
         {
             Debug.Log("No Answer");
@@ -244,18 +229,20 @@ public class WhosOnFirstModule : DisarmableModule
             {
                 keyIndex = Random.Range(0, buttons.Length);
             }
+
             labels[keyIndex] = stringArrayToPush[Random.Range(0, stringArrayToPush.Length)];
         }
+
         keyButton = buttons[keyIndex];
-        
-        int[] randomIndex = RandomUtil.GetShuffled(new int[]{0,1,2,3,4,5});
+
+        int[] randomIndex = RandomUtil.GetShuffled(new int[] { 0, 1, 2, 3, 4, 5 });
         for (int i = 0; i < labels.Length; i++)
         {
             int index = randomIndex[i];
             buttons[index].SetLabel(labels[index]);
             yield return new WaitForSeconds(0.05f);
         }
-        
+
         keyEvent.part = keyButton;
     }
 
@@ -268,6 +255,7 @@ public class WhosOnFirstModule : DisarmableModule
             Disarm();
             return;
         }
+
         SetKeyEvent();
     }
 

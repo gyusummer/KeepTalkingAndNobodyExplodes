@@ -53,9 +53,8 @@ public abstract class DisarmableModule : MonoBehaviour, ISelectable
         outline.enabled = false;
     }
     protected abstract void Init();
-
-    protected abstract void SetKeyEvent();
-    protected virtual bool CompareKeyEvent(PartEventInfo partEvent)
+    protected abstract void SetKeyEvent(); // 정답 설정
+    protected virtual bool IsCorrectEvent(PartEventInfo partEvent)
     {
         if (keyEvent.part == partEvent.part)
         {
@@ -63,20 +62,20 @@ public abstract class DisarmableModule : MonoBehaviour, ISelectable
         }
         return false;
     }
-    protected virtual void Judge(PartEventInfo partEvent)
+    private void Judge(PartEventInfo partEvent)
     {
-        if (CompareKeyEvent(partEvent))
+        if (IsCorrectEvent(partEvent))
         {
-            Hit(partEvent);
+            Hit(partEvent); // 정답
         }
         else
         {
-            Strike(partEvent);
+            Strike(partEvent); // 오답
         }
     }
     protected virtual void Hit(PartEventInfo info)
     {
-        Disarm();
+        Disarm(); // 모듈 해체
     }
     protected virtual void Strike(PartEventInfo info)
     {
@@ -115,8 +114,6 @@ public abstract class DisarmableModule : MonoBehaviour, ISelectable
         };
         Collider.enabled = false;
         
-        Debug.Log($"Selected ::: {gameObject.name}");
-
         return this;
     }
     public virtual ISelectable OnDeselected()
@@ -133,8 +130,6 @@ public abstract class DisarmableModule : MonoBehaviour, ISelectable
         };
         Collider.enabled = true;
         
-        Debug.Log($"DeSelected ::: {gameObject.name}");
-
         return bomb;
     }
     private void OnMouseEnter()
@@ -147,7 +142,7 @@ public abstract class DisarmableModule : MonoBehaviour, ISelectable
     {
         outline.enabled = false;
     }
-    protected virtual void OnDestroy()
+    private void OnDestroy()
     {
         for (int i = 0; i < parts.Length; i++)
         {

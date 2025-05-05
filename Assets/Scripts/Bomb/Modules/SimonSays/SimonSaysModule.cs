@@ -7,11 +7,22 @@ public class SimonSaysModule : DisarmableModule
 {
     public SimonButton[] buttons;
 
-    private SimonButton[,] vowelKeyTable;
-    private SimonButton[,] nVowelKeyTable;
+    private static int[,] vowelKeyTable = new int[3, 4]
+    {
+        { 1, 0, 3, 2 }, // Blue, Red, Yellow, Green
+        { 3, 2, 1, 0 }, // Yellow, Green, Blue, Red
+        { 2, 0, 3, 1 } // Green, Red, Yellow, Blue
+    };
+    private static int[,] nVowelKeyTable = new int[3, 4]
+    {
+        { 1, 3, 2, 0 }, // Blue, Yellow, Green, Red
+        { 0, 1, 3, 2 }, // Red, Blue, Yellow, Green
+        { 3, 2, 1, 0 } // Yellow, Green, Blue, Red
+    };
+    private int[,] keyTable;
     private SimonButton[] flashOrder;
-    private int keyCursor = 0;
-    private int flashCursor = 0;
+    private int keyCursor = 0; // Current button index
+    private int flashCursor = 0; // Max Index of current flash routine
     private float flashDuration = 0.5f;
     private float waitDuration = 5f;
 
@@ -23,20 +34,12 @@ public class SimonSaysModule : DisarmableModule
             buttons[i] = parts[i] as SimonButton;
         }
 
-        vowelKeyTable = new SimonButton[3, 4]
-        {
-            { buttons[1], buttons[0], buttons[3], buttons[2] }, // Blue, Red, Yellow, Green
-            { buttons[3], buttons[2], buttons[1], buttons[0] }, // Yellow, Green, Blue, Red
-            { buttons[2], buttons[0], buttons[3], buttons[1] } // Green, Red, Yellow, Blue
-        };
-        nVowelKeyTable = new SimonButton[3, 4]
-        {
-            { buttons[1], buttons[3], buttons[2], buttons[0] }, // Blue, Yellow, Green, Red
-            { buttons[0], buttons[1], buttons[3], buttons[2] }, // Red, Blue, Yellow, Green
-            { buttons[3], buttons[2], buttons[1], buttons[0] } // Yellow, Green, Blue, Red
-        };
-
         flashOrder = RandomUtil.GetShuffled(buttons);
+        
+        if (bomb.HasSerialVowel())
+            keyTable = vowelKeyTable;
+        else
+            keyTable = nVowelKeyTable;
 
         bomb.OnBombStrike += SetKeyEvent;
 
@@ -44,19 +47,9 @@ public class SimonSaysModule : DisarmableModule
     }
     protected override void SetKeyEvent()
     {
-        int strikes = bomb.CurStrike;
-        SimonButton[,] keyTable;
-        if (bomb.HasSerialVowel())
-        {
-            keyTable = vowelKeyTable;
-        }
-        else
-        {
-            keyTable = nVowelKeyTable;
-        }
-
         int tableIndex = Array.IndexOf(buttons, flashOrder[keyCursor]);
-        keyEvent.part = keyTable[strikes, tableIndex];
+        int keyIndex = keyTable[bomb.CurStrike, tableIndex];
+        keyEvent.part = parts[keyIndex];
     }
 
     private IEnumerator FlashRoutine_Coroutine()
@@ -89,9 +82,8 @@ public class SimonSaysModule : DisarmableModule
 
     protected override void Strike(PartEventInfo info)
     {
-        base.Strike(info);
         ResetKeyCursor();
-        SetKeyEvent();
+        base.Strike(info);
     }
 
     private void ResetKeyCursor()

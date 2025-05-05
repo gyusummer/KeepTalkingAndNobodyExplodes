@@ -158,7 +158,7 @@ public class BombBinder : MonoBehaviour, ISelectable
         transform.DOMove(selectPosition.position, animationDuration);
         transform.DORotate(selectPosition.eulerAngles, animationDuration);
         Camera.main.DOFieldOfView(40, animationDuration);
-        Debug.Log($"Selected ::: {gameObject.name}");
+        // Debug.Log($"Selected ::: {gameObject.name}");
         Collider.enabled = false;
         return this;
     }
@@ -173,7 +173,7 @@ public class BombBinder : MonoBehaviour, ISelectable
             Collider.enabled = true;
         };
         Camera.main.DOFieldOfView(60, animationDuration);
-        Debug.Log($"DeSelected ::: {gameObject.name}");
+        // Debug.Log($"DeSelected ::: {gameObject.name}");
         return null;
     }
     public void OnMouseEnter()

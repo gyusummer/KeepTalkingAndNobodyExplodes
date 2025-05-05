@@ -22,7 +22,7 @@ public class TutorialButton : ModulePart, IPointerClickHandler
         }
     }
 
-    protected override void OnButtonDown()
+    protected override void OnPointerDown()
     {
         if(this.enabled == false) return;
         holdTime = 0;

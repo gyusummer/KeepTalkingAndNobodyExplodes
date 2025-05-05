@@ -6,32 +6,23 @@ using UnityEngine;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
 
-public class Controller : MonoBehaviour
+public class Rotate_Controller : MonoBehaviour
 {
-    public static Controller Instance;
-    
     private ISelectable selectedObject;
-    [SerializeField]private Transform selectPosition;
+    [SerializeField] private Transform selectPosition;
     private Transform originalTransform;
-    // private Vector3 originalPosition;
-    // private Vector3 originalRotation;
 
     private Vector2 mouseMove;
     private float rotationX = 0f;
     private float rotationZ = 0f;
     private float rightDownTime;
 
-    private void Awake()
-    {
-        Instance = this;
-    }
-
     private void Update()
     {
         UpdateMouseInput();
     }
 
-    private float rotWeight = 600f;
+    private float rotWeight = 300f;
 
     private void UpdateMouseInput()
     {
@@ -54,20 +45,21 @@ public class Controller : MonoBehaviour
         {
             rightDownTime = Time.time;
         }
+
         // right click drag
         if (Input.GetMouseButton(1))
         {
             mouseMove.x = Input.GetAxis("Mouse X");
             mouseMove.y = Input.GetAxis("Mouse Y");
-            if (selectedObject is not DisarmableModule)
+            if (selectedObject is Rotate_Bomb)
             {
                 rotationZ -= mouseMove.x * rotWeight * Time.deltaTime;
                 rotationX += mouseMove.y * rotWeight * Time.deltaTime;
-                
+
                 selectedObject.Transform.rotation = Quaternion.Euler(rotationX, 0f, rotationZ);
             }
         }
-        
+
         if (Input.GetMouseButtonUp(1))
         {
             bool isPointerMoved = mouseMove.magnitude > 0.5f;
@@ -102,6 +94,7 @@ public class Controller : MonoBehaviour
         {
             return;
         }
+
         rotationX = selectedObject.Transform.rotation.eulerAngles.x;
         rotationZ = selectedObject.Transform.rotation.eulerAngles.z;
     }

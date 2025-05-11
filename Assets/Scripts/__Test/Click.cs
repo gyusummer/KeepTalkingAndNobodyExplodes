@@ -5,25 +5,10 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Click : MonoBehaviour, IPointerClickHandler
+public static class Click
 {
-	private void Start()
+	static Click()
 	{
-		Debug.Log("Click Start");
-
-		int i = -3;
-		
-		Debug.Log(Math.Clamp(i,0,10));
-		Debug.Log(i);
-	}
-
-	public void OnPointerClick(PointerEventData eventData)
-	{
-		Debug.Log("Pointer");
-	}
-
-	private void OnMouseUpAsButton()
-	{
-		Debug.Log("Mouse");
+		Debug.Log("Click static constructor called");
 	}
 }

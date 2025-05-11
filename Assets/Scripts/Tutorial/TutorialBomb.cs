@@ -60,7 +60,7 @@ public class TutorialBomb : MonoBehaviour, ISelectable
 
     private void OnMouseEnter()
     {
-        audio.PlayOneShot(outlineTick);
+        AudioManager.Instance.PlaySfx(outlineTick);
         outline.enabled = true;
     }
 

@@ -17,7 +17,7 @@ public class BombInfo
     public TimeSpan LimitTime;
     public int ModuleCount;
     public int StrikeCount;
-    
+
     public static BombInfo GetDefault()
     {
         return new BombInfo
@@ -28,44 +28,43 @@ public class BombInfo
         };
     }
 }
-[RequireComponent(typeof(Outlinable),typeof(AudioSource))]
+
+[RequireComponent(typeof(PointHighlighter))]
 public class Bomb : MonoBehaviour, ISelectable
 {
     [Serializable]
     private class AudioClips
     {
-        public AudioClip outlineTick;
-        public AudioClip putDown;
-        public AudioClip defuse;
-        public AudioClip strike;
-        public AudioClip explode;
+        public AudioClip PutDown;
+        public AudioClip Defuse;
+        public AudioClip Strike;
+        public AudioClip Explode;
     }
+
     public static Bomb Main;
 
     public event Action OnBombStrike;
-    
+
     public BombInfo Info;
     private string serial;
-    public string indicator;
-    public string[] battery;
-    public TimerModule timerModule;
+    public string Indicator;
+    public string[] Battery;
+    public TimerModule TimerModule;
 
     private static readonly string[] INDICATOR_LIST =
         { "SND", "CLR", "CAR", "IND", "FRQ", "SIG", "NSA", "MSA", "TRN", "BOB", "FRK" };
-    
+
     public GameObject GameObject => gameObject;
     public Transform Transform => transform;
-    public Collider Collider => selectCollider;
-    private Collider selectCollider;
-    
+    public Collider Collider { get; private set; }
+
     [SerializeField] private PrefabGroup componentPrefabs;
     [SerializeField] private Transform[] moduleAnchors;
     [SerializeField] private Transform[] widgetAnchors;
-    private Outlinable outline;
-    [SerializeField] private AudioSource audio;
     [SerializeField] private AudioClips audioClips;
     public int CurStrike { get; private set; } = 0;
     private int curDisarm = 0;
+
     public int CurDisarm
     {
         get => curDisarm;
@@ -88,27 +87,25 @@ public class Bomb : MonoBehaviour, ISelectable
         {
             Main = this;
         }
-        serial = GenerateSerial();
-        indicator = INDICATOR_LIST[Random.Range(0, INDICATOR_LIST.Length)];
 
-        battery = new string[Random.Range(1, 5)];
-        for (int i = 0; i < battery.Length; i++)
+        serial = GenerateSerial();
+        Indicator = INDICATOR_LIST[Random.Range(0, INDICATOR_LIST.Length)];
+
+        Battery = new string[Random.Range(1, 5)];
+        for (int i = 0; i < Battery.Length; i++)
         {
-            battery[i] = Random.Range(0, 1) < 0.5f ? "AA" : "D";
+            Battery[i] = Random.Range(0, 1) < 0.5f ? "AA" : "D";
         }
     }
 
     private void Start()
     {
-        selectCollider = GetComponent<Collider>();
-        outline = GetComponent<Outlinable>();
-        timerModule = GetComponentInChildren<TimerModule>();
-
-        outline.enabled = false;
+        Collider = GetComponent<Collider>();
+        TimerModule = GetComponentInChildren<TimerModule>();
 
         try
         {
-            Info = SceneChanger.Instance.BombInfo;
+            Info = SceneChanger.Instance.currentStageInfo.BombInfo;
         }
         catch (Exception e)
         {
@@ -120,18 +117,19 @@ public class Bomb : MonoBehaviour, ISelectable
             Debug.Log("BombInfo is null");
             Info = BombInfo.GetDefault();
         }
-        
+
         Debug.Log($"Serial: {serial}\n" +
-                  $"Indicator: {indicator}\n" +
-                  $"Battery: {battery.Length}\n" +
+                  $"Indicator: {Indicator}\n" +
+                  $"Battery: {Battery.Length}\n" +
                   $"LimitTime: {Info.LimitTime}");
-        
+
         FillModules();
         AttachWidgets();
     }
+
     private void FillModules()
     {
-        DisarmableModule[] moduleCandidates = SceneChanger.Instance.currentStageInfo.ModuleCandidates;
+        DisarmableModule[] moduleCandidates = SceneChanger.Instance.currentStageInfo.ModuleCandidates.prefabs;
         if (Info.ModuleCount > moduleCandidates.Length)
         {
             Debug.LogAssertion("Module count exceeds available modules.");
@@ -144,13 +142,14 @@ public class Bomb : MonoBehaviour, ISelectable
         {
             frontCount = Info.ModuleCount / 2;
         }
+
         int backCount = Info.ModuleCount - frontCount;
-        
-        var frontAnchors= RandomUtil.GetShuffled(moduleAnchors[..6]);
+
+        var frontAnchors = RandomUtil.GetShuffled(moduleAnchors[..6]);
         var backAnchors = RandomUtil.GetShuffled(moduleAnchors[6..]);
-        
-        timerModule = Instantiate(componentPrefabs.timer, frontAnchors[5]);
-        timerModule.bomb = this;
+
+        TimerModule = Instantiate(componentPrefabs.timer, frontAnchors[5]);
+        TimerModule.Bomb = this;
 
         var modules = RandomUtil.GetRandomSubset(moduleCandidates, Info.ModuleCount);
         var frontModules = modules[..frontCount];
@@ -161,24 +160,26 @@ public class Bomb : MonoBehaviour, ISelectable
         {
             if (backModules[i] is ButtonModule)
             {
-                var front = Array.FindIndex(frontModules,m => m is not ButtonModule);
+                var front = Array.FindIndex(frontModules, m => m is not ButtonModule);
                 Debug.Log($"{backModules[i].GetType().Name} ::: {frontModules[i].GetType().Name}");
                 (frontModules[front], backModules[i]) = (backModules[i], frontModules[front]);
             }
         }
-        
-        for(int i = 0; i < frontCount; i++)
+
+        for (int i = 0; i < frontCount; i++)
         {
             var module = frontModules[i];
-            module.bomb = this;
+            module.Bomb = this;
             Instantiate(module, frontAnchors[i]);
         }
-        for(int i = 0; i < backCount; i++)
+
+        for (int i = 0; i < backCount; i++)
         {
             var module = backModules[i];
-            module.bomb = this;
+            module.Bomb = this;
             Instantiate(module, backAnchors[i]);
         }
+
         CoverEmpties();
     }
 
@@ -195,18 +196,18 @@ public class Bomb : MonoBehaviour, ISelectable
 
     private void AttachWidgets()
     {
-        int widgetCount = 2 + battery.Length;
+        int widgetCount = 2 + Battery.Length;
         var widgetTransforms = RandomUtil.GetRandomSubset(widgetAnchors, widgetCount);
-        
+
         GameObject serialObj = Instantiate(componentPrefabs.widgets[0], widgetTransforms[widgetCount - 1]);
         serialObj.GetComponentsInChildren<TMP_Text>()[1].text = this.serial;
         GameObject indicatorObj = Instantiate(componentPrefabs.widgets[1], widgetTransforms[widgetCount - 2]);
-        indicatorObj.GetComponentInChildren<TMP_Text>().text = this.indicator;
+        indicatorObj.GetComponentInChildren<TMP_Text>().text = this.Indicator;
 
-        for (int i = 0; i < battery.Length; i++)
+        for (int i = 0; i < Battery.Length; i++)
         {
             var t = widgetTransforms[i];
-            switch (battery[i])
+            switch (Battery[i])
             {
                 case "AA":
                     Instantiate(componentPrefabs.widgets[2], t);
@@ -230,35 +231,35 @@ public class Bomb : MonoBehaviour, ISelectable
         else
         {
             OnBombStrike?.Invoke();
-            timerModule.strikeCounter[CurStrike - 1].SetActive(true);
-            PlaySound(audioClips.strike);
+            TimerModule.StrikeCounter[CurStrike - 1].SetActive(true);
+            AudioManager.Instance.PlaySfx(audioClips.Strike);
         }
     }
 
     public void Explode(DisarmableModule module)
     {
-        PlaySound(audioClips.explode);
-        timerModule.StopTimer();
+        AudioManager.Instance.PlaySfx(audioClips.Explode);
+        TimerModule.StopTimer();
         ResultInfo info = new ResultInfo();
         info.isDefused = false;
         info.stageInfo = SceneChanger.Instance.currentStageInfo;
-        info.leftTimeString = timerModule.leftTimeString;
-        info.causeOfExplosion = module == null? "TimeLimit" : module.GetType().Name;
-        
+        info.leftTimeString = TimerModule.LeftTimeString;
+        info.causeOfExplosion = module == null ? "TimeLimit" : module.GetType().Name;
+
         FacilityManager.Instance.ShowResult(info);
         Debug.Log("Explode");
     }
 
     private void Defuse()
     {
-        PlaySound(audioClips.defuse);
-        timerModule.StopTimer();
+        AudioManager.Instance.PlaySfx(audioClips.Defuse);
+        TimerModule.StopTimer();
         ResultInfo info = new ResultInfo();
         info.isDefused = true;
         info.stageInfo = SceneChanger.Instance.currentStageInfo;
 
-        info.leftTimeString = timerModule.leftTimeString;
-        
+        info.leftTimeString = TimerModule.LeftTimeString;
+
         FacilityManager.Instance.ShowResult(info);
         Debug.Log("Defuse");
     }
@@ -269,6 +270,7 @@ public class Bomb : MonoBehaviour, ISelectable
         int lastAsInt = serialLast - 48;
         return lastAsInt % 2 == 1;
     }
+
     public bool HasSerialVowel()
     {
         char[] vowels = { 'A', 'E', 'I', 'O', 'U' };
@@ -279,7 +281,7 @@ public class Bomb : MonoBehaviour, ISelectable
     {
         originalPosition = transform.position;
         originalRotation = transform.eulerAngles;
-        
+
         var targetPosition = selectPosition.position - selectPosition.up * 0.1f;
 
         transform.DOMove(targetPosition, 0.5f);
@@ -296,16 +298,6 @@ public class Bomb : MonoBehaviour, ISelectable
         return null;
     }
 
-    private void OnMouseEnter()
-    {
-        PlaySound(audioClips.outlineTick);
-        outline.enabled = true;
-    }
-
-    private void OnMouseExit()
-    {
-        outline.enabled = false;
-    }
     private string GenerateSerial()
     {
         var sb = new StringBuilder(6);
@@ -316,11 +308,5 @@ public class Bomb : MonoBehaviour, ISelectable
         sb.Append(RandomUtil.GetRandomAlphabet());
         sb.Append(RandomUtil.GetRandomDigit());
         return sb.ToString();
-    }
-
-    private void PlaySound(AudioClip clip)
-    {
-        audio.clip = clip;
-        audio.Play();
     }
 }

@@ -3,33 +3,33 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using EPOOutline;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.Serialization;
 
-[RequireComponent(typeof(Outlinable),typeof(AudioSource))]
+[RequireComponent(typeof(PointHighlighter),typeof(AudioSource))]
 public abstract class DisarmableModule : MonoBehaviour, ISelectable
 {
-    public Bomb bomb;
+    public Bomb Bomb;
     public GameObject GameObject => gameObject;
     public Transform Transform => transform;
-    public Collider Collider => selectCollider;
-    private Collider selectCollider;
-    private Outlinable outline;
-    protected AudioSource audio;
-    protected AudioClip outlineTick;
-    protected StatusLight statusLED;
+    public Collider Collider { get; private set; }
+
+    private PointHighlighter highlighter;
+    private StatusLight statusLed;
     protected ModulePart[] parts;
 
     protected PartEventInfo keyEvent;
 
-    public Vector3 originalPosition;
-    public Vector3 originalRotation;
+    public Vector3 OriginalPosition;
+    public Vector3 OriginalRotation;
     private Transform originalParent;
     
     private void Start()
     {
-        if (bomb == null)
+        if (Bomb == null)
         {
-            bomb = Bomb.Main;
+            Bomb = Bomb.Main;
         }
         EssentialInit();
         Init();
@@ -37,11 +37,9 @@ public abstract class DisarmableModule : MonoBehaviour, ISelectable
     }
     private void EssentialInit()
     {
-        selectCollider = GetComponent<Collider>();
-        outline = GetComponent<Outlinable>();
-        audio = GetComponent<AudioSource>();
-        outlineTick = Resources.Load(StaticStrings.AudioClipPath.Tick) as AudioClip;
-        statusLED = GetComponentInChildren<StatusLight>();
+        Collider = GetComponent<Collider>();
+        highlighter = GetComponent<PointHighlighter>();
+        statusLed = GetComponentInChildren<StatusLight>();
         parts = GetComponentsInChildren<ModulePart>();
         
         keyEvent = new PartEventInfo();
@@ -50,7 +48,6 @@ public abstract class DisarmableModule : MonoBehaviour, ISelectable
         {
             parts[i].MainEvent += Judge;
         }
-        outline.enabled = false;
     }
     protected abstract void Init();
     protected abstract void SetKeyEvent(); // 정답 설정
@@ -79,12 +76,13 @@ public abstract class DisarmableModule : MonoBehaviour, ISelectable
     }
     protected virtual void Strike(PartEventInfo info)
     {
-        statusLED.LightRed();
-        bomb.Strike(this);
+        statusLed.LightRed();
+        Bomb.Strike(this);
     }
+    
     protected void Disarm()
     {
-        statusLED.LightGreen();
+        statusLed.LightGreen();
         for (int i = 0; i < parts.Length; i++)
         {
             parts[i].MainEvent -= Judge;
@@ -92,16 +90,17 @@ public abstract class DisarmableModule : MonoBehaviour, ISelectable
         }
         this.enabled = false;
         Debug.Log($"{this.GetType().Name} Disarmed");
-        bomb.CurDisarm++;
+        Bomb.CurDisarm++;
     }
+    
     public virtual ISelectable OnSelected(Transform selectPosition)
     {
-        originalPosition = transform.position;
-        originalRotation = transform.eulerAngles;
+        OriginalPosition = transform.position;
+        OriginalRotation = transform.eulerAngles;
         
         originalParent = transform.parent;
         transform.parent = null;
-        bomb.transform.parent = transform;
+        Bomb.transform.parent = transform;
         
         var targetPosition = selectPosition.position + selectPosition.up * 0.1f;
         
@@ -109,7 +108,7 @@ public abstract class DisarmableModule : MonoBehaviour, ISelectable
         var tween = transform.DORotate(selectPosition.eulerAngles, 0.5f);
         tween.onComplete += () =>
         {
-            bomb.transform.parent = null;
+            Bomb.transform.parent = null;
             transform.parent = originalParent;
         };
         Collider.enabled = false;
@@ -120,28 +119,24 @@ public abstract class DisarmableModule : MonoBehaviour, ISelectable
     {
         originalParent = transform.parent;
         transform.parent = null;
-        bomb.transform.parent = transform;
+        Bomb.transform.parent = transform;
         
-        transform.DOMove(originalPosition, 0.5f);
-        transform.DORotate(originalRotation, 0.5f).onComplete += () =>
+        transform.DOMove(OriginalPosition, 0.5f);
+        transform.DORotate(OriginalRotation, 0.5f).onComplete += () =>
         {
-            bomb.transform.parent = null;
+            Bomb.transform.parent = null;
             transform.parent = originalParent;
         };
         Collider.enabled = true;
         
-        return bomb;
+        return Bomb;
     }
-    private void OnMouseEnter()
+    
+    private void OnDisable()
     {
-        audio.clip = outlineTick;
-        audio.Play();
-        outline.enabled = true;
+        highlighter.enabled = false;
     }
-    private void OnMouseExit()
-    {
-        outline.enabled = false;
-    }
+    
     private void OnDestroy()
     {
         for (int i = 0; i < parts.Length; i++)
@@ -149,4 +144,5 @@ public abstract class DisarmableModule : MonoBehaviour, ISelectable
             parts[i].MainEvent -= Judge;
         }
     }
+
 }

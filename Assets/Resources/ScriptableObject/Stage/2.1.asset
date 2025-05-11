@@ -19,13 +19,7 @@ MonoBehaviour:
 
     No matter.
     This bomb will only be half-comforting.'
-  LimitTimeMiniute: 5
-  LimitTimeSecond: 0
+  LimitTimeSecond: 300
   Modules: 3
   Strikes: 3
-  ModuleCandidates:
-  - {fileID: 7905152578400903473, guid: 1b75cab5e5227a8438ba39a148d5f94d, type: 3}
-  - {fileID: 7000963516593852145, guid: 1716845be0d1f944bb967e5659078b70, type: 3}
-  - {fileID: 4046879050595786344, guid: fa9b2f23f8a672b4f9a27239fbfbc19b, type: 3}
-  - {fileID: 4581982606879767853, guid: 8ae23db4452839a45a33bb8ba0ab0f06, type: 3}
-  - {fileID: 7407043047895958960, guid: c4ab24368b0f859408a9229135bcbc9c, type: 3}
+  ModuleCandidates: {fileID: 11400000, guid: 82c511ea4be457247865bf11aa180580, type: 2}

@@ -7,6 +7,5 @@ public class PrefabGroup : ScriptableObject
 {
     public GameObject emptyCoverPrefab;
     public TimerModule timer;
-    // public DisarmableModule[] modules;
     public GameObject[] widgets;
 }

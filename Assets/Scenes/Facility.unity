@@ -1051,7 +1051,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e8b20e930b563c4f85506341598a37b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audio: {fileID: 1259537308}
+  Sfx: {fileID: 0}
+  Bgm: {fileID: 0}
 --- !u!1001 &1433578915
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1141,6 +1142,26 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 0d0b2fdc6077a704eb1bfc98808e7628,
         type: 2}
+    - target: {fileID: 6512988657607974021, guid: 2730e91d9ce050e4d8789dd154486d06,
+        type: 3}
+      propertyPath: audioClips.Defuse
+      value: 
+      objectReference: {fileID: 8300000, guid: 555f5b5d645d914408ee50d4646c8d2f, type: 3}
+    - target: {fileID: 6512988657607974021, guid: 2730e91d9ce050e4d8789dd154486d06,
+        type: 3}
+      propertyPath: audioClips.Strike
+      value: 
+      objectReference: {fileID: 8300000, guid: 1fe717199fce62341aa5a40af187222c, type: 3}
+    - target: {fileID: 6512988657607974021, guid: 2730e91d9ce050e4d8789dd154486d06,
+        type: 3}
+      propertyPath: audioClips.Explode
+      value: 
+      objectReference: {fileID: 8300000, guid: 75fab7f292b92d24889bed313b862647, type: 3}
+    - target: {fileID: 6512988657607974021, guid: 2730e91d9ce050e4d8789dd154486d06,
+        type: 3}
+      propertyPath: audioClips.PutDown
+      value: 
+      objectReference: {fileID: 8300000, guid: a5c7eed264d7c6644b85457f68a8bb4d, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

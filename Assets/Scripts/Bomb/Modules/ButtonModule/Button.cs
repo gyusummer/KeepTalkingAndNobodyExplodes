@@ -36,6 +36,7 @@ public class Button : ModulePart, IPointerClickHandler
     private Coroutine ledCoroutine = null;
 
     [SerializeField] private AudioClip buttonUp;
+    
     private void Update()
     {
         if (isHolding)
@@ -47,6 +48,7 @@ public class Button : ModulePart, IPointerClickHandler
             }
         }
     }
+    
     private void TurnOnLed()
     {
         if (ledCoroutine == null)
@@ -97,7 +99,6 @@ public class Button : ModulePart, IPointerClickHandler
 
     protected override void OnPointerDown()
     {
-        if(this.enabled == false) return;
         holdTime = 0;
         isHolding = true;
         transform.Translate(0, -0.01f, 0);
@@ -117,7 +118,6 @@ public class Button : ModulePart, IPointerClickHandler
     }
     public override void OnPointerExit(PointerEventData eventData)
     {
-        if(this.enabled == false) return;
         if (holdTime > 0.5f)
         {
             ReleaseButton();
@@ -126,12 +126,11 @@ public class Button : ModulePart, IPointerClickHandler
     }
     private void ReleaseButton()
     {
-        audio.clip = buttonUp;
-        audio.Play();
+        AudioManager.Instance.PlaySfx(buttonUp);
         isHolding = false;
         transform.Translate(0, 0.01f, 0);
-        MainEvent?.Invoke(new PartEventInfo{part = this, time = holdTime});
         TurnOffLed();
         holdTime = 0;
+        MainEvent?.Invoke(new PartEventInfo{part = this, time = holdTime});
     }
 }

@@ -13,7 +13,6 @@ public class SceneChanger : MonoBehaviour
     public event Action OnScneChange;
     public Image black;
     
-    public BombInfo BombInfo;
     public StageInfoSAO currentStageInfo;
 
     private void Awake()
@@ -51,12 +50,6 @@ public class SceneChanger : MonoBehaviour
     public void LoadFacilityScene(StageInfoSAO stageInfo)
     {
         currentStageInfo = stageInfo;
-        BombInfo info = new BombInfo();
-        TimeSpan limitTime = new TimeSpan(0, stageInfo.LimitTimeMiniute, stageInfo.LimitTimeSecond);
-        info.LimitTime = limitTime;
-        info.ModuleCount = stageInfo.Modules;
-        info.StrikeCount = stageInfo.Strikes;
-        BombInfo = info;
         ChangeScene("Facility");
     }
     public void LoadSetupScene()

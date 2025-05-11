@@ -29,6 +29,8 @@ public class PageGroup
         }
     }
 }
+
+[RequireComponent(typeof(PointHighlighter))]
 public class BombBinder : MonoBehaviour, ISelectable
 {
     public StageGroupSAO StageGroup;
@@ -41,7 +43,6 @@ public class BombBinder : MonoBehaviour, ISelectable
     public PageGroup ResultExplodedPage;
 
     public Animator animator;
-    public Outlinable outline;
     public Collider selectCollider;
 
     private PageGroup currentPage;
@@ -54,7 +55,6 @@ public class BombBinder : MonoBehaviour, ISelectable
     private void Awake()
     {
         selectCollider = GetComponent<Collider>();
-        outline.enabled = false;
     }
 
     private void Start()
@@ -118,7 +118,7 @@ public class BombBinder : MonoBehaviour, ISelectable
         SetPageDetail(pageGroup,
             info.Identifier, 
             info.Description, 
-            $"{info.LimitTimeMiniute:D2}:{info.LimitTimeSecond:D2}", 
+            $"{info.LimitMinute:D2}:{info.LimitSecond:D2}", 
             $"{info.Modules} Modules", 
             $"{info.Strikes} Strikes");
     }
@@ -176,20 +176,9 @@ public class BombBinder : MonoBehaviour, ISelectable
         // Debug.Log($"DeSelected ::: {gameObject.name}");
         return null;
     }
-    public void OnMouseEnter()
-    {
-        outline.enabled = true;
-    }
 
-    public void OnMouseExit()
-    {
-        outline.enabled = false;
-    }
-
-    public AudioSource audio;
     public void PlaySound(AudioClip clip)
     {
-        audio.clip = clip;
-        audio.Play();
+        AudioManager.Instance.PlaySfx(clip);
     }
 }

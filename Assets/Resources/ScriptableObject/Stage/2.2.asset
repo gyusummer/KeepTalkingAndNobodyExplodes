@@ -15,14 +15,7 @@ MonoBehaviour:
   Key: 2.2
   Identifier: Double Your Money
   Description: The task is clear but the timer doesn't care about your workload.
-  LimitTimeMiniute: 5
-  LimitTimeSecond: 0
+  LimitTimeSecond: 300
   Modules: 6
   Strikes: 3
-  ModuleCandidates:
-  - {fileID: 7905152578400903473, guid: 1b75cab5e5227a8438ba39a148d5f94d, type: 3}
-  - {fileID: 7000963516593852145, guid: 1716845be0d1f944bb967e5659078b70, type: 3}
-  - {fileID: 4046879050595786344, guid: fa9b2f23f8a672b4f9a27239fbfbc19b, type: 3}
-  - {fileID: 7905152578400903473, guid: 1b75cab5e5227a8438ba39a148d5f94d, type: 3}
-  - {fileID: 7000963516593852145, guid: 1716845be0d1f944bb967e5659078b70, type: 3}
-  - {fileID: 4046879050595786344, guid: fa9b2f23f8a672b4f9a27239fbfbc19b, type: 3}
+  ModuleCandidates: {fileID: 11400000, guid: c2ca1b5efc3be644abef9a850b28e5b5, type: 2}

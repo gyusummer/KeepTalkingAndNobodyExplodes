@@ -8,12 +8,20 @@ public class StageInfoSAO : ScriptableObject
 {
     public string Key;
     public string Identifier;
-    [TextArea]
-    public string Description;
-    public int LimitTimeMiniute;
-    public int LimitTimeSecond;
+    [TextArea] public string Description;
+    public float LimitTimeSecond;
     public int Modules;
     public int Strikes;
 
-    public DisarmableModule[] ModuleCandidates;
+    public ModuleGroupSAO ModuleCandidates;
+
+    public int LimitMinute => (int)LimitTimeSecond / 60;
+    public int LimitSecond => (int)LimitTimeSecond % 60;
+
+    public BombInfo BombInfo => new BombInfo
+    {
+        LimitTime = TimeSpan.FromSeconds(LimitTimeSecond),
+        ModuleCount = Modules,
+        StrikeCount = Strikes
+    };
 }

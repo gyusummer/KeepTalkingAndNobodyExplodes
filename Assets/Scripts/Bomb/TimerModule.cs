@@ -5,12 +5,13 @@ using System.Diagnostics;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Debug = UnityEngine.Debug;
 
 public class TimerModule : MonoBehaviour
 {
-    public Bomb bomb;
-    public GameObject[] strikeCounter;
+    public Bomb Bomb;
+    public GameObject[] StrikeCounter;
     
     [SerializeField]private AudioSource audio;
     [SerializeField]private TMP_Text timeText;
@@ -18,15 +19,15 @@ public class TimerModule : MonoBehaviour
     private TimeSpan limitTime;
     private Coroutine coroutine;
 
-    public string leftTimeString;
+    public string LeftTimeString;
 
     private void Start()
     {
-        foreach (GameObject go in strikeCounter)
+        foreach (GameObject go in StrikeCounter)
         {
             go.SetActive(false);
         }
-        limitTime = bomb.Info.LimitTime;
+        limitTime = Bomb.Info.LimitTime;
     }
 
     private void Update()
@@ -63,17 +64,17 @@ public class TimerModule : MonoBehaviour
         {
             timer.Stop();
             leftTime = TimeSpan.Zero;
-            bomb.Explode(null);
+            Bomb.Explode(null);
         }
         if (leftTime.Minutes > 0)
         {
-            leftTimeString = $"{leftTime.Minutes:D2}:{leftTime.Seconds:D2}";
+            LeftTimeString = $"{leftTime.Minutes:D2}:{leftTime.Seconds:D2}";
         }
         else
         {
             int milliseconds = (int)(leftTime.Milliseconds * 0.1f);
-            leftTimeString = $"{leftTime.Seconds:D2}:{milliseconds:D2}";
+            LeftTimeString = $"{leftTime.Seconds:D2}:{milliseconds:D2}";
         }
-        timeText.text = leftTimeString;
+        timeText.text = LeftTimeString;
     }
 }

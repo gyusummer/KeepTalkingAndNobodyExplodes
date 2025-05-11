@@ -17,7 +17,7 @@ public class ResultInfo
     {
         string[] result = new string[6];
         result[0] = stageInfo.Identifier;
-        result[1] = $"{stageInfo.LimitTimeMiniute:D2}:{stageInfo.LimitTimeSecond:D2}";
+        result[1] = $"{stageInfo.LimitMinute:D2}:{stageInfo.LimitSecond:D2}";
         result[2] = $"{stageInfo.Modules} Modules";
         result[3] = $"{stageInfo.Strikes} Strikes";
         result[4] = $"Time Remaining:\n{leftTimeString}";
@@ -61,7 +61,7 @@ public class FacilityManager : MonoBehaviour
         RenderSettings.ambientIntensity = 1.0f;
         light.SetActive(true);
         audio.PlayOneShot(switchOn);
-        Bomb.Main.timerModule.StartTimer();
+        Bomb.Main.TimerModule.StartTimer();
         
         yield return new WaitForSeconds(2.0f);
 

@@ -36,7 +36,7 @@ public class ButtonModule : DisarmableModule
     }
     protected override bool IsCorrectEvent(PartEventInfo partEvent)
     {
-        string timer = bomb.timerModule.leftTimeString;
+        string timer = Bomb.TimerModule.LeftTimeString;
         bool isTimerHasKey = timer.Contains(keyEvent.parameter);
         bool isImmediateRelease = partEvent.time <= 0.2f;
         if (keyEvent.parameter == "-1" && isImmediateRelease)
@@ -51,7 +51,7 @@ public class ButtonModule : DisarmableModule
     }
     protected override void SetKeyEvent()
     {
-        int batteryCount = bomb.battery.Length;
+        int batteryCount = Bomb.Battery.Length;
         if (buttonColor == Color.blue && label == "Abort")
         {
             DelayedRelease(); // Releasing a Held Button 참조
@@ -60,11 +60,11 @@ public class ButtonModule : DisarmableModule
         {
             keyEvent.parameter = "-1";
         }
-        else if (buttonColor == Color.white && bomb.indicator == "CAR")
+        else if (buttonColor == Color.white && Bomb.Indicator == "CAR")
         {
             DelayedRelease(); // Releasing a Held Button 참조
         }
-        else if (batteryCount > 2 && bomb.indicator == "FRK")
+        else if (batteryCount > 2 && Bomb.Indicator == "FRK")
         {
             keyEvent.parameter = "-1";
         }

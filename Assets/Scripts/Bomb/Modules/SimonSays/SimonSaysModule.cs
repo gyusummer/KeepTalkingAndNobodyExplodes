@@ -36,19 +36,19 @@ public class SimonSaysModule : DisarmableModule
 
         flashOrder = RandomUtil.GetShuffled(buttons);
         
-        if (bomb.HasSerialVowel())
+        if (Bomb.HasSerialVowel())
             keyTable = vowelKeyTable;
         else
             keyTable = nVowelKeyTable;
 
-        bomb.OnBombStrike += SetKeyEvent;
+        Bomb.OnBombStrike += SetKeyEvent;
 
         StartCoroutine(FlashRoutine_Coroutine());
     }
     protected override void SetKeyEvent()
     {
         int tableIndex = Array.IndexOf(buttons, flashOrder[keyCursor]);
-        int keyIndex = keyTable[bomb.CurStrike, tableIndex];
+        int keyIndex = keyTable[Bomb.CurStrike, tableIndex];
         keyEvent.part = parts[keyIndex];
     }
 

@@ -42,20 +42,18 @@ public class TutorialButton : ModulePart, IPointerClickHandler
         }
         ReleaseButton();
     }
-    public override void OnPointerExit(PointerEventData eventData)
+    public void OnPointerExit(PointerEventData eventData)
     {
-        if(this.enabled == false) return;
         if (holdTime > 0.5f)
         {
             ReleaseButton();
         }
-        outline.enabled = false;
     }
     private void ReleaseButton()
     {
         ControlTutorialManager.Instance.BombEvent("ButtonReleased");
         
-        audio.PlayOneShot(buttonUp);
+        AudioManager.Instance.PlaySfx(buttonUp);
         isHolding = false;
         transform.Translate(0, 0.01f, 0);
         holdTime = 0;

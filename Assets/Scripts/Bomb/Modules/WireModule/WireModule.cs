@@ -71,7 +71,7 @@ public class WireModule : DisarmableModule
                 // Otherwise, if there is exactly one blue wire, cut the first wire.
                 // Otherwise, if there is more than one yellow wire, cut the last wire.
                 // Otherwise, cut the second wire.
-                if (activeColors.Count(c => c == Color.red) > 1 && bomb.IsSerialOdd())
+                if (activeColors.Count(c => c == Color.red) > 1 && Bomb.IsSerialOdd())
                 {
                     for(int i = activeColors.Length - 1; i > 0; i--)
                     {
@@ -101,7 +101,7 @@ public class WireModule : DisarmableModule
                 break;
             case 5:
                 // If the last wire is black and the last digit of the serial number is odd, cut the fourth wire.
-                if (activeColors.Last() == Color.black && bomb.IsSerialOdd())
+                if (activeColors.Last() == Color.black && Bomb.IsSerialOdd())
                 {
                     keyEvent.part = activeWires[3]; // 4번째 와이어
                 }
@@ -123,7 +123,7 @@ public class WireModule : DisarmableModule
                 break;
             case 6:
                 // If there are no yellow wires and the last digit of the serial number is odd, cut the third wire.
-                if (!activeColors.Contains(Color.yellow) && bomb.IsSerialOdd())
+                if (!activeColors.Contains(Color.yellow) && Bomb.IsSerialOdd())
                 {
                     keyEvent.part = activeWires[2]; // 세 번째 와이어 (인덱스 2)
                 }

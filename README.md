@@ -1,4 +1,4 @@
-# Keep Talking and Nobody Explodes (Unity 구현 프로젝트)
+# Keep Talking and Nobody Explodes
 
 
 ## 개요

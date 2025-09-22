@@ -1,2 +1,16 @@
-# KeepTalkingAndNobodyExplodes
- tgbikop
+# Keep Talking and Nobody Explodes (Unity 구현 프로젝트)
+
+
+## 개요
+폭탄 해체 협동 게임 "Keep Talking and Nobody Explodes"의 모작입니다.
+
+개발 기간: 2025.04.14 - 2025.04.30
+
+개발 환경: Unity 2022.3.16f
+
+
+## 주요 기능
+
+*   **절차적으로 생성되는 폭탄**: 매 게임마다 규칙에 따라 새로운 폭탄이 생성됩니다.
+*   **다양한 모듈**: 와이어, 버튼, 키패드 등 여러 종류의 퍼즐 모듈이 포함되어 있습니다.
+*   **상호작용 가능한 3D 환경**: 플레이어는 직접 폭탄을 들고 돌려보며 조작할 수 있습니다.
